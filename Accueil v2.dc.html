@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f4eee2;color:#22281a;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#2f3b25;text-decoration:none}
+a:hover{color:#b4602f}
+*{box-sizing:border-box}
+::selection{background:#c9a86a;color:#1f2718}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="overflow-x:clip">
+
+  <header data-header="1" style="position:fixed;top:14px;left:14px;right:14px;z-index:50;border-radius:999px;transition:background .4s,box-shadow .4s,backdrop-filter .4s">
+    <div style="display:flex;align-items:center;gap:20px;padding:8px 8px 8px 10px">
+      <a href="#" style="display:flex;align-items:center;gap:10px;color:#f4eee2;flex:none">
+        <img src="assets/logo.jpg" alt="Comptoir de la Vallée" style="width:46px;height:46px;border-radius:50%;object-fit:cover;display:block">
+        <span style="font-family:'Instrument Serif',serif;font-size:22px;letter-spacing:.02em;white-space:nowrap">Comptoir <em style="color:#c9a86a">de la Vallée</em></span>
+      </a>
+      <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+        <nav style="display:flex;gap:4px;flex:1;justify-content:center">
+          <sc-for list="{{ t.nav }}" as="item" hint-placeholder-count="8">
+            <a href="#" style="color:#f4eee2;font-size:14px;font-weight:500;padding:9px 12px;border-radius:999px;white-space:nowrap;transition:background .25s" style-hover="background:rgba(244,238,226,.12);color:#f4eee2">{{ item }}</a>
+          </sc-for>
+        </nav>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex:none">
+        <div style="display:flex;background:rgba(244,238,226,.1);border-radius:999px;padding:3px;font-size:12px;font-weight:700">
+          <button onClick="{{ setFr }}" style="border:0;padding:7px 11px;border-radius:999px;cursor:pointer;font:inherit;transition:all .3s;background:{{ frBg }};color:{{ frFg }}">FR</button>
+          <button onClick="{{ setEn }}" style="border:0;padding:7px 11px;border-radius:999px;cursor:pointer;font:inherit;transition:all .3s;background:{{ enBg }};color:{{ enFg }}">EN</button>
+        </div>
+        <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+          <a href="tel:+33427501510" style="display:flex;align-items:center;gap:10px;background:#c9a86a;color:#1f2718;font-weight:700;font-size:14px;padding:13px 20px;border-radius:999px;white-space:nowrap;transition:transform .3s,background .3s" style-hover="background:#e0c58f;color:#1f2718;transform:scale(1.04)"><span style="width:8px;height:8px;border-radius:50%;background:#1f2718"></span>{{ t.callShort }} 04 27 50 15 10</a>
+        </sc-if>
+        <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ toggleMenu }}" aria-label="Menu" style="width:46px;height:46px;border:0;background:#c9a86a;border-radius:50%;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px">
+            <span style="width:18px;height:2px;background:#1f2718"></span><span style="width:18px;height:2px;background:#1f2718"></span>
+          </button>
+        </sc-if>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:45;background:#1f2718;padding:110px 28px 40px;display:flex;flex-direction:column;gap:4px;overflow:auto">
+      <sc-for list="{{ t.nav }}" as="item" hint-placeholder-count="8">
+        <a href="#" onClick="{{ toggleMenu }}" style="color:#f4eee2;font-family:'Instrument Serif',serif;font-size:44px;line-height:1.15;border-bottom:1px solid rgba(244,238,226,.1);padding:6px 0" style-hover="color:#c9a86a">{{ item }}</a>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <section data-screen-label="Hero" style="position:relative;height:100vh;min-height:640px;background:#1f2718;overflow:hidden;color:#f4eee2">
+    <div style="position:absolute;inset:0">
+      <div data-speed="-0.35" style="position:absolute;top:-18%;bottom:-18%;left:0;right:0">
+        <image-slot id="hero" shape="rect" placeholder="Photo plein écran : olivier ou allées du magasin"></image-slot>
+      </div>
+    </div>
+    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(31,39,24,.55) 0%,rgba(31,39,24,.15) 35%,rgba(31,39,24,.85) 100%)"></div>
+    <div style="position:absolute;right:6vw;top:20vh;width:clamp(150px,18vw,260px);aspect-ratio:3/4;z-index:2">
+      <div data-speed="0.25" style="width:100%;height:100%;border-radius:200px 200px 16px 16px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.35);background:#3b4a2c">
+        <image-slot id="hero-float" shape="rect" placeholder="Détail : feuillage d'olivier"></image-slot>
+      </div>
+    </div>
+    <div style="position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(20px,4vw,56px) clamp(36px,6vh,64px);z-index:3">
+      <div style="display:flex;align-items:center;gap:12px;font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#c9a86a;margin-bottom:22px">
+        <span style="width:40px;height:1px;background:#c9a86a"></span>{{ t.heroKicker }}
+      </div>
+      <h1 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(48px,8.4vw,148px);line-height:.92;letter-spacing:-.02em;margin:0;max-width:1300px;display:flex;flex-wrap:wrap;column-gap:.22em">
+        <sc-for list="{{ heroWords }}" as="wd" hint-placeholder-count="10">
+          <span style="display:inline-block;overflow:hidden;padding-bottom:.08em"><span data-word="1" style="display:inline-block">{{ wd }}</span></span>
+        </sc-for>
+      </h1>
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:28px;margin-top:32px">
+        <p data-reveal="1" style="font-size:clamp(16px,1.4vw,19px);line-height:1.55;margin:0;max-width:500px;color:#e6dcc6;text-wrap:pretty">{{ t.heroSub }}</p>
+        <div data-reveal="1" data-delay="150" style="display:flex;flex-wrap:wrap;gap:10px;pointer-events:auto">
+          <a href="{{ mapsUrl }}" target="_blank" style="background:#f4eee2;color:#1f2718;font-weight:700;padding:18px 28px;border-radius:999px;font-size:15px;transition:transform .3s" style-hover="transform:translateY(-3px);color:#1f2718">{{ t.visit }} ↗</a>
+          <a href="tel:+33427501510" style="border:1px solid rgba(244,238,226,.5);color:#f4eee2;font-weight:600;padding:18px 28px;border-radius:999px;font-size:15px;transition:background .3s" style-hover="background:rgba(244,238,226,.14);color:#f4eee2">{{ t.callLong }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#c9a86a;color:#1f2718;overflow:hidden;padding:22px 0;border-block:1px solid #1f2718">
+    <div data-marquee="1" style="display:flex;width:max-content;gap:0">
+      <sc-for list="{{ marquee }}" as="m" hint-placeholder-count="16">
+        <span style="display:flex;align-items:center;gap:36px;padding-right:36px;font-family:'Instrument Serif',serif;font-size:clamp(34px,4vw,56px);line-height:1;white-space:nowrap">{{ m }}<span style="font-size:.5em">✦</span></span>
+      </sc-for>
+    </div>
+  </section>
+
+  <section data-screen-label="Nos univers" style="padding:clamp(80px,12vw,160px) clamp(16px,3vw,40px) 80px">
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:56px">
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(56px,9vw,140px);line-height:.9;letter-spacing:-.02em;margin:0;color:#1f2718">{{ t.worldsTitle }}</h2>
+        <span data-reveal="1" style="font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#b4602f">01 — 04</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <sc-for list="{{ worlds }}" as="w" hint-placeholder-count="4">
+          <a href="#" style="position:sticky;top:{{ w.top }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));min-height:min(72vh,620px);border-radius:28px;overflow:hidden;background:{{ w.bg }};color:{{ w.fg }};box-shadow:0 -20px 50px rgba(31,39,24,.12)" style-hover="color:{{ w.fg }}">
+            <div style="padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;justify-content:space-between;gap:32px">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;letter-spacing:.22em;font-weight:700">
+                <span>0{{ w.n }}</span>
+                <span style="width:52px;height:52px;border-radius:50%;border:1px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:20px;letter-spacing:0">↗</span>
+              </div>
+              <div>
+                <h3 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(48px,6vw,96px);line-height:.95;letter-spacing:-.02em;margin:0 0 20px">{{ w.title }}</h3>
+                <p style="margin:0;font-size:18px;line-height:1.55;max-width:420px;opacity:.85;text-wrap:pretty">{{ w.text }}</p>
+              </div>
+            </div>
+            <div style="position:relative;min-height:320px;overflow:hidden">
+              <div data-speed="-0.12" style="position:absolute;top:-12%;bottom:-12%;left:0;right:0">
+                <image-slot id="world-{{ $index }}" shape="rect" placeholder="{{ w.ph }}"></image-slot>
+              </div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Arrivages" data-hscroll="1" style="position:relative;height:300vh;background:#1f2718;color:#f4eee2">
+    <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:40px">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;padding:90px clamp(20px,4vw,56px) 0">
+        <div>
+          <div style="font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#c9a86a;margin-bottom:14px">{{ t.arrKicker }}</div>
+          <h2 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(48px,7vw,110px);line-height:.92;letter-spacing:-.02em;margin:0">{{ t.arrTitle }}</h2>
+        </div>
+        <p style="margin:0;font-size:17px;line-height:1.6;max-width:400px;color:#d6ccb4;text-wrap:pretty">{{ t.arrText }}</p>
+      </div>
+      <div data-htrack="1" style="display:flex;gap:20px;padding:0 clamp(20px,4vw,56px);width:max-content;will-change:transform">
+        <sc-for list="{{ arrivals }}" as="a" hint-placeholder-count="6">
+          <div style="width:clamp(240px,26vw,380px);flex:none;display:flex;flex-direction:column;gap:14px">
+            <div style="aspect-ratio:4/5;border-radius:20px;overflow:hidden;background:#2f3b25;transition:transform .5s" style-hover="transform:scale(.97)">
+              <image-slot id="arrival-{{ $index }}" shape="rect" placeholder="{{ t.arrPh }}"></image-slot>
+            </div>
+            <div style="font-size:13px;letter-spacing:.2em;font-weight:600;color:#c9a86a">N° 0{{ a }}</div>
+          </div>
+        </sc-for>
+        <a href="#" style="width:clamp(240px,26vw,380px);flex:none;aspect-ratio:4/5;border-radius:20px;background:#c9a86a;color:#1f2718;display:flex;flex-direction:column;justify-content:space-between;padding:32px" style-hover="color:#1f2718;background:#e0c58f">
+          <span style="font-size:42px">↗</span>
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(36px,3.4vw,52px);line-height:1">{{ t.arrBtn }}</span>
+        </a>
+      </div>
+      <div style="margin:0 clamp(20px,4vw,56px);height:2px;background:rgba(244,238,226,.15);border-radius:2px;overflow:hidden">
+        <div data-hbar="1" style="height:100%;width:100%;background:#c9a86a;transform-origin:left"></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Offre du moment" style="background:#b4602f;color:#f8efe2;padding:clamp(80px,10vw,140px) clamp(20px,4vw,56px);position:relative;overflow:hidden">
+    <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,96px);align-items:center">
+      <div style="position:relative">
+        <div data-reveal="1" style="aspect-ratio:4/5;border-radius:999px 999px 28px 28px;overflow:hidden;background:#9a4f25;position:relative">
+          <div data-speed="-0.15" style="position:absolute;top:-12%;bottom:-12%;left:0;right:0">
+            <image-slot id="offer" shape="rect" placeholder="Photo de l'offre (Strelitzia)"></image-slot>
+          </div>
+        </div>
+        <div style="position:absolute;right:-10px;bottom:8%;width:clamp(140px,14vw,190px);aspect-ratio:1;pointer-events:none">
+          <div data-spin="1" style="position:absolute;inset:0">
+            <svg viewBox="0 0 200 200" style="width:100%;height:100%;display:block"><defs><path id="ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"></path></defs><circle cx="100" cy="100" r="98" fill="#f8efe2"></circle><text style="font-family:'Hanken Grotesk',sans-serif;font-size:15px;font-weight:700;letter-spacing:4px" fill="#b4602f"><textPath href="#ring">{{ t.ringText }}</textPath></text></svg>
+          </div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:clamp(34px,3.4vw,46px);color:#b4602f">{{ t.offerBadge }}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:26px">
+        <div data-reveal="1" style="font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#f3d6b4">{{ t.offerKicker }}</div>
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(48px,6vw,96px);line-height:.95;letter-spacing:-.02em;margin:0;text-wrap:balance">{{ t.offerTitle }}</h2>
+        <p data-reveal="1" style="margin:0;font-size:clamp(20px,2vw,26px);line-height:1.4">{{ t.offerText }}</p>
+        <p data-reveal="1" style="margin:0;font-size:14px;color:#f3d6b4">{{ t.offerTerms }}</p>
+        <div data-reveal="1"><a href="#" style="display:inline-flex;gap:10px;background:#f8efe2;color:#b4602f;font-weight:700;padding:18px 28px;border-radius:999px;font-size:15px;transition:transform .3s" style-hover="transform:translateY(-3px);color:#8f4824">{{ t.offerBtn }} →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Récolte des olives" style="position:relative;min-height:110vh;overflow:hidden;color:#f4eee2;display:flex;align-items:center;background:#2f3b25">
+    <div style="position:absolute;inset:0">
+      <div data-speed="-0.3" style="position:absolute;top:-20%;bottom:-20%;left:0;right:0">
+        <image-slot id="olive-1" shape="rect" placeholder="Olivier centenaire / récolte"></image-slot>
+      </div>
+    </div>
+    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(31,39,24,.92) 0%,rgba(31,39,24,.6) 50%,rgba(31,39,24,.1) 100%)"></div>
+    <div style="position:relative;pointer-events:none;width:100%;max-width:1400px;margin:0 auto;padding:120px clamp(20px,4vw,56px)">
+      <div style="max-width:720px;display:flex;flex-direction:column;gap:28px;pointer-events:auto">
+        <div data-reveal="1" style="display:flex;align-items:center;gap:12px;font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#c9a86a"><span style="width:40px;height:1px;background:#c9a86a"></span>{{ t.oliveKicker }}</div>
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,7.4vw,120px);line-height:.92;letter-spacing:-.02em;margin:0;text-wrap:balance">{{ t.oliveTitle }}</h2>
+        <p data-reveal="1" style="margin:0;font-size:19px;line-height:1.6;max-width:480px;color:#e6dcc6;text-wrap:pretty">{{ t.oliveText }}</p>
+        <div data-reveal="1" style="display:flex;flex-wrap:wrap;gap:10px">
+          <a href="#" style="background:#c9a86a;color:#1f2718;font-weight:700;padding:18px 28px;border-radius:999px;font-size:15px;transition:transform .3s" style-hover="transform:translateY(-3px);color:#1f2718">{{ t.oliveBtn }} →</a>
+          <a href="tel:+33427501510" style="border:1px solid rgba(244,238,226,.5);color:#f4eee2;font-weight:600;padding:18px 28px;border-radius:999px;font-size:15px" style-hover="background:rgba(244,238,226,.14);color:#f4eee2">{{ t.oliveBook }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Pourquoi le Comptoir" style="padding:clamp(80px,12vw,160px) clamp(20px,4vw,56px)">
+    <div style="max-width:1400px;margin:0 auto">
+      <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,8vw,128px);line-height:.9;letter-spacing:-.02em;margin:0 0 64px;color:#1f2718">{{ t.whyTitle }}</h2>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ t.why }}" as="r" hint-placeholder-count="3">
+          <div data-reveal="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px 40px;align-items:baseline;border-top:1px solid #1f2718;padding:36px 0;transition:padding .4s" style-hover="padding-left:16px">
+            <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(64px,7vw,110px);line-height:.8;color:#b4602f">0{{ r.n }}</div>
+            <h3 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(30px,3vw,44px);line-height:1.05;margin:0;color:#1f2718">{{ r.title }}</h3>
+            <p style="margin:0;font-size:17px;line-height:1.6;color:#55574a;text-wrap:pretty">{{ r.text }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Instagram" style="background:#e6d9bf;padding:clamp(72px,9vw,120px) clamp(20px,4vw,56px)">
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:40px">
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(40px,5.4vw,80px);line-height:.95;margin:0;color:#1f2718">@comptoirdelavallee</h2>
+        <a data-reveal="1" href="https://www.instagram.com/comptoirdelavallee/" target="_blank" style="background:#1f2718;color:#f4eee2;font-weight:700;padding:18px 28px;border-radius:999px;font-size:15px;transition:transform .3s" style-hover="transform:translateY(-3px);color:#f4eee2">{{ t.igBtn }} ↗</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:12px">
+        <sc-for list="{{ arrivals }}" as="p" hint-placeholder-count="6">
+          <div data-reveal="1" style="aspect-ratio:1;border-radius:16px;overflow:hidden;background:#d8c9aa;transition:transform .5s,border-radius .5s" style-hover="transform:rotate(-2deg) scale(1.03);border-radius:40px">
+            <image-slot id="ig-{{ $index }}" shape="rect" placeholder="Post Instagram"></image-slot>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Infos pratiques" style="padding:clamp(80px,10vw,140px) clamp(20px,4vw,56px)">
+    <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:clamp(40px,5vw,80px)">
+      <div style="display:flex;flex-direction:column;gap:36px">
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,7vw,110px);line-height:.92;letter-spacing:-.02em;margin:0;color:#1f2718">{{ t.visitTitle }}</h2>
+        <div data-reveal="1" style="display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-top:1px solid rgba(31,39,24,.2);font-size:17px;line-height:1.5">
+            <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66;padding-top:4px">{{ t.lAddress }}</span>
+            <span>891 route de Saint-Zacharie<br>13390 Auriol{{ t.country }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-top:1px solid rgba(31,39,24,.2);font-size:17px">
+            <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66;padding-top:4px">{{ t.lPhone }}</span>
+            <a href="tel:+33427501510" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1">{{ t.phone }}</a>
+          </div>
+          <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-top:1px solid rgba(31,39,24,.2);font-size:17px">
+            <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66;padding-top:4px">{{ t.lHours }}</span>
+            <span style="color:#8a7f66;font-style:italic">{{ t.tbc }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-block:1px solid rgba(31,39,24,.2);font-size:17px">
+            <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66;padding-top:4px">Parking</span>
+            <span style="color:#8a7f66;font-style:italic">{{ t.tbc }}</span>
+          </div>
+        </div>
+        <div data-reveal="1" style="display:flex;flex-wrap:wrap;gap:10px">
+          <a href="{{ mapsUrl }}" target="_blank" style="background:#1f2718;color:#f4eee2;font-weight:700;padding:18px 28px;border-radius:999px;font-size:15px;transition:transform .3s" style-hover="transform:translateY(-3px);color:#f4eee2">{{ t.directions }} ↗</a>
+          <a href="tel:+33427501510" style="border:1px solid #1f2718;color:#1f2718;font-weight:600;padding:18px 28px;border-radius:999px;font-size:15px" style-hover="background:#1f2718;color:#f4eee2">{{ t.callShort }}</a>
+        </div>
+      </div>
+      <div data-reveal="1" style="min-height:480px;border-radius:28px;overflow:hidden;background:#e6d9bf">
+        <iframe title="Google Maps" src="https://maps.google.com/maps?q=891%20route%20de%20Saint-Zacharie%2C%2013390%20Auriol&z=14&output=embed" style="border:0;width:100%;height:100%;min-height:480px;display:block;filter:grayscale(.4) sepia(.2)" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background:#1f2718;color:#cfc4a8;padding:72px clamp(20px,4vw,56px) {{ footerPad }};overflow:hidden">
+    <div style="max-width:1400px;margin:0 auto;display:flex;flex-direction:column;gap:56px">
+      <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between;align-items:center">
+        <div style="display:flex;align-items:center;gap:16px">
+          <img src="assets/logo.jpg" alt="" style="width:72px;height:72px;border-radius:50%;object-fit:cover;display:block">
+          <div style="font-size:15px;line-height:1.6;max-width:300px">{{ t.tagline }}</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px 24px;font-size:14px">
+          <sc-for list="{{ t.legal }}" as="l" hint-placeholder-count="4">
+            <a href="#" style="color:#cfc4a8" style-hover="color:#c9a86a">{{ l }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div data-speed="0.08" style="font-family:'Instrument Serif',serif;font-size:17.5vw;line-height:.8;letter-spacing:-.03em;color:#c9a86a;white-space:nowrap;text-align:center">Comptoir</div>
+    </div>
+  </footer>
+
+  <sc-if value="{{ showBar }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:60;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px;background:rgba(31,39,24,.92);backdrop-filter:blur(14px);border-radius:999px;box-shadow:0 12px 30px rgba(0,0,0,.3)">
+      <a href="{{ mapsUrl }}" target="_blank" style="display:flex;align-items:center;justify-content:center;min-height:50px;border-radius:999px;color:#f4eee2;font-weight:700;font-size:15px">{{ t.directions }}</a>
+      <a href="tel:+33427501510" style="display:flex;align-items:center;justify-content:center;min-height:50px;background:#c9a86a;border-radius:999px;color:#1f2718;font-weight:700;font-size:15px">{{ t.callShort }}</a>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;fr&quot;,&quot;en&quot;],&quot;default&quot;:&quot;fr&quot;,&quot;tsType&quot;:&quot;'fr'|'en'&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;mobileBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const COPY = {
+  fr: {
+    nav: ['Jardinerie','Animalerie','Déco & maison','Services','Promotions','Actualités','À propos','Contact'],
+    callShort: 'Appeler', callLong: 'Appeler le 04 27 50 15 10', visit: 'Nous rendre visite', directions: 'Itinéraire',
+    heroKicker: 'Jardinerie · Animalerie · Déco — Auriol',
+    heroTitle: 'Tout pour votre jardin et vos animaux, au cœur de la vallée',
+    heroSub: "Jardinerie, animalerie et déco à Auriol. Des plantes choisies pour notre climat, des conseils de passionnés et des arrivages toute l'année.",
+    marquee: ['Plantes & fleurs','Oliviers','Arbres fruitiers','Plantes exotiques','Poterie','Outillage','Animalerie','Déco & maison'],
+    worldsTitle: 'Nos univers',
+    worlds: [
+      { title: 'Jardinerie', text: 'Plantes, fleurs, arbres fruitiers, poterie et outillage pour le jardin et la terrasse.', ph: 'Photo jardinerie' },
+      { title: 'Oliviers', text: "Des jeunes plants aux sujets centenaires, l'arbre emblème de la Provence.", ph: 'Photo oliviers' },
+      { title: 'Animalerie', text: 'Alimentation, accessoires et soins pour vos compagnons.', ph: 'Photo animalerie' },
+      { title: 'Déco & maison', text: 'Objets, cache-pots et idées cadeaux, chaussures confort au quotidien.', ph: 'Photo déco' }
+    ],
+    arrKicker: 'Arrivages', arrTitle: "Ça vient d'arriver",
+    arrText: 'Chaque semaine, de nouvelles plantes arrivent au Comptoir. Passez vite, les plus beaux sujets partent en premier.',
+    arrBtn: 'Voir les arrivages', arrPh: 'Arrivage',
+    offerKicker: 'Offre du moment', offerBadge: '-30 %', ringText: 'OFFRE DU MOMENT · OFFRE DU MOMENT · ',
+    offerTitle: "Strelitzia, l'exotisme dans votre jardin",
+    offerText: '-30 % ou 2 achetés = 1 offert', offerTerms: "Jusqu'à fin septembre · en magasin, dans la limite des stocks disponibles",
+    offerBtn: 'Toutes nos promotions',
+    oliveKicker: 'Service', oliveTitle: "Préparez votre récolte d'olives.",
+    oliveText: 'Peignes, filets, gaules électriques : achetez ou louez le matériel de récolte directement en magasin.',
+    oliveBtn: 'En savoir plus', oliveBook: 'Réserver par téléphone',
+    whyTitle: 'Pourquoi le Comptoir',
+    why: [
+      { n: 1, title: 'Des plantes adaptées à notre climat', text: 'Soleil, mistral, sécheresse, nous sélectionnons ce qui pousse bien en Provence.' },
+      { n: 2, title: 'Le conseil avant tout', text: 'Plantation, taille, arrosage, nous prenons le temps de vous répondre.' },
+      { n: 3, title: 'Un commerce local', text: "Une équipe de la vallée, engagée dans la vie d'Auriol." }
+    ],
+    igBtn: 'Suivez-nous',
+    visitTitle: 'Nous rendre visite', lAddress: 'Adresse', lPhone: 'Téléphone', lHours: 'Horaires',
+    country: '', phone: '04 27 50 15 10', tbc: 'À confirmer',
+    tagline: 'Le Comptoir de la Vallée — Tout pour votre jardin & vos animaux. Auriol, Provence.',
+    legal: ['Mentions légales','Politique de confidentialité','Gestion des cookies','Instagram']
+  },
+  en: {
+    nav: ['Garden centre','Pet shop','Home & décor','Services','Offers','News','About','Contact'],
+    callShort: 'Call', callLong: 'Call +33 4 27 50 15 10', visit: 'Visit us', directions: 'Directions',
+    heroKicker: 'Garden centre · Pet shop · Décor — Auriol',
+    heroTitle: 'Everything for your garden and your pets, in the heart of the valley',
+    heroSub: 'Garden centre, pet shop and home décor in Auriol. Plants chosen for our climate, advice from people who love what they do, and new arrivals all year round.',
+    marquee: ['Plants & flowers','Olive trees','Fruit trees','Exotic plants','Pottery','Tools','Pet shop','Home & décor'],
+    worldsTitle: 'Our worlds',
+    worlds: [
+      { title: 'Garden centre', text: 'Plants, flowers, fruit trees, pottery and tools for garden and terrace.', ph: 'Garden centre photo' },
+      { title: 'Olive trees', text: 'From young plants to century-old specimens, the emblem of Provence.', ph: 'Olive trees photo' },
+      { title: 'Pet shop', text: 'Food, accessories and care for your companions.', ph: 'Pet shop photo' },
+      { title: 'Home & décor', text: 'Décor pieces, plant pots, gift ideas and comfortable everyday footwear.', ph: 'Décor photo' }
+    ],
+    arrKicker: 'New arrivals', arrTitle: 'Just arrived',
+    arrText: 'New plants arrive at the Comptoir every week. Come by soon, the finest specimens go first.',
+    arrBtn: 'See new arrivals', arrPh: 'New arrival',
+    offerKicker: 'Offer of the moment', offerBadge: '-30%', ringText: 'OFFER OF THE MOMENT · OFFER OF THE MOMENT · ',
+    offerTitle: 'Strelitzia, the exotic touch for your garden',
+    offerText: '-30% or buy 2, get 1 free', offerTerms: 'Until end of September · in store, while stocks last',
+    offerBtn: 'All our offers',
+    oliveKicker: 'Service', oliveTitle: 'Get ready for your olive harvest.',
+    oliveText: 'Combs, nets, electric harvesters: buy or rent your harvesting equipment in store.',
+    oliveBtn: 'Find out more', oliveBook: 'Book by phone',
+    whyTitle: 'Why the Comptoir',
+    why: [
+      { n: 1, title: 'Plants suited to our climate', text: 'Sun, mistral wind, dry summers, we choose what thrives in Provence.' },
+      { n: 2, title: 'Advice comes first', text: 'Planting, pruning, watering, we take the time to answer you.' },
+      { n: 3, title: 'A local business', text: 'A team from the valley, involved in life in Auriol.' }
+    ],
+    igBtn: 'Follow us',
+    visitTitle: 'Visit us', lAddress: 'Address', lPhone: 'Phone', lHours: 'Hours',
+    country: ', France', phone: '+33 4 27 50 15 10', tbc: 'To be confirmed',
+    tagline: 'Le Comptoir de la Vallée — Everything for your garden and your pets. Auriol, Provence.',
+    legal: ['Legal notice','Privacy policy','Cookie settings','Instagram']
+  }
+};
+const SCHEMES = [['#2f3b25','#f4eee2'],['#e6d9bf','#1f2718'],['#c9a86a','#1f2718'],['#b4602f','#f8efe2']];
+
+class Component extends DCLogic {
+  state = { lang: null, w: typeof window !== 'undefined' ? window.innerWidth : 1280, menuOpen: false };
+  rootRef = (el) => { this.root = el; };
+  componentDidMount() {
+    this.reduced = (this.props.motion === false) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.onResize = () => { this.setState({ w: window.innerWidth }); this.tick(); };
+    this.onScroll = () => { if (!this.raf) this.raf = requestAnimationFrame(() => { this.raf = null; this.tick(); }); };
+    window.addEventListener('resize', this.onResize);
+    document.addEventListener('scroll', this.onScroll, { passive: true, capture: true });
+    setTimeout(() => { this.setupReveal(); this.animateWords(); this.startLoops(); this.tick(); }, 60);
+  }
+  componentDidUpdate(pp, ps) {
+    if (ps.lang !== this.state.lang) setTimeout(() => { this.animateWords(); this.startLoops(); this.tick(); }, 0);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    document.removeEventListener('scroll', this.onScroll, { capture: true });
+    this.io && this.io.disconnect();
+  }
+  q(s) { return this.root ? Array.from(this.root.querySelectorAll(s)) : []; }
+  setupReveal() {
+    if (this.reduced) return;
+    const ease = 'cubic-bezier(.2,.7,.2,1)';
+    this.io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) { e.target.style.opacity = 1; e.target.style.transform = 'none'; this.io.unobserve(e.target); }
+    }), { threshold: 0.12 });
+    this.q('[data-reveal]').forEach((el) => {
+      el.style.opacity = 0; el.style.transform = 'translateY(56px)';
+      el.style.transition = `opacity 1.1s ${ease} ${el.dataset.delay || 0}ms, transform 1.1s ${ease} ${el.dataset.delay || 0}ms`;
+      this.io.observe(el);
+    });
+  }
+  animateWords() {
+    if (this.reduced) return;
+    this.q('[data-word]').forEach((el, i) => el.animate(
+      [{ transform: 'translateY(110%) rotate(4deg)' }, { transform: 'none' }],
+      { duration: 1200, delay: 150 + i * 70, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' }));
+  }
+  startLoops() {
+    if (this.reduced) return;
+    this.q('[data-marquee]').forEach((el) => { el.getAnimations().forEach(a => a.cancel()); el.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }], { duration: 38000, iterations: Infinity }); });
+    this.q('[data-spin]').forEach((el) => { if (!el.getAnimations().length) el.animate([{ transform: 'rotate(0)' }, { transform: 'rotate(360deg)' }], { duration: 18000, iterations: Infinity }); });
+  }
+  tick() {
+    if (!this.root) return;
+    const H = window.innerHeight;
+    const scrolled = this.root.getBoundingClientRect().top < -40;
+    const hdr = this.root.querySelector('[data-header]');
+    if (hdr) {
+      hdr.style.background = scrolled ? 'rgba(31,39,24,.88)' : 'rgba(31,39,24,0)';
+      hdr.style.backdropFilter = scrolled ? 'blur(16px)' : 'none';
+      hdr.style.boxShadow = scrolled ? '0 10px 30px rgba(0,0,0,.18)' : 'none';
+    }
+    if (!this.reduced) this.q('[data-speed]').forEach((el) => {
+      const r = el.parentElement.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > H + 200) return;
+      const d = r.top + r.height / 2 - H / 2;
+      el.style.transform = `translate3d(0,${(d * +el.dataset.speed).toFixed(1)}px,0)`;
+    });
+    const sec = this.root.querySelector('[data-hscroll]'), tr = this.root.querySelector('[data-htrack]'), bar = this.root.querySelector('[data-hbar]');
+    if (sec && tr) {
+      const r = sec.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -r.top / (r.height - H)));
+      const max = Math.max(0, tr.scrollWidth - window.innerWidth);
+      tr.style.transform = `translate3d(${(-p * max).toFixed(1)}px,0,0)`;
+      if (bar) bar.style.transform = `scaleX(${p})`;
+    }
+  }
+  renderVals() {
+    const lang = this.state.lang ?? this.props.lang ?? 'fr';
+    const t = COPY[lang];
+    const narrow = this.state.w < 1180;
+    const mobileBar = (this.props.mobileBar ?? true) && this.state.w < 760;
+    const on = (l) => lang === l;
+    return {
+      t, rootRef: this.rootRef,
+      heroWords: t.heroTitle.split(' '),
+      marquee: [...t.marquee, ...t.marquee],
+      worlds: t.worlds.map((w, i) => ({ ...w, n: i + 1, top: `${96 + i * 28}px`, bg: SCHEMES[i][0], fg: SCHEMES[i][1] })),
+      wide: !narrow, narrow,
+      menuOpen: narrow && this.state.menuOpen,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      setFr: () => this.setState({ lang: 'fr' }),
+      setEn: () => this.setState({ lang: 'en' }),
+      frBg: on('fr') ? '#f4eee2' : 'transparent', frFg: on('fr') ? '#1f2718' : '#f4eee2',
+      enBg: on('en') ? '#f4eee2' : 'transparent', enFg: on('en') ? '#1f2718' : '#f4eee2',
+      arrivals: [1,2,3,4,5,6],
+      mapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=891+route+de+Saint-Zacharie+13390+Auriol',
+      showBar: mobileBar,
+      footerPad: mobileBar ? '120px' : '48px'
+    };
+  }
+}
+</script>
+</body>
+</html>

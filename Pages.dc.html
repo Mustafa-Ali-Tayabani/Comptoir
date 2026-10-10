@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<script src="./site-content.js"></script>
+<style>
+body{margin:0;background:#f4eee2;color:#22281a;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#2f3b25;text-decoration:none}
+a:hover{color:#b4602f}
+*{box-sizing:border-box}
+::selection{background:#c9a86a;color:#1f2718}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" onClickCapture="{{ onLinkClick }}" style="overflow-x:clip">
+  <div data-cursor="1" style="position:fixed;top:0;left:0;width:40px;height:40px;margin:-20px 0 0 -20px;pointer-events:none;z-index:250;opacity:0;transition:opacity .3s">
+    <svg data-flower="1" viewBox="0 0 40 40" width="40" height="40" style="display:block;transition:transform .45s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 4px 8px rgba(0,0,0,.25))"><ellipse cx="20" cy="9.5" rx="6" ry="9" transform="rotate(0 20 20)" fill="#c9a86a" fill-opacity=".92"></ellipse><ellipse cx="20" cy="9.5" rx="6" ry="9" transform="rotate(72 20 20)" fill="#c9a86a" fill-opacity=".92"></ellipse><ellipse cx="20" cy="9.5" rx="6" ry="9" transform="rotate(144 20 20)" fill="#c9a86a" fill-opacity=".92"></ellipse><ellipse cx="20" cy="9.5" rx="6" ry="9" transform="rotate(216 20 20)" fill="#c9a86a" fill-opacity=".92"></ellipse><ellipse cx="20" cy="9.5" rx="6" ry="9" transform="rotate(288 20 20)" fill="#c9a86a" fill-opacity=".92"></ellipse><circle cx="20" cy="20" r="5.5" fill="#b4602f"></circle><circle cx="20" cy="20" r="2.2" fill="#f4eee2"></circle></svg>
+  </div>
+  <div data-cursor-dot="1" style="position:fixed;top:0;left:0;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:#1f2718;box-shadow:0 0 0 1.5px #f4eee2;pointer-events:none;z-index:251;opacity:0"></div>
+
+  <header data-header="1" onMouseLeave="{{ closeMega }}" style="position:fixed;top:0;left:0;right:0;z-index:50;color:#f4eee2;transition:background .5s,box-shadow .5s,backdrop-filter .5s">
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:20px;padding:12px clamp(16px,3vw,40px)">
+      <div style="display:flex;align-items:center;gap:24px;min-width:0">
+        <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+          <sc-for list="{{ navLeft }}" as="item" hint-placeholder-count="4">
+            <a href="{{ item.href }}" onMouseEnter="{{ item.onEnter }}" onFocus="{{ item.onEnter }}" style="position:relative;display:flex;align-items:center;gap:6px;color:#f4eee2;font-size:14px;font-weight:500;padding:12px 0;white-space:nowrap" style-hover="color:#c9a86a">{{ item.label }}<sc-if value="{{ item.hasMega }}" hint-placeholder-val="{{ false }}"><span style="font-size:8px;opacity:.75;transition:transform .35s;transform:{{ item.caretRot }}">▼</span></sc-if><span style="position:absolute;left:0;right:0;bottom:6px;height:1px;background:#c9a86a;transform-origin:left;transition:transform .35s;transform:scaleX({{ item.line }})"></span></a>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ toggleMenu }}" aria-label="Menu" style="height:46px;padding:0 18px 0 14px;border:1px solid rgba(244,238,226,.4);background:transparent;border-radius:999px;color:#f4eee2;cursor:pointer;display:flex;align-items:center;gap:10px;font:600 14px 'Hanken Grotesk',sans-serif">
+            <span style="display:flex;flex-direction:column;gap:5px"><span style="width:18px;height:1.5px;background:#f4eee2"></span><span style="width:12px;height:1.5px;background:#f4eee2"></span></span>{{ menuLabel }}
+          </button>
+        </sc-if>
+      </div>
+      <a href="{{ homeHref }}" data-logo="1" style="display:flex;color:#f4eee2;transform-origin:center top;transition:transform .45s cubic-bezier(.2,.7,.2,1)">
+        <img src="assets/logo.jpg" alt="Comptoir de la Vallée" style="width:60px;height:60px;border-radius:50%;object-fit:cover;display:block;box-shadow:0 0 0 1px rgba(201,168,106,.5)">
+      </a>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:22px;min-width:0">
+        <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+          <sc-for list="{{ navRight }}" as="item" hint-placeholder-count="4">
+            <a href="{{ item.href }}" onMouseEnter="{{ item.onEnter }}" onFocus="{{ item.onEnter }}" style="position:relative;display:flex;align-items:center;gap:6px;color:#f4eee2;font-size:14px;font-weight:500;padding:12px 0;white-space:nowrap" style-hover="color:#c9a86a">{{ item.label }}<sc-if value="{{ item.hasMega }}" hint-placeholder-val="{{ false }}"><span style="font-size:8px;opacity:.75;transition:transform .35s;transform:{{ item.caretRot }}">▼</span></sc-if><span style="position:absolute;left:0;right:0;bottom:6px;height:1px;background:#c9a86a;transform-origin:left;transition:transform .35s;transform:scaleX({{ item.line }})"></span></a>
+          </sc-for>
+        </sc-if>
+        <div style="display:flex;gap:2px;font-weight:700;font-size:12.5px">
+          <button onClick="{{ setFr }}" style="border:0;background:transparent;padding:2px 5px;cursor:pointer;font:inherit;color:{{ frFg }}">FR</button>
+          <span style="opacity:.4">/</span>
+          <button onClick="{{ setEn }}" style="border:0;background:transparent;padding:2px 5px;cursor:pointer;font:inherit;color:{{ enFg }}">EN</button>
+        </div>
+        <a href="tel:+33427501510" style="display:flex;align-items:center;gap:10px;background:#c9a86a;color:#1f2718;font-weight:700;font-size:14px;padding:0 18px;height:44px;border-radius:999px;white-space:nowrap;transition:transform .3s,background .3s" style-hover="background:#e0c58f;color:#1f2718;transform:scale(1.04)">
+          <span style="position:relative;width:8px;height:8px;flex:none"><span data-ping="1" style="position:absolute;inset:0;border-radius:50%;background:#1f2718"></span><span style="position:absolute;inset:0;border-radius:50%;background:#1f2718"></span></span>{{ callLabel }}
+        </a>
+      </div>
+    </div>
+    <sc-if value="{{ megaOpen }}" hint-placeholder-val="{{ false }}">
+      <div data-mega-panel="1" onMouseEnter="{{ keepMega }}" style="position:absolute;top:100%;left:0;right:0;padding:0 clamp(16px,3vw,40px)">
+        <div style="max-width:1500px;margin:10px auto 0;background:#f4eee2;color:#1f2718;border-radius:28px;box-shadow:0 40px 90px rgba(0,0,0,.4);overflow:hidden;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.5fr) minmax(0,.95fr)">
+          <div style="padding:40px;display:flex;flex-direction:column;justify-content:space-between;gap:28px;background:#ece3d0">
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <span style="display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#b4602f"><span style="width:28px;height:1px;background:#b4602f"></span>{{ mega.kicker }}</span>
+              <span style="font-family:'Instrument Serif',serif;font-size:56px;line-height:.95;letter-spacing:-.02em">{{ mega.label }}</span>
+              <p style="margin:0;font-size:15px;line-height:1.6;color:#55574a;text-wrap:pretty">{{ mega.intro }}</p>
+            </div>
+            <a href="{{ mega.href }}" style="align-self:flex-start;display:flex;align-items:center;gap:12px;background:#1f2718;color:#f4eee2;font-weight:700;font-size:14px;padding:8px 8px 8px 22px;border-radius:999px" style-hover="color:#f4eee2;background:#2f3b25">{{ mega.viewAll }}<span style="width:36px;height:36px;border-radius:50%;background:#c9a86a;color:#1f2718;display:flex;align-items:center;justify-content:center">→</span></a>
+          </div>
+          <div style="padding:28px 36px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;align-content:start">
+            <sc-for list="{{ mega.links }}" as="ml" hint-placeholder-count="6">
+              <a href="{{ ml.href }}" data-mega-link="1" style="display:flex;gap:14px;align-items:baseline;padding:16px 0;border-bottom:1px solid rgba(31,39,24,.12);color:#1f2718;transition:padding .35s,color .35s" style-hover="padding-left:10px;color:#b4602f">
+                <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;color:#c9a86a;flex:none">0{{ ml.n }}</span>
+                <span style="display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font-family:'Instrument Serif',serif;font-size:26px;line-height:1.05">{{ ml.label }}</span><span style="font-size:13px;line-height:1.45;color:#6b6a5a">{{ ml.text }}</span></span>
+              </a>
+            </sc-for>
+          </div>
+          <div style="padding:14px;display:flex;flex-direction:column;gap:12px">
+            <a href="{{ mega.href }}" style="position:relative;flex:1;min-height:250px;border-radius:20px;overflow:hidden;display:block;background:#2f3b25">
+              <img data-mega-img="1" src="{{ mega.img.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+            </a>
+            <a href="{{ mega.promo.href }}" style="display:flex;align-items:center;gap:14px;background:#b4602f;color:#f8efe2;border-radius:18px;padding:12px 14px;transition:transform .3s" style-hover="color:#f8efe2;transform:translateY(-2px)">
+              <span style="width:54px;height:54px;border-radius:50%;background:#f8efe2;color:#b4602f;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:19px;flex:none;transform:rotate(-8deg)">{{ mega.promo.badge }}</span>
+              <span style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#f3d6b4">{{ mega.promoKicker }}</span><span style="font-size:14.5px;font-weight:600;line-height:1.3">{{ mega.promo.title }}</span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+    <div data-progress="1" style="height:2px;background:#c9a86a;transform-origin:left"></div>
+  </header>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:45;background:#1f2718;padding:120px 28px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:40px;overflow:auto">
+      <nav style="display:flex;flex-direction:column">
+        <sc-for list="{{ navAll }}" as="item" hint-placeholder-count="8">
+          <div style="overflow:hidden;border-bottom:1px solid rgba(244,238,226,.1)">
+            <a href="{{ item.href }}" data-menu-item="1" style="display:block;color:#f4eee2;font-family:'Instrument Serif',serif;font-size:clamp(36px,8vw,60px);line-height:1.15;padding:4px 0" style-hover="color:#c9a86a">{{ item.label }}</a>
+          </div>
+        </sc-for>
+      </nav>
+      <div style="display:flex;flex-direction:column;gap:6px;color:#cfc4a8;font-size:15px">
+        <span>891 route de Saint-Zacharie, 13390 Auriol</span>
+        <a href="tel:+33427501510" style="color:#c9a86a;font-family:'Instrument Serif',serif;font-size:30px">{{ u.phone }}</a>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ heroImg }}" hint-placeholder-val="{{ true }}">
+  <section data-screen-label="Page hero" style="position:relative;min-height:70svh;background:linear-gradient(135deg,#1f2718 0%,#2a3420 60%,#36412a 100%);color:#f4eee2;overflow:hidden">
+    <div data-blob="1" style="position:absolute;width:55vw;aspect-ratio:1;left:-20vw;top:-28vw;border-radius:50%;background:radial-gradient(circle,rgba(201,168,106,.22),rgba(201,168,106,0) 65%);pointer-events:none"></div>
+    <div data-blob="2" style="position:absolute;width:45vw;aspect-ratio:1;right:-12vw;bottom:-26vw;border-radius:50%;background:radial-gradient(circle,rgba(180,96,47,.2),rgba(180,96,47,0) 65%);pointer-events:none"></div>
+    <div data-hero-fade="1" style="position:relative;max-width:1400px;margin:0 auto;min-height:70svh;padding:120px clamp(20px,4vw,56px) 56px;display:grid;grid-template-columns:{{ heroCols }};gap:clamp(40px,6vw,96px);align-items:center">
+      <div style="display:flex;flex-direction:column;gap:28px;min-width:0">
+        <nav data-reveal="1" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.04em">
+          <sc-for list="{{ crumbs }}" as="c" hint-placeholder-count="2">
+            <a href="{{ c.href }}" style="color:#cfc4a8" style-hover="color:#c9a86a">{{ c.label }}</a><span style="color:#c9a86a">/</span>
+          </sc-for>
+          <span style="color:#c9a86a">{{ page.nav }}</span>
+        </nav>
+        <h1 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(48px,6vw,104px);line-height:.92;letter-spacing:-.03em;margin:0;display:flex;flex-wrap:wrap;column-gap:.2em;text-wrap:balance">
+          <sc-for list="{{ titleWords }}" as="wd" hint-placeholder-count="5">
+            <span style="display:inline-block;overflow:hidden;padding-bottom:.1em"><span data-word="1" style="display:inline-block">{{ wd }}</span></span>
+          </sc-for>
+        </h1>
+        <sc-if value="{{ page.intro }}" hint-placeholder-val="{{ true }}">
+          <p data-reveal="1" data-delay="300" style="margin:0;font-size:clamp(16px,1.25vw,19px);line-height:1.65;max-width:560px;color:#e6dcc6;text-wrap:pretty">{{ page.intro }}</p>
+        </sc-if>
+        <div data-reveal="1" data-delay="450" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+          <a href="{{ mapsUrl }}" target="_blank" style="display:flex;align-items:center;gap:12px;background:#f4eee2;color:#1f2718;font-weight:700;padding:7px 7px 7px 22px;border-radius:999px;font-size:15px;transition:transform .3s" style-hover="transform:translateY(-3px);color:#1f2718">{{ u.visit }}<span style="width:40px;height:40px;border-radius:50%;background:#1f2718;color:#f4eee2;display:flex;align-items:center;justify-content:center">↗</span></a>
+          <a href="tel:+33427501510" style="display:flex;align-items:center;min-height:54px;padding:0 22px;border-radius:999px;border:1px solid rgba(244,238,226,.35);color:#f4eee2;font-weight:600;font-size:15px" style-hover="background:rgba(244,238,226,.12);color:#f4eee2">{{ u.callLong }}</a>
+        </div>
+      </div>
+      <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+        <div data-speed="0.08" style="justify-self:end;position:relative;padding:18px 18px 0 0">
+          <div style="position:absolute;top:0;right:0;bottom:-18px;left:18px;border:1px solid rgba(201,168,106,.55);border-radius:999px 999px 32px 32px;pointer-events:none"></div>
+          <div data-hero-front="1" style="position:relative;height:min(calc(70svh - 190px),580px);min-height:340px;aspect-ratio:{{ heroImg.ratio }};border-radius:999px 999px 32px 32px;overflow:hidden;background:#2f3b25;box-shadow:0 40px 80px rgba(0,0,0,.4);transition:transform .8s cubic-bezier(.2,.7,.2,1)" style-hover="transform:translateY(-8px)">
+            <image-slot id="page-hero-{{ key }}" shape="rect" placeholder="Photo de la page" src="{{ heroImg.src }}" credit="{{ heroImg.credit }}" credit-href="{{ heroImg.href }}"></image-slot>
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(31,39,24,0) 60%,rgba(31,39,24,.35));pointer-events:none"></div>
+          </div>
+          <div style="position:absolute;left:-46px;bottom:36px;width:112px;height:112px;border-radius:50%;background:#c9a86a;color:#1f2718;display:flex;align-items:center;justify-content:center;box-shadow:0 18px 40px rgba(0,0,0,.3);z-index:2">
+            <svg data-spin="1" viewBox="0 0 100 100" width="112" height="112" style="position:absolute;inset:0">
+              <defs><path id="hero-ring" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"></path></defs>
+              <text style="font:700 10.5px 'Hanken Grotesk',sans-serif;letter-spacing:2.6px;text-transform:uppercase" fill="#1f2718"><textPath href="#hero-ring">Comptoir de la Vallée · Auriol · </textPath></text>
+            </svg>
+            <img src="assets/logo.jpg" alt="" style="width:46px;height:46px;border-radius:50%;object-fit:cover;position:relative">
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+  </sc-if>
+  <sc-if value="{{ noHero }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="Page hero" style="background:#1f2718;color:#f4eee2;padding:clamp(150px,20vh,200px) clamp(20px,4vw,56px) clamp(56px,7vw,96px)">
+    <div style="max-width:1600px;margin:0 auto">
+      <h1 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(54px,8vw,140px);line-height:.9;letter-spacing:-.035em;margin:0;display:flex;flex-wrap:wrap;column-gap:.2em">
+        <sc-for list="{{ titleWords }}" as="wd" hint-placeholder-count="3">
+          <span style="display:inline-block;overflow:hidden;padding-bottom:.1em"><span data-word="1" style="display:inline-block">{{ wd }}</span></span>
+        </sc-for>
+      </h1>
+    </div>
+  </section>
+  </sc-if>
+
+  <main style="display:flex;flex-direction:column">
+    <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="2">
+      <section style="padding:clamp(64px,8vw,120px) clamp(20px,4vw,56px);background:{{ b.bg }}">
+        <div style="max-width:1400px;margin:0 auto;display:flex;flex-direction:column;gap:40px">
+          <sc-if value="{{ b.title }}" hint-placeholder-val="{{ false }}">
+            <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(40px,5.4vw,84px);line-height:.95;letter-spacing:-.02em;margin:0;color:#1f2718;text-wrap:balance">{{ b.title }}</h2>
+          </sc-if>
+
+          <sc-if value="{{ b.isCards }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:24px;align-items:start">
+              <sc-for list="{{ b.items }}" as="c" hint-placeholder-count="4">
+                <a href="{{ c.href }}" data-reveal="1" data-delay="{{ c.delay }}" style="display:flex;flex-direction:column;gap:16px;color:#1f2718" style-hover="color:#1f2718">
+                  <div style="aspect-ratio:4/5;border-radius:22px;overflow:hidden;background:#e6d9bf;transition:transform .6s cubic-bezier(.2,.7,.2,1),border-radius .6s" style-hover="transform:scale(.97);border-radius:40px">
+                    <image-slot id="card-{{ key }}-{{ c.id }}" shape="rect" placeholder="{{ c.title }}" src="{{ c.img.src }}" credit="{{ c.img.credit }}" credit-href="{{ c.img.href }}"></image-slot>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+                    <h3 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:32px;line-height:1.05;margin:0">{{ c.title }}</h3>
+                    <sc-if value="{{ c.isLink }}" hint-placeholder-val="{{ false }}"><span style="color:#b4602f;font-size:22px">↗</span></sc-if>
+                  </div>
+                  <p style="margin:-6px 0 0;font-size:16px;line-height:1.6;color:#55574a;text-wrap:pretty">{{ c.text }}</p>
+                </a>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ b.isBullets }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ b.items }}" as="r" hint-placeholder-count="3">
+                <a href="{{ r.href }}" data-reveal="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px 40px;align-items:baseline;border-top:1px solid #1f2718;padding:30px 0;color:#1f2718;transition:padding .4s,background .4s" style-hover="padding-left:18px;background:#ece3d0;color:#1f2718">
+                  <div style="display:flex;gap:20px;align-items:baseline">
+                    <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:44px;line-height:.8;color:#b4602f">0{{ r.n }}</span>
+                    <h3 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(28px,2.8vw,40px);line-height:1.05;margin:0">{{ r.title }}</h3>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+                    <sc-if value="{{ r.text }}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-size:17px;line-height:1.6;color:#55574a;text-wrap:pretty">{{ r.text }}</p></sc-if>
+                    <sc-if value="{{ r.tbc }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;font-style:italic;color:#8a7f66;border:1px dashed #c9a86a;padding:5px 10px;border-radius:999px">{{ r.tbc }}</span></sc-if>
+                    <sc-if value="{{ r.isLink }}" hint-placeholder-val="{{ false }}"><span style="font-weight:700;font-size:14px;color:#b4602f">{{ u.more }} →</span></sc-if>
+                  </div>
+                </a>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ b.isGallery }}" hint-placeholder-val="{{ false }}">
+            <div style="columns:3 240px;column-gap:14px">
+              <sc-for list="{{ b.imgs }}" as="g" hint-placeholder-count="4">
+                <div data-reveal="1" data-delay="{{ g.delay }}" style="break-inside:avoid;margin-bottom:14px;aspect-ratio:{{ g.ratio }};border-radius:20px;overflow:hidden;background:#e6d9bf;transition:transform .5s" style-hover="transform:rotate(-1.5deg) scale(1.02)">
+                  <image-slot id="gal-{{ key }}-{{ g.id }}" shape="rect" placeholder="Photo" src="{{ g.src }}" credit="{{ g.credit }}" credit-href="{{ g.href }}"></image-slot>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ b.link }}" hint-placeholder-val="{{ false }}">
+              <div><a href="{{ b.link }}" style="display:inline-flex;background:#1f2718;color:#f4eee2;font-weight:700;padding:17px 26px;border-radius:999px;font-size:15px" style-hover="color:#f4eee2;background:#2f3b25">{{ b.linkText }} →</a></div>
+            </sc-if>
+          </sc-if>
+
+          <sc-if value="{{ b.isTip }}" hint-placeholder-val="{{ false }}">
+            <div data-reveal="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px 64px;align-items:center;background:#2f3b25;color:#f4eee2;border-radius:28px;padding:clamp(32px,5vw,64px)">
+              <div style="display:flex;align-items:center;gap:14px;font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#c9a86a"><span style="width:40px;height:1px;background:#c9a86a"></span>{{ b.label }}</div>
+              <p style="margin:0;font-family:'Instrument Serif',serif;font-size:clamp(28px,3vw,44px);line-height:1.15;text-wrap:pretty">{{ b.text }}</p>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ b.isOffers }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px">
+              <sc-for list="{{ b.items }}" as="o" hint-placeholder-count="2">
+                <div data-reveal="1" data-delay="{{ o.delay }}" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);background:#b4602f;color:#f8efe2;border-radius:28px;overflow:hidden;min-height:340px">
+                  <div style="position:relative;background:#9a4f25">
+                    <image-slot id="offer-{{ o.id }}" shape="rect" placeholder="Photo de l'offre" src="{{ o.img.src }}" credit="{{ o.img.credit }}" credit-href="{{ o.img.href }}"></image-slot>
+                    <div style="position:absolute;top:18px;left:18px;width:92px;height:92px;border-radius:50%;background:#f8efe2;color:#b4602f;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:32px;transform:rotate(-8deg);pointer-events:none">{{ o.badge }}</div>
+                  </div>
+                  <div style="padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;justify-content:space-between;gap:20px">
+                    <div style="display:flex;flex-direction:column;gap:14px">
+                      <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#f3d6b4">{{ o.period }}</span>
+                      <h3 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(30px,2.8vw,42px);line-height:1;margin:0">{{ o.title }}</h3>
+                      <p style="margin:0;font-size:18px;line-height:1.4">{{ o.detail }}</p>
+                    </div>
+                    <span style="font-size:13px;color:#f3d6b4">{{ u.terms }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ b.isNews }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:24px;align-items:start">
+              <sc-for list="{{ b.items }}" as="n" hint-placeholder-count="4">
+                <a href="{{ n.href }}" data-reveal="1" data-delay="{{ n.delay }}" style="display:flex;flex-direction:column;gap:16px;color:#1f2718;background:#fbf8f1;border-radius:24px;padding:12px 12px 24px;transition:transform .4s,box-shadow .4s" style-hover="transform:translateY(-6px);box-shadow:0 20px 40px rgba(31,39,24,.12);color:#1f2718">
+                  <div style="aspect-ratio:{{ n.img.ratio }};border-radius:16px;overflow:hidden;background:#e6d9bf">
+                    <image-slot id="news-{{ n.id }}" shape="rect" placeholder="{{ n.tag }}" src="{{ n.img.src }}" credit="{{ n.img.credit }}" credit-href="{{ n.img.href }}"></image-slot>
+                  </div>
+                  <div style="padding:0 10px;display:flex;flex-direction:column;gap:10px">
+                    <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#b4602f">{{ n.tag }}</span>
+                    <p style="margin:0;font-family:'Instrument Serif',serif;font-size:26px;line-height:1.15;text-wrap:pretty">{{ n.text }}</p>
+                  </div>
+                </a>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ b.isFaq }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;border-bottom:1px solid #1f2718">
+              <sc-for list="{{ b.items }}" as="f" hint-placeholder-count="3">
+                <div style="border-top:1px solid #1f2718">
+                  <button onClick="{{ f.toggle }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;background:transparent;border:0;padding:26px 0;cursor:pointer;text-align:left;color:#1f2718">
+                    <span style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.4vw,34px);line-height:1.1">{{ f.q }}</span>
+                    <span style="flex:none;width:44px;height:44px;border-radius:50%;border:1px solid #1f2718;display:flex;align-items:center;justify-content:center;font-size:20px;transition:transform .35s;transform:{{ f.rot }}">+</span>
+                  </button>
+                  <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+                    <p style="margin:0 0 26px;max-width:720px;font-size:17px;line-height:1.6;color:{{ f.color }};font-style:{{ f.style }}">{{ f.a }}</p>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ b.isTbc }}" hint-placeholder-val="{{ false }}">
+            <div data-reveal="1" style="border:1px dashed #c9a86a;border-radius:20px;padding:28px 32px;color:#8a7f66;font-style:italic;font-size:17px">{{ b.text }}</div>
+          </sc-if>
+
+          <sc-if value="{{ b.isInfo }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:20px;align-items:stretch">
+              <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px">
+                <sc-for list="{{ infoTiles }}" as="tile" hint-placeholder-count="5">
+                  <a href="{{ tile.href }}" target="{{ tile.target }}" data-reveal="1" data-delay="{{ tile.delay }}" style="grid-column:{{ tile.span }};display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:180px;padding:26px 28px;border-radius:26px;background:{{ tile.bg }};color:{{ tile.fg }};transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s" style-hover="transform:translateY(-5px);box-shadow:0 24px 48px rgba(31,39,24,.16);color:{{ tile.fg }}">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+                      <span style="font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:{{ tile.kc }}">{{ tile.k }}</span>
+                      <span style="width:40px;height:40px;border-radius:50%;border:1px solid {{ tile.kc }};display:flex;align-items:center;justify-content:center;font-size:15px">{{ tile.icon }}</span>
+                    </div>
+                    <span style="font-family:'Instrument Serif',serif;font-size:{{ tile.fs }};line-height:1.05;font-style:{{ tile.style }};text-wrap:balance">{{ tile.v }}</span>
+                  </a>
+                </sc-for>
+              </div>
+              <div data-clip="1" style="position:relative;min-height:540px;border-radius:28px;overflow:hidden;background:#e6d9bf">
+                <iframe title="Google Maps" src="https://maps.google.com/maps?q=891%20route%20de%20Saint-Zacharie%2C%2013390%20Auriol&amp;z=14&amp;output=embed" style="position:absolute;inset:0;border:0;width:100%;height:100%;display:block;filter:grayscale(.35) sepia(.25)" loading="lazy"></iframe>
+                <div style="position:absolute;left:16px;right:16px;bottom:16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;background:rgba(31,39,24,.92);backdrop-filter:blur(12px);color:#f4eee2;border-radius:20px;padding:14px 14px 14px 16px">
+                  <div style="display:flex;align-items:center;gap:12px;min-width:0">
+                    <img src="assets/logo.jpg" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex:none">
+                    <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-family:'Instrument Serif',serif;font-size:22px;line-height:1">Le Comptoir de la Vallée</span><span style="font-size:13px;color:#cfc4a8">{{ u.address }}</span></div>
+                  </div>
+                  <a href="{{ mapsUrl }}" target="_blank" style="background:#c9a86a;color:#1f2718;font-weight:700;font-size:14px;padding:12px 18px;border-radius:999px" style-hover="color:#1f2718;background:#e0c58f">{{ u.itin }} ↗</a>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ b.isForm }}" hint-placeholder-val="{{ false }}">
+            <div data-reveal="1" style="background:#1f2718;color:#f4eee2;border-radius:28px;padding:clamp(28px,5vw,64px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:40px">
+              <h2 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(40px,5vw,72px);line-height:.95;margin:0">{{ u.formTitle }}</h2>
+              <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+                <p style="margin:0;font-size:20px;line-height:1.5;color:#c9a86a">{{ u.thanks }}</p>
+              </sc-if>
+              <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+                <form onSubmit="{{ submit }}" style="display:flex;flex-direction:column;gap:14px">
+                  <sc-for list="{{ formFields }}" as="fld" hint-placeholder-count="3">
+                    <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#cfc4a8">{{ fld.label }}
+                      <input type="{{ fld.type }}" required="{{ fld.req }}" style="font:400 17px 'Hanken Grotesk',sans-serif;letter-spacing:0;text-transform:none;color:#f4eee2;background:rgba(244,238,226,.06);border:1px solid rgba(244,238,226,.2);border-radius:14px;padding:14px 16px;outline:none" style-focus="border-color:#c9a86a">
+                    </label>
+                  </sc-for>
+                  <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#cfc4a8">{{ u.fMsg }}
+                    <textarea rows="4" style="font:400 17px 'Hanken Grotesk',sans-serif;letter-spacing:0;text-transform:none;color:#f4eee2;background:rgba(244,238,226,.06);border:1px solid rgba(244,238,226,.2);border-radius:14px;padding:14px 16px;outline:none;resize:vertical" style-focus="border-color:#c9a86a"></textarea>
+                  </label>
+                  <label style="display:flex;align-items:center;gap:12px;font-size:15px;color:#e6dcc6;cursor:pointer;padding:6px 0">
+                    <input type="checkbox" style="width:20px;height:20px;accent-color:#c9a86a">{{ u.fHarvest }}
+                  </label>
+                  <button type="submit" style="align-self:flex-start;background:#c9a86a;color:#1f2718;border:0;font:700 15px 'Hanken Grotesk',sans-serif;padding:17px 28px;border-radius:999px;cursor:pointer;transition:transform .3s" style-hover="transform:translateY(-3px)">{{ u.send }} →</button>
+                </form>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ b.isCta }}" hint-placeholder-val="{{ false }}">
+            <div data-reveal="1" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:28px;border-top:1px solid #1f2718;border-bottom:1px solid #1f2718;padding:40px 0">
+              <p style="margin:0;font-family:'Instrument Serif',serif;font-size:clamp(32px,3.6vw,56px);line-height:1.05;color:#1f2718;max-width:820px;text-wrap:balance">{{ b.text }}</p>
+              <div style="display:flex;flex-wrap:wrap;gap:10px">
+                <a href="tel:+33427501510" style="background:#1f2718;color:#f4eee2;font-weight:700;padding:17px 26px;border-radius:999px;font-size:15px" style-hover="color:#f4eee2;background:#2f3b25">{{ u.callLong }}</a>
+                <a href="{{ mapsUrl }}" target="_blank" style="border:1px solid #1f2718;color:#1f2718;font-weight:600;padding:17px 26px;border-radius:999px;font-size:15px" style-hover="background:#1f2718;color:#f4eee2">{{ u.directions }} ↗</a>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </section>
+    </sc-for>
+  </main>
+
+  <sc-if value="{{ next }}" hint-placeholder-val="{{ true }}">
+    <section data-screen-label="Next page" style="background:#f4eee2;padding:clamp(40px,5vw,72px) clamp(12px,2vw,24px) 0">
+      <a href="{{ next.href }}" style="position:relative;max-width:1600px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));background:#c9a86a;color:#1f2718;border-radius:36px 36px 0 0;overflow:hidden" style-hover="color:#1f2718">
+        <div style="position:absolute;width:40vw;aspect-ratio:1;right:-10vw;top:-20vw;border-radius:50%;background:radial-gradient(circle,rgba(244,238,226,.45),rgba(244,238,226,0) 65%);pointer-events:none"></div>
+        <div style="position:relative;padding:clamp(36px,5vw,80px);display:flex;flex-direction:column;justify-content:space-between;gap:40px">
+          <span style="display:flex;align-items:center;gap:14px;font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:700"><span style="width:40px;height:1px;background:#1f2718"></span>{{ u.next }}</span>
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <span style="font-family:'Instrument Serif',serif;font-size:clamp(60px,8.5vw,150px);line-height:.88;letter-spacing:-.035em">{{ next.label }}</span>
+            <p style="margin:0;font-size:18px;line-height:1.55;max-width:460px;color:#2f3b25;text-wrap:pretty">{{ next.card }}</p>
+          </div>
+          <span style="display:flex;align-items:center;gap:16px;font-weight:700;font-size:15px"><span style="width:72px;height:72px;border-radius:50%;background:#1f2718;color:#c9a86a;display:flex;align-items:center;justify-content:center;font-size:26px;transition:transform .5s cubic-bezier(.2,.7,.2,1)" style-hover="transform:rotate(-45deg) scale(1.08)">→</span>{{ u.discover }}</span>
+        </div>
+        <div style="position:relative;display:flex;align-items:center;justify-content:center;padding:clamp(28px,4vw,56px);min-height:360px">
+          <div data-speed="-0.08" style="height:clamp(300px,34vw,460px);aspect-ratio:{{ next.img.ratio }};max-width:100%">
+            <div style="width:100%;height:100%;border-radius:26px;overflow:hidden;transform:rotate(4deg);box-shadow:0 40px 80px rgba(31,39,24,.35);border:6px solid #f4eee2;background:#2f3b25;transition:transform .8s cubic-bezier(.2,.7,.2,1)" style-hover="transform:rotate(0deg) scale(1.03)">
+              <img src="{{ next.img.src }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
+            </div>
+          </div>
+        </div>
+      </a>
+    </section>
+  </sc-if>
+
+  <footer data-screen-label="Footer" style="position:relative;background:#1f2718;color:#cfc4a8;padding:clamp(64px,8vw,110px) clamp(20px,4vw,56px) {{ footerPad }};overflow:hidden">
+    <div style="position:absolute;width:70vw;aspect-ratio:1;right:-25vw;top:-35vw;border-radius:50%;background:radial-gradient(circle,rgba(201,168,106,.14),rgba(201,168,106,0) 65%);pointer-events:none"></div>
+    <div style="position:relative;max-width:1400px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(48px,6vw,80px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:32px;align-items:end;padding-bottom:clamp(40px,5vw,64px);border-bottom:1px solid rgba(244,238,226,.14)">
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,7vw,116px);line-height:.9;letter-spacing:-.03em;margin:0;color:#f4eee2">{{ ft.ctaTitle }} <em style="color:#c9a86a">{{ ft.ctaEm }}</em></h2>
+        <div data-reveal="1" data-delay="150" style="display:flex;flex-direction:column;gap:20px;align-items:flex-start">
+          <p style="margin:0;font-size:18px;line-height:1.5;color:#e6dcc6">{{ ft.address }}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <a href="https://www.google.com/maps/dir/?api=1&amp;destination=891+route+de+Saint-Zacharie+13390+Auriol" target="_blank" style="display:flex;align-items:center;gap:12px;background:#f4eee2;color:#1f2718;font-weight:700;font-size:15px;padding:8px 8px 8px 22px;border-radius:999px;transition:transform .3s" style-hover="color:#1f2718;transform:translateY(-3px)">{{ ft.directions }}<span style="width:40px;height:40px;border-radius:50%;background:#1f2718;color:#f4eee2;display:flex;align-items:center;justify-content:center">↗</span></a>
+            <a href="tel:+33427501510" style="display:flex;align-items:center;min-height:56px;padding:0 24px;border-radius:999px;background:#c9a86a;color:#1f2718;font-weight:700;font-size:15px;transition:transform .3s" style-hover="color:#1f2718;transform:translateY(-3px)">{{ ft.phone }}</a>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:40px 32px">
+        <div style="display:flex;flex-direction:column;gap:18px;align-items:flex-start">
+          <img src="assets/logo.jpg" alt="Comptoir de la Vallée" style="width:84px;height:84px;border-radius:50%;object-fit:cover;display:block;box-shadow:0 0 0 1px rgba(201,168,106,.5)">
+          <p style="margin:0;font-size:15px;line-height:1.6;max-width:240px">{{ ft.tagline }}</p>
+          <a href="https://www.instagram.com/comptoirdelavallee/" target="_blank" style="display:flex;align-items:center;gap:10px;border:1px solid rgba(244,238,226,.25);color:#f4eee2;font-size:14px;font-weight:600;padding:10px 16px;border-radius:999px" style-hover="color:#1f2718;background:#c9a86a;border-color:#c9a86a">@comptoirdelavallee ↗</a>
+        </div>
+        <sc-for list="{{ ft.cols }}" as="col" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <span style="font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#c9a86a;margin-bottom:6px">{{ col.title }}</span>
+            <sc-for list="{{ col.links }}" as="l" hint-placeholder-count="5">
+              <a href="{{ l.href }}" style="color:#cfc4a8;font-size:15px;transition:color .3s,padding .3s" style-hover="color:#f4eee2;padding-left:6px">{{ l.label }}</a>
+            </sc-for>
+          </div>
+        </sc-for>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#c9a86a;margin-bottom:6px">{{ ft.infoTitle }}</span>
+          <span style="font-size:13px;color:#8f8a72">{{ ft.phoneK }}</span>
+          <a href="tel:+33427501510" style="font-family:'Instrument Serif',serif;font-size:28px;color:#f4eee2;margin-top:-8px" style-hover="color:#c9a86a">{{ ft.phone }}</a>
+          <span style="font-size:13px;color:#8f8a72">{{ ft.hoursK }}</span>
+          <span style="font-size:15px;font-style:italic;color:#cfc4a8;margin-top:-8px">{{ ft.tbc }}</span>
+        </div>
+      </div>
+      <div data-speed="0.06" style="font-family:'Instrument Serif',serif;font-size:11.4vw;line-height:.85;letter-spacing:-.04em;color:#c9a86a;white-space:nowrap;text-align:center;margin:0 calc(-1 * clamp(20px,4vw,56px))">Comptoir de la Vallée</div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;padding-top:24px;border-top:1px solid rgba(244,238,226,.14);font-size:13px">
+        <span>{{ ft.copy }}</span>
+        <div style="display:flex;flex-wrap:wrap;gap:8px 22px">
+          <sc-for list="{{ ft.legal }}" as="l" hint-placeholder-count="3">
+            <a href="{{ l.href }}" style="color:#cfc4a8" style-hover="color:#c9a86a">{{ l.label }}</a>
+          </sc-for>
+        </div>
+        <button onClick="{{ toTop }}" style="display:flex;align-items:center;gap:10px;background:transparent;border:1px solid rgba(244,238,226,.25);color:#f4eee2;font:600 13px 'Hanken Grotesk',sans-serif;padding:10px 16px;border-radius:999px;cursor:pointer" style-hover="background:#f4eee2;color:#1f2718">{{ ft.top }} ↑</button>
+      </div>
+    </div>
+  </footer>
+
+  <sc-if value="{{ showBar }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:60;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px;background:rgba(31,39,24,.92);backdrop-filter:blur(14px);border-radius:999px;box-shadow:0 12px 30px rgba(0,0,0,.3)">
+      <a href="{{ mapsUrl }}" target="_blank" style="display:flex;align-items:center;justify-content:center;min-height:50px;border-radius:999px;color:#f4eee2;font-weight:700;font-size:15px">{{ u.directions }}</a>
+      <a href="tel:+33427501510" style="display:flex;align-items:center;justify-content:center;min-height:50px;background:#c9a86a;border-radius:999px;color:#1f2718;font-weight:700;font-size:15px">{{ u.callShort }}</a>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;page&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;jardinerie&quot;,&quot;plantes-fleurs&quot;,&quot;oliviers&quot;,&quot;arbres-fruitiers&quot;,&quot;plantes-exotiques&quot;,&quot;poterie&quot;,&quot;outillage-entretien&quot;,&quot;arrivages&quot;,&quot;animalerie&quot;,&quot;deco-maison&quot;,&quot;services&quot;,&quot;recolte-olives&quot;,&quot;promotions&quot;,&quot;actualites&quot;,&quot;a-propos&quot;,&quot;contact&quot;,&quot;mentions-legales&quot;,&quot;confidentialite&quot;,&quot;cookies&quot;],&quot;default&quot;:&quot;jardinerie&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;fr&quot;,&quot;en&quot;],&quot;default&quot;:&quot;fr&quot;,&quot;tsType&quot;:&quot;'fr'|'en'&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const UI = {
+  fr: { home: 'Accueil', menu: 'Menu', close: 'Fermer', callShort: 'Appeler', callLong: 'Appeler le 04 27 50 15 10', phone: '04 27 50 15 10',
+    visit: 'Nous rendre visite', directions: 'Itinéraire', more: 'En savoir plus', next: 'Page suivante', discover: 'Découvrir la page', itin: 'Itinéraire',
+    terms: 'Valable en magasin, dans la limite des stocks disponibles.', tbc: 'À confirmer',
+    lAddress: 'Adresse', lPhone: 'Téléphone', lHours: 'Horaires', lAccess: 'Parking', address: '891 route de Saint-Zacharie, 13390 Auriol',
+    formTitle: 'Écrivez-nous', fName: 'Nom', fPhone: 'Téléphone', fEmail: 'E-mail', fMsg: 'Message', fHarvest: 'Je souhaite réserver du matériel de récolte',
+    send: 'Envoyer', thanks: 'Merci, votre message a bien été envoyé. Nous vous répondons rapidement.',
+    tagline: 'Le Comptoir de la Vallée — Tout pour votre jardin & vos animaux. Auriol, Provence.' },
+  en: { home: 'Home', menu: 'Menu', close: 'Close', callShort: 'Call', callLong: 'Call +33 4 27 50 15 10', phone: '+33 4 27 50 15 10',
+    visit: 'Visit us', directions: 'Directions', more: 'Find out more', next: 'Next page', discover: 'Discover the page', itin: 'Directions',
+    terms: 'Valid in store, while stocks last.', tbc: 'To be confirmed',
+    lAddress: 'Address', lPhone: 'Phone', lHours: 'Hours', lAccess: 'Parking', address: '891 route de Saint-Zacharie, 13390 Auriol, France',
+    formTitle: 'Write to us', fName: 'Name', fPhone: 'Phone', fEmail: 'Email', fMsg: 'Message', fHarvest: "I'd like to reserve harvesting equipment",
+    send: 'Send', thanks: "Thank you, your message has been sent. We'll get back to you soon.",
+    tagline: 'Le Comptoir de la Vallée — Everything for your garden and your pets. Auriol, Provence.' }
+};
+const EASE = 'cubic-bezier(.2,.7,.2,1)';
+const MAPS = 'https://www.google.com/maps/dir/?api=1&destination=891+route+de+Saint-Zacharie+13390+Auriol';
+
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    const hs = this.parseHash();
+    this.state = { lang: hs.lang, key: hs.key, w: typeof window !== 'undefined' ? window.innerWidth : 1280, menuOpen: false, faq: null, sent: false, mega: null };
+  }
+  rootRef = (el) => { this.root = el; };
+  navigate(hash) {
+    const [k, l] = hash.replace(/^#/, '').split('/');
+    try { history.pushState(null, '', '#' + hash.replace(/^#/, '')); } catch (e) {}
+    this.setState({ key: k, lang: l || this.state.lang, faq: null, sent: false, menuOpen: false }, () => {
+      window.scrollTo(0, 0); if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+      if (this.root && this.root.parentElement) { let el = this.root; while (el) { if (el.scrollTop) el.scrollTop = 0; el = el.parentElement; } }
+      setTimeout(() => { this.io && this.io.disconnect(); this.setupReveal(); this.animateWords(); this.tick(); }, 30);
+    });
+  }
+  onLinkClick = (e) => {
+    const a = e.target.closest && e.target.closest('a');
+    if (!a) return;
+    const h = a.getAttribute('href') || '';
+    if (h.startsWith('#') && h.length > 1) { e.preventDefault(); e.stopPropagation(); this.navigate(h); }
+  };
+  parseHash() {
+    if (typeof location === 'undefined') return { key: null, lang: null };
+    const qs = new URLSearchParams(location.search);
+    const [k, l] = decodeURIComponent((location.hash || '').replace(/^#/, '')).split('/');
+    return { key: k || qs.get('p'), lang: l || qs.get('lang') };
+  }
+  componentDidMount() {
+    this.reduced = (this.props.motion === false) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.onResize = () => { this.setState({ w: window.innerWidth }); this.tick(); };
+    this.onScroll = () => { if (!this.raf) this.raf = requestAnimationFrame(() => { this.raf = null; this.tick(); }); };
+    window.addEventListener('resize', this.onResize);
+    document.addEventListener('scroll', this.onScroll, { passive: true, capture: true });
+    this.onHash = () => {
+      const hs = this.parseHash();
+      this.setState({ key: hs.key, lang: hs.lang || this.state.lang, faq: null, sent: false, menuOpen: false }, () => {
+        window.scrollTo(0, 0); if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+        setTimeout(() => { this.io && this.io.disconnect(); this.setupReveal(); this.animateWords(); this.tick(); }, 30);
+      });
+    };
+    window.addEventListener('hashchange', this.onHash);
+    const go = () => { if (!window.SITE) return setTimeout(go, 50); this.forceUpdate(); setTimeout(() => { this.setupReveal(); this.animateWords(); this.loops(); this.setupCursor(); this.tick(); }, 60); };
+    go();
+  }
+  componentDidUpdate(pp, ps) {
+    if (ps.mega !== this.state.mega) { this.tick(); if (this.state.mega && !this.reduced) setTimeout(() => { const p = this.root.querySelector('[data-mega-panel]'); if (p && !ps.mega) p.animate([{ opacity: 0, transform: 'translateY(-12px)' }, { opacity: 1, transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.2,.7,.2,1)' }); this.q('[data-mega-link]').forEach((el, i) => el.animate([{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }], { duration: 500, delay: 40 * i, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' })); const im = this.root.querySelector('[data-mega-img]'); if (im) im.animate([{ transform: 'scale(1.15)' }, { transform: 'scale(1)' }], { duration: 1200, easing: 'cubic-bezier(.2,.7,.2,1)' }); }, 0); }
+    if (ps.lang !== this.state.lang) setTimeout(() => { this.animateWords(); this.tick(); }, 0);
+    if (!ps.menuOpen && this.state.menuOpen && !this.reduced) setTimeout(() => this.q('[data-menu-item]').forEach((el, i) =>
+      el.animate([{ transform: 'translateY(110%)' }, { transform: 'none' }], { duration: 800, delay: 60 * i, easing: EASE, fill: 'both' })), 0);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('hashchange', this.onHash);
+    document.removeEventListener('scroll', this.onScroll, { capture: true });
+    window.removeEventListener('mousemove', this.onMove);
+    this.io && this.io.disconnect(); cancelAnimationFrame(this.cursorRaf);
+  }
+  q(s) { return this.root ? Array.from(this.root.querySelectorAll(s)) : []; }
+  setupReveal() {
+    if (this.reduced) return;
+    this.io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return; const el = e.target;
+      if (el.dataset.clip) el.style.clipPath = 'inset(0 0 0 0)'; else { el.style.opacity = 1; el.style.transform = 'none'; }
+      this.io.unobserve(el);
+    }), { threshold: 0.1 });
+    this.q('[data-reveal]').forEach((el) => {
+      const d = el.dataset.delay || 0;
+      el.style.opacity = 0; el.style.transform = 'translateY(48px)';
+      el.style.transition = `opacity 1s ${EASE} ${d}ms, transform 1s ${EASE} ${d}ms, background .4s, padding .4s, box-shadow .4s`;
+      this.io.observe(el);
+    });
+    this.q('[data-clip]').forEach((el) => { el.style.clipPath = 'inset(14% 10% 14% 10%)'; el.style.transition = `clip-path 1.4s ${EASE}`; this.io.observe(el); });
+  }
+  animateWords() {
+    if (this.reduced) return;
+    this.q('[data-spin]').forEach((el) => { if (!el.getAnimations().length) el.animate([{ transform: 'rotate(0)' }, { transform: 'rotate(360deg)' }], { duration: 18000, iterations: Infinity }); });
+    this.q('[data-hero-front]').forEach((el) => el.animate([{ transform: 'scale(1.15)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 1400, delay: 200, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'both' }));
+    this.q('[data-blob]').forEach((el, i) => { if (!el.getAnimations().length) el.animate([{ transform: 'translate(0,0) scale(1)' }, { transform: `translate(${i % 2 ? -6 : 6}vw,${i === 1 ? -4 : 5}vw) scale(1.15)` }], { duration: 9000 + i * 2500, iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' }); });
+    this.q('[data-scroll-cue]').forEach((el) => { if (!el.getAnimations().length) el.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(6px)' }, { transform: 'translateY(0)' }], { duration: 1800, iterations: Infinity, easing: 'ease-in-out' }); });
+    this.q('[data-word]').forEach((el, i) => el.animate([{ transform: 'translateY(110%) rotate(4deg)' }, { transform: 'none' }],
+      { duration: 1100, delay: 100 + i * 70, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' }));
+  }
+  loops() {
+    if (this.reduced) return;
+    this.q('[data-ping]').forEach((el) => { if (!el.getAnimations().length) el.animate([{ transform: 'scale(1)', opacity: .7 }, { transform: 'scale(3)', opacity: 0 }], { duration: 1600, iterations: Infinity, easing: 'ease-out' }); });
+  }
+  openMega(k) { clearTimeout(this.megaT); if (this.state.mega !== k) this.setState({ mega: k }); }
+  closeMega = () => { clearTimeout(this.megaT); this.megaT = setTimeout(() => this.setState({ mega: null }), 140); };
+  keepMega = () => clearTimeout(this.megaT);
+  toTop = () => { this.scroller().scrollTo({ top: 0, behavior: 'smooth' }); };
+  scroller() { let el = this.root && this.root.parentElement; while (el && el !== document.body && el !== document.documentElement) { const o = getComputedStyle(el).overflowY; if ((o === 'auto' || o === 'scroll') && el.scrollHeight > el.clientHeight + 1) return el; el = el.parentElement; } return document.scrollingElement || document.documentElement; }
+  setupCursor() {
+    const c = this.root && this.root.querySelector('[data-cursor]');
+    if (!c || this.reduced || !window.matchMedia('(pointer: fine)').matches) return;
+    let x = -100, y = -100, cx = -100, cy = -100, rot = 0, sc = 1, hotNow = false;
+    const fl = c.querySelector('[data-flower]'), d = this.root.querySelector('[data-cursor-dot]');
+    this.onMove = (e) => {
+      x = e.clientX; y = e.clientY; c.style.opacity = 1;
+      const hot = e.target.closest && e.target.closest('a,button');
+      hotNow = !!hot; if (d) { d.style.opacity = 1; d.style.transform = `translate3d(${x}px,${y}px,0)`; }
+    };
+    window.addEventListener('mousemove', this.onMove);
+    const loop = () => { const dx = (x - cx) * 0.16, dy = (y - cy) * 0.16; cx += dx; cy += dy; rot += 0.6 + Math.min(14, Math.hypot(dx, dy) * 0.9); sc += ((hotNow ? 1.9 : 1) - sc) * 0.15; c.style.transform = `translate3d(${cx}px,${cy}px,0)`; if (fl) fl.style.transform = `rotate(${rot.toFixed(1)}deg) scale(${sc.toFixed(3)})`; this.cursorRaf = requestAnimationFrame(loop); };
+    loop();
+  }
+  tick() {
+    if (!this.root) return;
+    const H = window.innerHeight, rt = this.root.getBoundingClientRect(), y = -rt.top, scrolled = y > 40;
+    const hdr = this.root.querySelector('[data-header]');
+    if (hdr) {
+      hdr.style.background = (scrolled || this.state.mega) ? 'rgba(31,39,24,.92)' : 'rgba(31,39,24,0)';
+      hdr.style.backdropFilter = (scrolled || this.state.mega) ? 'blur(16px)' : 'none';
+      hdr.style.boxShadow = scrolled ? '0 10px 30px rgba(0,0,0,.18)' : 'none';
+      const lg = hdr.querySelector('[data-logo]'); if (lg) lg.style.transform = scrolled ? 'scale(.8)' : 'none';
+      const pr = hdr.querySelector('[data-progress]'); if (pr) pr.style.transform = `scaleX(${Math.min(1, Math.max(0, y / Math.max(1, rt.height - H)))})`;
+    }
+    if (this.reduced) return;
+    const hf = this.root.querySelector('[data-hero-fade]');
+    if (hf) { const k = Math.min(1, Math.max(0, y / (H * 0.8))); hf.style.opacity = (1 - k * 1.1).toFixed(3); hf.style.transform = `translate3d(0,${(k * -60).toFixed(1)}px,0)`; }
+    this.q('[data-speed]').forEach((el) => {
+      const r = el.parentElement.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > H + 200) return;
+      el.style.transform = `translate3d(0,${((r.top + r.height / 2 - H / 2) * +el.dataset.speed).toFixed(1)}px,0)`;
+    });
+  }
+  img(k, S) {
+    if (!k) return null;
+    if (S.images[k]) { const [src, name, user] = S.images[k]; return { src, credit: `Photo by ${name} on Unsplash`, href: `https://unsplash.com/@${user}`, ratio: '4/5' }; }
+    const m = /^v(\d)-poster$/.exec(k);
+    if (m) return { src: `assets/videos/${k}.jpg`, credit: '', href: '', ratio: m[1] === '7' ? '576/816' : '9/16' };
+    return { src: `assets/photos/${k}.jpg`, credit: '', href: '', ratio: `1000/${S.dims[k] || 1200}` };
+  }
+  renderVals() {
+    const S = window.SITE;
+    const lang = this.state.lang === 'en' ? 'en' : (this.state.lang ?? this.props.lang ?? 'fr');
+    const u = UI[lang];
+    const narrow = this.state.w < 1360, tiny = this.state.w < 560, mobileBar = this.state.w < 760;
+    const href = (k) => `#${k}/${lang}`;
+    const homeHref = `Accueil%20v3.dc.html#${lang}`;
+    const base = {
+      rootRef: this.rootRef, onLinkClick: this.onLinkClick, u, mapsUrl: MAPS, homeHref, wide: !narrow, narrow,
+      menuOpen: narrow && this.state.menuOpen, menuLabel: this.state.menuOpen ? u.close : u.menu,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      setFr: () => this.setLang('fr'), setEn: () => this.setLang('en'),
+      frFg: lang === 'fr' ? '#c9a86a' : '#f4eee2', enFg: lang === 'en' ? '#c9a86a' : '#f4eee2',
+      callLabel: tiny ? u.callShort : (narrow ? u.phone : (this.state.w < 1700 ? u.callShort : `${u.callShort} · ${u.phone}`)),
+      showBar: mobileBar, footerPad: mobileBar ? '120px' : '48px', sent: this.state.sent, notSent: !this.state.sent
+    };
+    if (!S) return { ...base, page: { nav: '', title: '' }, titleWords: [], crumbs: [], blocks: [], navLeft: [], navRight: [], navAll: [], legalNav: [], ft: { cols: [], legal: [] }, mega: { links: [], img: {}, promo: {} } };
+    const key = S.pages[this.state.key] ? this.state.key : (this.props.page ?? 'jardinerie');
+    const P = S.pages[key], page = P[lang];
+    const mkey = this.state.mega;
+    const navAll = S.nav.map((k) => { const hm = S.hasMega(k); return { label: S.pages[k][lang].nav, href: href(k), hasMega: hm, line: (k === key || k === P.parent || k === mkey) ? 1 : 0, caretRot: mkey === k ? 'rotate(180deg)' : 'none', onEnter: () => (hm ? this.openMega(k) : (this.state.mega && this.setState({ mega: null }))) }; });
+    const megaD = mkey ? S.megaFor(mkey, lang, href) : null;
+    const crumbs = [{ label: u.home, href: homeHref }];
+    if (P.parent) crumbs.push({ label: S.pages[P.parent][lang].nav, href: href(P.parent) });
+    let bi = 0;
+    const blocks = page.blocks.map((b, idx) => {
+      const out = { ...b, title: b.title || '', bg: (bi++ % 2) ? '#ece3d0' : '#f4eee2' };
+      out['is' + b.type[0].toUpperCase() + b.type.slice(1)] = true;
+      if (b.type === 'subpages') {
+        out.isCards = true;
+        out.items = P.kids.map((k, i) => ({ id: k, title: S.pages[k][lang].nav, text: S.pages[k][lang].card, img: this.img(S.pages[k].img, S), href: href(k), isLink: true, delay: i * 80 }));
+      } else if (b.type === 'cards') out.items = b.items.map((c, i) => ({ ...c, id: i, img: this.img(c.img, S), href: c.href ? href(c.href) : '#', isLink: !!c.href, delay: i * 80 }));
+      else if (b.type === 'bullets') out.items = b.items.map((r, i) => ({ ...r, n: i + 1, text: r.text || '', tbc: r.tbc || '', href: r.href ? href(r.href) : undefined, isLink: !!r.href }));
+      else if (b.type === 'gallery') { out.imgs = b.imgs.map((k, i) => ({ ...this.img(k, S), id: k, delay: (i % 3) * 90 })); out.link = b.link ? href(b.link) : ''; }
+      else if (b.type === 'offers') out.items = b.items.map((o, i) => ({ ...o, id: i, img: this.img(o.img, S), delay: i * 100 }));
+      else if (b.type === 'news') out.items = b.items.map((n, i) => ({ ...n, id: i, img: this.img(n.img, S), href: n.href ? href(n.href) : '#', delay: (i % 3) * 90 }));
+      else if (b.type === 'faq') out.items = b.items.map((f, i) => {
+        const open = this.state.faq === `${idx}-${i}`;
+        return { ...f, open, rot: open ? 'rotate(45deg)' : 'none', color: f.tbc ? '#8a7f66' : '#55574a', style: f.tbc ? 'italic' : 'normal', toggle: () => this.setState({ faq: open ? null : `${idx}-${i}` }) };
+      });
+      return out;
+    });
+    const order = [...S.nav, ...Object.keys(S.pages).filter((k) => !S.nav.includes(k) && !S.pages[k].legal)];
+    const flat = [];
+    S.nav.forEach((k) => { flat.push(k); (S.pages[k].kids || []).forEach((c) => flat.push(c)); });
+    const pos = flat.indexOf(key);
+    const nextKey = pos >= 0 ? flat[(pos + 1) % flat.length] : S.nav[0];
+    return {
+      ...base, onLinkClick: this.onLinkClick,
+      megaOpen: !narrow && !!megaD, mega: megaD || { links: [], img: {}, promo: {} }, closeMega: this.closeMega, keepMega: this.keepMega,
+      ft: S.footer(lang, href), toTop: this.toTop,
+      key, page: { ...page, intro: page.intro || '' },
+      titleWords: page.title.split(' '),
+      heroImg: P.legal ? null : this.img(P.img, S), noHero: !!P.legal,
+      heroCols: narrow ? 'minmax(0,1fr)' : 'minmax(0,1fr) auto',
+      crumbs, blocks,
+      navAll, navLeft: navAll.slice(0, 4), navRight: navAll.slice(4),
+      legalNav: S.legal.map((k) => ({ label: S.pages[k][lang].nav, href: href(k) })),
+      next: { label: S.pages[nextKey][lang].nav, href: href(nextKey), card: S.pages[nextKey][lang].card || S.firstSentence(S.pages[nextKey][lang].intro), img: this.img(S.pages[nextKey].img, S) || { src: '', ratio: '4/5' } },
+      infoTiles: [
+        { k: u.lAddress, v: u.address, href: MAPS, target: '_blank', icon: '↗', span: 'span 2', bg: '#1f2718', fg: '#f4eee2', kc: '#c9a86a', fs: 'clamp(28px,2.6vw,38px)', style: 'normal', delay: 0 },
+        { k: u.lPhone, v: u.phone, href: 'tel:+33427501510', target: '_self', icon: '☏', span: 'span 1', bg: '#c9a86a', fg: '#1f2718', kc: '#1f2718', fs: 'clamp(26px,2.2vw,34px)', style: 'normal', delay: 80 },
+        { k: 'Instagram', v: '@comptoirdelavallee', href: 'https://www.instagram.com/comptoirdelavallee/', target: '_blank', icon: '↗', span: 'span 1', bg: '#b4602f', fg: '#f8efe2', kc: '#f3d6b4', fs: 'clamp(20px,1.7vw,26px)', style: 'normal', delay: 160 },
+        { k: u.lHours, v: u.tbc, href: '#', target: '_self', icon: '◷', span: 'span 1', bg: '#fbf8f1', fg: '#8a7f66', kc: '#8a7f66', fs: '28px', style: 'italic', delay: 240 },
+        { k: u.lAccess, v: u.tbc, href: '#', target: '_self', icon: 'P', span: 'span 1', bg: '#fbf8f1', fg: '#8a7f66', kc: '#8a7f66', fs: '28px', style: 'italic', delay: 320 }
+      ],
+      formFields: [
+        { label: u.fName, type: 'text', req: true }, { label: u.fPhone, type: 'tel', req: false }, { label: u.fEmail, type: 'email', req: true }
+      ],
+      submit: (e) => { e.preventDefault(); this.setState({ sent: true }); }
+    };
+  }
+  setLang(l) {
+    this.setState({ lang: l });
+    try { const k = this.parseHash().key || ''; history.replaceState(null, '', `#${k}/${l}`); } catch (e) {}
+  }
+}
+</script>
+</body>
+</html>

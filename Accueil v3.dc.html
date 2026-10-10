@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<script src="./site-content.js"></script>
+<style>
+body{margin:0;background:#f4eee2;color:#22281a;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#2f3b25;text-decoration:none}
+a:hover{color:#b4602f}
+*{box-sizing:border-box}
+::selection{background:#c9a86a;color:#1f2718}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="overflow-x:clip">
+
+  <div data-loader="1" style="position:fixed;inset:0;z-index:300;background:#1f2718;color:#f4eee2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px">
+    <img data-loader-logo="1" src="assets/logo.jpg" alt="" style="width:120px;height:120px;border-radius:50%;object-fit:cover;display:block">
+    <div style="overflow:hidden"><div data-loader-text="1" style="font-family:'Instrument Serif',serif;font-size:34px;letter-spacing:.02em">Comptoir <em style="color:#c9a86a">de la Vallée</em></div></div>
+  </div>
+
+  <div data-cursor="1" style="position:fixed;top:0;left:0;width:40px;height:40px;margin:-20px 0 0 -20px;pointer-events:none;z-index:250;opacity:0;transition:opacity .3s">
+    <svg data-flower="1" viewBox="0 0 40 40" width="40" height="40" style="display:block;transition:transform .45s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 4px 8px rgba(0,0,0,.25))"><ellipse cx="20" cy="9.5" rx="6" ry="9" transform="rotate(0 20 20)" fill="#c9a86a" fill-opacity=".92"></ellipse><ellipse cx="20" cy="9.5" rx="6" ry="9" transform="rotate(72 20 20)" fill="#c9a86a" fill-opacity=".92"></ellipse><ellipse cx="20" cy="9.5" rx="6" ry="9" transform="rotate(144 20 20)" fill="#c9a86a" fill-opacity=".92"></ellipse><ellipse cx="20" cy="9.5" rx="6" ry="9" transform="rotate(216 20 20)" fill="#c9a86a" fill-opacity=".92"></ellipse><ellipse cx="20" cy="9.5" rx="6" ry="9" transform="rotate(288 20 20)" fill="#c9a86a" fill-opacity=".92"></ellipse><circle cx="20" cy="20" r="5.5" fill="#b4602f"></circle><circle cx="20" cy="20" r="2.2" fill="#f4eee2"></circle></svg>
+  </div>
+  <div data-cursor-dot="1" style="position:fixed;top:0;left:0;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:#1f2718;box-shadow:0 0 0 1.5px #f4eee2;pointer-events:none;z-index:251;opacity:0"></div>
+
+  <header data-header="1" onMouseLeave="{{ closeMega }}" style="position:fixed;top:0;left:0;right:0;z-index:50;color:#f4eee2;transition:background .5s,box-shadow .5s,backdrop-filter .5s">
+    <div data-topbar="1" style="overflow:hidden;transition:max-height .45s,opacity .45s">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:9px clamp(16px,3vw,40px);font-size:12.5px;letter-spacing:.04em;border-bottom:1px solid rgba(244,238,226,.14)">
+        <span style="display:flex;align-items:center;gap:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><span style="width:6px;height:6px;border-radius:50%;background:#c9a86a;flex:none"></span>891 route de Saint-Zacharie, 13390 Auriol</span>
+        <div style="display:flex;align-items:center;gap:18px;flex:none">
+          <a href="https://www.instagram.com/comptoirdelavallee/" target="_blank" style="color:#f4eee2" style-hover="color:#c9a86a">Instagram ↗</a>
+          <div style="display:flex;gap:2px;font-weight:700">
+            <button onClick="{{ setFr }}" style="border:0;background:transparent;padding:2px 6px;cursor:pointer;font:inherit;color:{{ frFg }}">FR</button>
+            <span style="opacity:.4">/</span>
+            <button onClick="{{ setEn }}" style="border:0;background:transparent;padding:2px 6px;cursor:pointer;font:inherit;color:{{ enFg }}">EN</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:20px;padding:12px clamp(16px,3vw,40px)">
+      <div style="display:flex;align-items:center;gap:26px;min-width:0">
+        <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+          <sc-for list="{{ navLeft }}" as="item" hint-placeholder-count="4">
+            <a href="{{ item.href }}" onMouseEnter="{{ item.onEnter }}" onFocus="{{ item.onEnter }}" style="position:relative;display:flex;align-items:center;gap:6px;color:#f4eee2;font-size:14px;font-weight:500;padding:12px 0;white-space:nowrap" style-hover="color:#c9a86a">{{ item.label }}<sc-if value="{{ item.hasMega }}" hint-placeholder-val="{{ false }}"><span style="font-size:8px;opacity:.75;transition:transform .35s;transform:{{ item.caretRot }}">▼</span></sc-if><span style="position:absolute;left:0;right:0;bottom:6px;height:1px;background:#c9a86a;transform-origin:left;transition:transform .35s;transform:scaleX({{ item.line }})"></span></a>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ toggleMenu }}" aria-label="Menu" style="height:46px;padding:0 18px 0 14px;border:1px solid rgba(244,238,226,.4);background:transparent;border-radius:999px;color:#f4eee2;cursor:pointer;display:flex;align-items:center;gap:10px;font:600 14px 'Hanken Grotesk',sans-serif">
+            <span style="display:flex;flex-direction:column;gap:5px"><span style="width:18px;height:1.5px;background:#f4eee2"></span><span style="width:12px;height:1.5px;background:#f4eee2"></span></span>{{ menuLabel }}
+          </button>
+        </sc-if>
+      </div>
+      <a href="#" data-logo="1" style="display:flex;flex-direction:column;align-items:center;gap:6px;color:#f4eee2;transform-origin:center top;transition:transform .45s cubic-bezier(.2,.7,.2,1)">
+        <img src="assets/logo.jpg" alt="Comptoir de la Vallée" style="width:64px;height:64px;border-radius:50%;object-fit:cover;display:block;box-shadow:0 0 0 1px rgba(201,168,106,.5)">
+      </a>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:26px;min-width:0">
+        <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+          <sc-for list="{{ navRight }}" as="item" hint-placeholder-count="4">
+            <a href="{{ item.href }}" onMouseEnter="{{ item.onEnter }}" onFocus="{{ item.onEnter }}" style="position:relative;display:flex;align-items:center;gap:6px;color:#f4eee2;font-size:14px;font-weight:500;padding:12px 0;white-space:nowrap" style-hover="color:#c9a86a">{{ item.label }}<sc-if value="{{ item.hasMega }}" hint-placeholder-val="{{ false }}"><span style="font-size:8px;opacity:.75;transition:transform .35s;transform:{{ item.caretRot }}">▼</span></sc-if><span style="position:absolute;left:0;right:0;bottom:6px;height:1px;background:#c9a86a;transform-origin:left;transition:transform .35s;transform:scaleX({{ item.line }})"></span></a>
+          </sc-for>
+        </sc-if>
+        <a href="tel:+33427501510" aria-label="{{ t.callShort }}" style="display:flex;align-items:center;gap:10px;background:#c9a86a;color:#1f2718;font-weight:700;font-size:14px;padding:0 20px;height:46px;border-radius:999px;white-space:nowrap;transition:transform .3s,background .3s" style-hover="background:#e0c58f;color:#1f2718;transform:scale(1.04)">
+          <span style="position:relative;width:8px;height:8px;flex:none"><span data-ping="1" style="position:absolute;inset:0;border-radius:50%;background:#1f2718"></span><span style="position:absolute;inset:0;border-radius:50%;background:#1f2718"></span></span>{{ callLabel }}
+        </a>
+      </div>
+    </div>
+    <sc-if value="{{ megaOpen }}" hint-placeholder-val="{{ false }}">
+      <div data-mega-panel="1" onMouseEnter="{{ keepMega }}" style="position:absolute;top:100%;left:0;right:0;padding:0 clamp(16px,3vw,40px)">
+        <div style="max-width:1500px;margin:10px auto 0;background:#f4eee2;color:#1f2718;border-radius:28px;box-shadow:0 40px 90px rgba(0,0,0,.4);overflow:hidden;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.5fr) minmax(0,.95fr)">
+          <div style="padding:40px;display:flex;flex-direction:column;justify-content:space-between;gap:28px;background:#ece3d0">
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <span style="display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#b4602f"><span style="width:28px;height:1px;background:#b4602f"></span>{{ mega.kicker }}</span>
+              <span style="font-family:'Instrument Serif',serif;font-size:56px;line-height:.95;letter-spacing:-.02em">{{ mega.label }}</span>
+              <p style="margin:0;font-size:15px;line-height:1.6;color:#55574a;text-wrap:pretty">{{ mega.intro }}</p>
+            </div>
+            <a href="{{ mega.href }}" style="align-self:flex-start;display:flex;align-items:center;gap:12px;background:#1f2718;color:#f4eee2;font-weight:700;font-size:14px;padding:8px 8px 8px 22px;border-radius:999px" style-hover="color:#f4eee2;background:#2f3b25">{{ mega.viewAll }}<span style="width:36px;height:36px;border-radius:50%;background:#c9a86a;color:#1f2718;display:flex;align-items:center;justify-content:center">→</span></a>
+          </div>
+          <div style="padding:28px 36px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;align-content:start">
+            <sc-for list="{{ mega.links }}" as="ml" hint-placeholder-count="6">
+              <a href="{{ ml.href }}" data-mega-link="1" style="display:flex;gap:14px;align-items:baseline;padding:16px 0;border-bottom:1px solid rgba(31,39,24,.12);color:#1f2718;transition:padding .35s,color .35s" style-hover="padding-left:10px;color:#b4602f">
+                <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;color:#c9a86a;flex:none">0{{ ml.n }}</span>
+                <span style="display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font-family:'Instrument Serif',serif;font-size:26px;line-height:1.05">{{ ml.label }}</span><span style="font-size:13px;line-height:1.45;color:#6b6a5a">{{ ml.text }}</span></span>
+              </a>
+            </sc-for>
+          </div>
+          <div style="padding:14px;display:flex;flex-direction:column;gap:12px">
+            <a href="{{ mega.href }}" style="position:relative;flex:1;min-height:250px;border-radius:20px;overflow:hidden;display:block;background:#2f3b25">
+              <img data-mega-img="1" src="{{ mega.img.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+            </a>
+            <a href="{{ mega.promo.href }}" style="display:flex;align-items:center;gap:14px;background:#b4602f;color:#f8efe2;border-radius:18px;padding:12px 14px;transition:transform .3s" style-hover="color:#f8efe2;transform:translateY(-2px)">
+              <span style="width:54px;height:54px;border-radius:50%;background:#f8efe2;color:#b4602f;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:19px;flex:none;transform:rotate(-8deg)">{{ mega.promo.badge }}</span>
+              <span style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#f3d6b4">{{ mega.promoKicker }}</span><span style="font-size:14.5px;font-weight:600;line-height:1.3">{{ mega.promo.title }}</span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+    <div data-progress="1" style="height:2px;background:#c9a86a;transform-origin:left"></div>
+  </header>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:45;background:#1f2718;padding:150px 28px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:40px;overflow:auto">
+      <nav style="display:flex;flex-direction:column">
+        <sc-for list="{{ navAll }}" as="item" hint-placeholder-count="8">
+          <div style="overflow:hidden;border-bottom:1px solid rgba(244,238,226,.1)">
+            <a href="{{ item.href }}" data-menu-item="1" style="display:block;color:#f4eee2;font-family:'Instrument Serif',serif;font-size:clamp(38px,8vw,64px);line-height:1.15;padding:4px 0" style-hover="color:#c9a86a">{{ item.label }}</a>
+          </div>
+        </sc-for>
+      </nav>
+      <div style="display:flex;flex-direction:column;gap:6px;color:#cfc4a8;font-size:15px">
+        <span>891 route de Saint-Zacharie, 13390 Auriol</span>
+        <a href="tel:+33427501510" style="color:#c9a86a;font-family:'Instrument Serif',serif;font-size:30px">{{ t.phone }}</a>
+      </div>
+    </div>
+  </sc-if>
+
+  <section data-screen-label="Hero" style="position:relative;height:100vh;min-height:680px;background:#1f2718;overflow:hidden;color:#f4eee2">
+    <div style="position:absolute;inset:0">
+      <div data-speed="-0.35" style="position:absolute;top:-18%;bottom:-18%;left:0;right:0">
+        <div data-zoom="1" style="position:absolute;inset:0">
+          <image-slot id="hero" shape="rect" placeholder="Photo plein écran : olivier ou allées du magasin" src="{{ img.hero.src }}" credit="{{ img.hero.credit }}" credit-href="{{ img.hero.href }}"></image-slot>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(31,39,24,.7) 0%,rgba(31,39,24,.35) 28%,rgba(31,39,24,.62) 52%,rgba(31,39,24,.92) 85%),linear-gradient(90deg,rgba(31,39,24,.55) 0%,rgba(31,39,24,0) 70%)"></div>
+    <sc-if value="{{ showFloat }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;right:6vw;top:17vh;width:clamp(150px,14vw,220px);aspect-ratio:9/16;z-index:2">
+      <div data-speed="0.25" style="width:100%;height:100%">
+        <div data-float="1" style="width:100%;height:100%;border-radius:22px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.35);background:#3b4a2c;border:5px solid #f4eee2">
+          <video data-vid="1" src="assets/videos/v4.mp4" poster="assets/videos/v4-poster.jpg" preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block"></video>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+    <div style="position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(20px,4vw,56px) clamp(56px,8vh,88px);z-index:3">
+      <div data-reveal="1" data-delay="400" style="display:flex;align-items:center;gap:12px;font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#c9a86a;margin-bottom:22px">
+        <span style="width:40px;height:1px;background:#c9a86a"></span>{{ t.heroKicker }}
+      </div>
+      <h1 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(48px,8.2vw,144px);line-height:.92;letter-spacing:-.02em;margin:0;max-width:1300px;display:flex;flex-wrap:wrap;column-gap:.22em">
+        <sc-for list="{{ heroWords }}" as="wd" hint-placeholder-count="10">
+          <span style="display:inline-block;overflow:hidden;padding-bottom:.08em"><span data-word="1" style="display:inline-block">{{ wd }}</span></span>
+        </sc-for>
+      </h1>
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:28px;margin-top:32px">
+        <p data-reveal="1" data-delay="900" style="font-size:clamp(16px,1.4vw,19px);line-height:1.55;margin:0;max-width:500px;color:#e6dcc6;text-wrap:pretty">{{ t.heroSub }}</p>
+        <div data-reveal="1" data-delay="1050" style="display:flex;flex-wrap:wrap;gap:10px;pointer-events:auto">
+          <a href="{{ mapsUrl }}" target="_blank" style="background:#f4eee2;color:#1f2718;font-weight:700;padding:18px 28px;border-radius:999px;font-size:15px;transition:transform .3s" style-hover="transform:translateY(-3px);color:#1f2718">{{ t.visit }} ↗</a>
+          <a href="tel:+33427501510" style="border:1px solid rgba(244,238,226,.5);color:#f4eee2;font-weight:600;padding:18px 28px;border-radius:999px;font-size:15px;transition:background .3s" style-hover="background:rgba(244,238,226,.14);color:#f4eee2">{{ t.callLong }}</a>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#cfc4a8;pointer-events:none">
+      <span>{{ t.scroll }}</span>
+      <span style="width:1px;height:36px;background:rgba(244,238,226,.25);overflow:hidden;position:relative"><span data-scrollcue="1" style="position:absolute;left:0;top:0;width:1px;height:14px;background:#c9a86a"></span></span>
+    </div>
+  </section>
+
+  <section style="background:#c9a86a;color:#1f2718;overflow:hidden;padding:22px 0;border-block:1px solid #1f2718">
+    <div data-skew="1">
+      <div data-marquee="1" style="display:flex;width:max-content">
+        <sc-for list="{{ marquee }}" as="m" hint-placeholder-count="16">
+          <span style="display:flex;align-items:center;gap:36px;padding-right:36px;font-family:'Instrument Serif',serif;font-size:clamp(34px,4vw,56px);line-height:1;white-space:nowrap">{{ m }}<span style="font-size:.5em">✦</span></span>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Nos univers" style="padding:clamp(80px,12vw,160px) clamp(16px,3vw,40px) 80px">
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:56px">
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(56px,9vw,140px);line-height:.9;letter-spacing:-.02em;margin:0;color:#1f2718">{{ t.worldsTitle }}</h2>
+        <span data-reveal="1" style="font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#b4602f">01 — 04</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <sc-for list="{{ worlds }}" as="w" hint-placeholder-count="4">
+          <a href="{{ w.href }}" data-card="1" style="position:sticky;top:{{ w.top }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));min-height:min(70vh,600px);border-radius:28px;overflow:hidden;background:{{ w.bg }};color:{{ w.fg }};box-shadow:0 -20px 50px rgba(31,39,24,.14);transform-origin:center top" style-hover="color:{{ w.fg }}">
+            <div style="padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;justify-content:space-between;gap:32px">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;letter-spacing:.22em;font-weight:700">
+                <span>0{{ w.n }}</span>
+                <span style="width:56px;height:56px;border-radius:50%;border:1px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:20px;letter-spacing:0;transition:transform .4s" style-hover="transform:rotate(45deg)">↗</span>
+              </div>
+              <div>
+                <h3 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(48px,6vw,96px);line-height:.95;letter-spacing:-.02em;margin:0 0 20px">{{ w.title }}</h3>
+                <p style="margin:0;font-size:18px;line-height:1.55;max-width:420px;opacity:.85;text-wrap:pretty">{{ w.text }}</p>
+              </div>
+            </div>
+            <div data-clip="1" style="position:relative;min-height:320px;overflow:hidden">
+              <div data-speed="-0.12" style="position:absolute;top:-12%;bottom:-12%;left:0;right:0">
+                <image-slot id="world-{{ $index }}" shape="rect" placeholder="{{ w.ph }}" src="{{ w.src }}" credit="{{ w.credit }}" credit-href="{{ w.creditHref }}"></image-slot>
+              </div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Arrivages" data-hscroll="1" style="position:relative;height:300vh;background:#1f2718;color:#f4eee2">
+    <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:36px">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;padding:110px clamp(20px,4vw,56px) 0">
+        <div>
+          <div style="font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#c9a86a;margin-bottom:14px">{{ t.arrKicker }}</div>
+          <h2 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(48px,7vw,110px);line-height:.92;letter-spacing:-.02em;margin:0">{{ t.arrTitle }}</h2>
+        </div>
+        <p style="margin:0;font-size:17px;line-height:1.6;max-width:400px;color:#d6ccb4;text-wrap:pretty">{{ t.arrText }}</p>
+      </div>
+      <div data-htrack="1" style="display:flex;gap:20px;padding:0 clamp(20px,4vw,56px);width:max-content;will-change:transform;align-items:flex-start">
+        <sc-for list="{{ arrivals }}" as="a" hint-placeholder-count="6">
+          <div style="width:clamp(230px,24vw,360px);flex:none;display:flex;flex-direction:column;gap:14px;margin-top:{{ a.offset }}">
+            <div style="aspect-ratio:{{ a.ratio }};border-radius:20px;overflow:hidden;background:#2f3b25;transition:transform .6s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(.96) rotate(-1.5deg)">
+              <image-slot id="arrival-{{ $index }}" shape="rect" placeholder="{{ t.arrPh }}" src="{{ a.src }}" credit="{{ a.credit }}" credit-href="{{ a.href }}"></image-slot>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;letter-spacing:.2em;font-weight:600;color:#c9a86a"><span>N° 0{{ a.n }}</span><span>{{ t.arrNew }}</span></div>
+          </div>
+        </sc-for>
+        <a href="{{ links.arrivages }}" style="width:clamp(230px,24vw,360px);flex:none;aspect-ratio:4/5;border-radius:20px;background:#c9a86a;color:#1f2718;display:flex;flex-direction:column;justify-content:space-between;padding:32px;transition:background .3s" style-hover="color:#1f2718;background:#e0c58f">
+          <span style="font-size:42px">↗</span>
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(36px,3.4vw,52px);line-height:1">{{ t.arrBtn }}</span>
+        </a>
+      </div>
+      <div style="margin:0 clamp(20px,4vw,56px);height:2px;background:rgba(244,238,226,.15);border-radius:2px;overflow:hidden">
+        <div data-hbar="1" style="height:100%;width:100%;background:#c9a86a;transform-origin:left"></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Offre du moment" style="background:#b4602f;color:#f8efe2;padding:clamp(80px,10vw,140px) clamp(20px,4vw,56px);position:relative;overflow:hidden">
+    <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,96px);align-items:center">
+      <div style="position:relative">
+        <div data-clip="1" style="aspect-ratio:4/5;border-radius:999px 999px 28px 28px;overflow:hidden;background:#9a4f25;position:relative">
+          <div data-speed="-0.15" style="position:absolute;top:-12%;bottom:-12%;left:0;right:0">
+            <image-slot id="offer" shape="rect" placeholder="Photo de l'offre (Strelitzia)" src="{{ img.strel.src }}" credit="{{ img.strel.credit }}" credit-href="{{ img.strel.href }}"></image-slot>
+          </div>
+        </div>
+        <div style="position:absolute;right:-10px;bottom:10%;width:clamp(140px,14vw,190px);aspect-ratio:1;pointer-events:none">
+          <div data-spin="1" style="position:absolute;inset:0">
+            <svg viewBox="0 0 200 200" style="width:100%;height:100%;display:block"><defs><path id="ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"></path></defs><circle cx="100" cy="100" r="98" fill="#f8efe2"></circle><text style="font-family:'Hanken Grotesk',sans-serif;font-size:15px;font-weight:700;letter-spacing:4px" fill="#b4602f"><textPath href="#ring">{{ t.ringText }}</textPath></text></svg>
+          </div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:clamp(34px,3.4vw,46px);color:#b4602f">{{ t.offerBadge }}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:26px">
+        <div data-reveal="1" style="font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#f3d6b4">{{ t.offerKicker }}</div>
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(48px,6vw,96px);line-height:.95;letter-spacing:-.02em;margin:0;text-wrap:balance">{{ t.offerTitle }}</h2>
+        <p data-reveal="1" style="margin:0;font-size:clamp(20px,2vw,26px);line-height:1.4">{{ t.offerText }}</p>
+        <p data-reveal="1" style="margin:0;font-size:14px;color:#f3d6b4">{{ t.offerTerms }}</p>
+        <div data-reveal="1"><a href="{{ links.promotions }}" style="display:inline-flex;gap:10px;background:#f8efe2;color:#b4602f;font-weight:700;padding:18px 28px;border-radius:999px;font-size:15px;transition:transform .3s" style-hover="transform:translateY(-3px);color:#8f4824">{{ t.offerBtn }} →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Récolte des olives" style="position:relative;min-height:110vh;overflow:hidden;color:#f4eee2;display:flex;align-items:center;background:#2f3b25">
+    <div style="position:absolute;inset:0">
+      <div data-speed="-0.3" style="position:absolute;top:-20%;bottom:-20%;left:0;right:0">
+        <image-slot id="olive-1" shape="rect" placeholder="Olivier centenaire / récolte" src="{{ img.olive1.src }}" credit="{{ img.olive1.credit }}" credit-href="{{ img.olive1.href }}"></image-slot>
+      </div>
+    </div>
+    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(31,39,24,.94) 0%,rgba(31,39,24,.65) 50%,rgba(31,39,24,.15) 100%)"></div>
+    <div style="position:relative;pointer-events:none;width:100%;max-width:1400px;margin:0 auto;padding:140px clamp(20px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px;align-items:end">
+      <div style="display:flex;flex-direction:column;gap:28px;pointer-events:auto">
+        <div data-reveal="1" style="display:flex;align-items:center;gap:12px;font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#c9a86a"><span style="width:40px;height:1px;background:#c9a86a"></span>{{ t.oliveKicker }}</div>
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,7.4vw,120px);line-height:.92;letter-spacing:-.02em;margin:0;text-wrap:balance">{{ t.oliveTitle }}</h2>
+        <p data-reveal="1" style="margin:0;font-size:19px;line-height:1.6;max-width:480px;color:#e6dcc6;text-wrap:pretty">{{ t.oliveText }}</p>
+        <div data-reveal="1" style="display:flex;flex-wrap:wrap;gap:10px">
+          <a href="{{ links.recolte }}" style="background:#c9a86a;color:#1f2718;font-weight:700;padding:18px 28px;border-radius:999px;font-size:15px;transition:transform .3s" style-hover="transform:translateY(-3px);color:#1f2718">{{ t.oliveBtn }} →</a>
+          <a href="tel:+33427501510" style="border:1px solid rgba(244,238,226,.5);color:#f4eee2;font-weight:600;padding:18px 28px;border-radius:999px;font-size:15px" style-hover="background:rgba(244,238,226,.14);color:#f4eee2">{{ t.oliveBook }}</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;pointer-events:auto">
+        <sc-for list="{{ t.oliveTools }}" as="tool" hint-placeholder-count="3">
+          <div data-reveal="1" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 24px;border-radius:18px;background:rgba(244,238,226,.08);backdrop-filter:blur(10px);border:1px solid rgba(244,238,226,.16);transition:background .3s,transform .3s" style-hover="background:rgba(201,168,106,.22);transform:translateX(-6px)">
+            <span style="font-family:'Instrument Serif',serif;font-size:30px">{{ tool.name }}</span>
+            <span style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#c9a86a;font-weight:600">{{ tool.mode }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Pourquoi le Comptoir" style="padding:clamp(80px,12vw,160px) clamp(20px,4vw,56px)">
+    <div style="max-width:1400px;margin:0 auto">
+      <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,8vw,128px);line-height:.9;letter-spacing:-.02em;margin:0 0 64px;color:#1f2718">{{ t.whyTitle }}</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(32px,5vw,72px);align-items:start">
+      <div data-clip="1" style="position:sticky;top:130px;aspect-ratio:1000/1111;border-radius:28px;overflow:hidden;background:#e6d9bf">
+        <image-slot id="team" shape="rect" placeholder="Photo de l'équipe" src="{{ img.team.src }}"></image-slot>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ t.why }}" as="r" hint-placeholder-count="3">
+          <div data-reveal="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px 40px;align-items:baseline;border-top:1px solid #1f2718;padding:36px 0;transition:padding .4s,background .4s" style-hover="padding-left:20px;background:#ece3d0">
+            <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(64px,7vw,110px);line-height:.8;color:#b4602f">0{{ r.n }}</div>
+            <h3 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(30px,3vw,44px);line-height:1.05;margin:0;color:#1f2718">{{ r.title }}</h3>
+            <p style="margin:0;font-size:17px;line-height:1.6;color:#55574a;text-wrap:pretty">{{ r.text }}</p>
+          </div>
+        </sc-for>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Vidéos" data-ph-section="1" style="position:relative;background:#1f2718;color:#f4eee2;height:{{ phHeight }}">
+    <div style="position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center">
+      <div style="position:absolute;width:56vw;aspect-ratio:1;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(201,168,106,.22),rgba(201,168,106,0) 62%);pointer-events:none"></div>
+      <div style="position:relative;width:100%;max-width:1440px;margin:0 auto;height:100%;padding:112px clamp(20px,4vw,56px) 28px;display:grid;grid-template-columns:{{ phCols }};gap:clamp(20px,5vw,80px);align-items:center;align-content:center">
+        <div style="display:flex;flex-direction:column;gap:clamp(14px,2.4vh,28px);min-width:0">
+          <span style="display:flex;align-items:center;gap:12px;font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#c9a86a"><span style="width:36px;height:1px;background:#c9a86a"></span>{{ t.reelsKicker }}</span>
+          <h2 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(40px,5.6vw,92px);line-height:.92;letter-spacing:-.02em;margin:0">{{ t.reelsTitle }}</h2>
+          <sc-if value="{{ phWide }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:baseline;gap:14px;margin-top:12px">
+              <span style="font-family:'Instrument Serif',serif;font-size:clamp(72px,8vw,132px);line-height:.8;color:#c9a86a">{{ phNum }}</span>
+              <span style="font-size:15px;color:#cfc4a8;letter-spacing:.1em">{{ phTotal }}</span>
+            </div>
+            <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:34px;line-height:1.1;color:#f4eee2">{{ phLabel }}</span>
+          </sc-if>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <button onClick="{{ phPrev }}" aria-label="Précédent" style="width:60px;height:60px;border-radius:50%;border:1px solid rgba(244,238,226,.35);background:transparent;color:#f4eee2;font-size:22px;cursor:pointer;opacity:{{ phPrevOp }};transition:background .3s,transform .3s" style-hover="background:rgba(244,238,226,.12);transform:translateY(-3px)">↑</button>
+            <button onClick="{{ phNext }}" aria-label="Suivant" style="height:60px;padding:0 10px 0 24px;border-radius:999px;border:0;background:#c9a86a;color:#1f2718;font:700 15px 'Hanken Grotesk',sans-serif;cursor:pointer;display:flex;align-items:center;gap:14px;opacity:{{ phNextOp }};transition:transform .3s" style-hover="transform:translateY(-3px)">{{ t.nextVid }}<span style="width:42px;height:42px;border-radius:50%;background:#1f2718;color:#c9a86a;display:flex;align-items:center;justify-content:center">↓</span></button>
+            <span style="font-size:13px;color:#cfc4a8;max-width:180px;line-height:1.4">{{ phScrollHint }}</span>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:center;align-items:center;min-height:0">
+          <div data-phone="1" style="position:relative;width:clamp(260px,min(30vw,calc((100svh - 150px) * 0.466)),480px);aspect-ratio:9/19.3;flex:none;border-radius:58px;background:#0b0d09;padding:5px;box-shadow:0 0 0 1px #ffb27a inset,0 0 0 1.5px #c4521a,0 0 0 3.5px #e8702f,0 0 0 4.5px #a8420f,0 60px 120px rgba(0,0,0,.6),0 0 90px rgba(232,112,47,.25)">
+            <span style="position:absolute;left:-6px;top:22%;width:3px;height:56px;border-radius:2px;background:linear-gradient(90deg,#a8420f,#f08a4b)"></span>
+            <span style="position:absolute;left:-6px;top:34%;width:3px;height:56px;border-radius:2px;background:linear-gradient(90deg,#a8420f,#f08a4b)"></span>
+            <span style="position:absolute;right:-6px;top:28%;width:3px;height:84px;border-radius:2px;background:linear-gradient(90deg,#a8420f,#f08a4b)"></span>
+            <div style="position:relative;width:100%;height:100%;border-radius:53px;overflow:hidden;background:#000;font-family:'Hanken Grotesk',sans-serif">
+              <sc-for list="{{ reels }}" as="r" hint-placeholder-count="1">
+                <div style="position:absolute;inset:0;transform:translateY({{ r.ty }});transition:transform .9s cubic-bezier(.7,0,.2,1)">
+                  <video data-ph-vid="{{ r.i }}" src="{{ r.src }}" poster="{{ r.poster }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="metadata" onClick="{{ phTapMute }}" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer"></video>
+                </div>
+              </sc-for>
+              <div style="position:absolute;left:0;right:0;top:0;height:130px;background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,0));pointer-events:none"></div>
+              <div style="position:absolute;left:0;right:0;bottom:0;height:45%;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.6) 60%,rgba(0,0,0,.8));pointer-events:none"></div>
+              <div style="position:absolute;top:12px;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 26px;color:#fff;font-size:14px;font-weight:600;pointer-events:none">
+                <span>9:41</span>
+                <span style="width:96px;height:28px;border-radius:999px;background:#000"></span>
+                <span style="display:flex;gap:5px;align-items:center"><span style="width:16px;height:9px;border-radius:2px;border:1.5px solid #fff"></span></span>
+              </div>
+              <div style="position:absolute;top:54px;left:18px;right:18px;display:flex;justify-content:space-between;align-items:center;color:#fff;pointer-events:none">
+                <span style="font-size:21px;font-weight:700;letter-spacing:-.01em">Reels</span>
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" ><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h2l1.5-2h6l1.5 2h2A2.5 2.5 0 0 1 21 8.5v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z M12 16.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path></svg>
+              </div>
+              <button onClick="{{ phTapMute }}" style="position:absolute;top:96px;right:16px;display:flex;align-items:center;gap:6px;border:0;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);color:#fff;font:600 12px 'Hanken Grotesk',sans-serif;padding:7px 12px;border-radius:999px;cursor:pointer">{{ phSoundIcon }} {{ phSound }}</button>
+              <div style="position:absolute;right:14px;bottom:178px;display:flex;flex-direction:column;align-items:center;gap:24px">
+                <button onClick="{{ phLike }}" aria-label="J'aime" style="border:0;background:transparent;padding:0;cursor:pointer;transition:transform .2s" style-active="transform:scale(.8)"><svg viewBox="0 0 24 24" width="30" height="30" fill="{{ phHeartFill }}" stroke="{{ phHeartStroke }}" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.5-9.3-9.1C1.4 7.9 3.6 4.5 7 4.5c2.1 0 3.7 1.2 5 3 1.3-1.8 2.9-3 5-3 3.4 0 5.6 3.4 4.3 6.9-1.8 4.6-9.3 9.1-9.3 9.1z"></path></svg></button>
+                <a href="https://www.instagram.com/comptoirdelavallee/" target="_blank" aria-label="Commenter" style="display:flex"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" width="28" height="28"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.6L3 20.5l1.5-5A8.5 8.5 0 1 1 21 11.5z"></path></svg></a>
+                <button onClick="{{ phOpen }}" aria-label="Plein écran" style="border:0;background:transparent;padding:0;cursor:pointer;display:flex"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" width="28" height="28"><path d="M21.5 3 2.5 10l8 3 3 8z M10.5 13l5-5"></path></svg></button>
+                
+              </div>
+              <div style="position:absolute;left:18px;right:18px;bottom:84px;display:flex;flex-direction:column;gap:12px;color:#fff;pointer-events:none">
+                <div style="display:flex;align-items:center;gap:10px;pointer-events:auto;min-width:0">
+                  <img src="assets/logo.jpg" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 0 0 1.5px #fff">
+                  <span style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0">comptoirdelavallee</span>
+                  <a href="https://www.instagram.com/comptoirdelavallee/" target="_blank" style="flex:none;border:1px solid rgba(255,255,255,.7);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:7px" style-hover="color:#fff;background:rgba(255,255,255,.18)">{{ t.follow }}</a>
+                </div>
+                <span style="font-size:13px;line-height:1.4;opacity:.95;padding-right:40px">{{ phLabel }} · Auriol</span>
+              </div>
+              <div style="position:absolute;left:0;right:0;bottom:0;height:62px;background:#000;display:flex;justify-content:space-around;align-items:center;padding:0 10px 10px;pointer-events:none">
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" width="24" height="24"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"></path></svg>
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" width="24" height="24"><path d="M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15z M21 21l-5.2-5.2"></path></svg>
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" width="24" height="24"><path d="M4 4h16v16H4z M12 8v8 M8 12h8"></path></svg>
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" width="24" height="24"><path d="M3 3h18v18H3z M3 8h18 M10 12.5v5l4.5-2.5z"></path></svg>
+                <span style="width:24px;height:24px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 1.5px #fff"><img src="assets/logo.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></span>
+                <span style="position:absolute;bottom:6px;left:50%;width:110px;height:4px;margin-left:-55px;border-radius:2px;background:#fff"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <sc-if value="{{ phWide }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:6px;justify-self:end;width:100%;max-width:280px;min-width:0">
+            <sc-for list="{{ reels }}" as="r" hint-placeholder-count="7">
+              <button onClick="{{ r.go }}" style="display:flex;align-items:center;gap:14px;border:0;padding:6px 14px 6px 6px;border-radius:16px;cursor:pointer;color:#f4eee2;text-align:left;opacity:{{ r.op }};background:{{ r.thumbBg }};transition:opacity .4s,background .4s" style-hover="opacity:1">
+                <img src="{{ r.poster }}" alt="" style="width:40px;aspect-ratio:9/16;border-radius:8px;object-fit:cover;display:block;box-shadow:0 0 0 2px {{ r.thumbRing }}">
+                <span style="font-family:'Instrument Serif',serif;font-size:22px;line-height:1.1">{{ r.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Avis Google" style="position:relative;background:#f4eee2;color:#1f2718;padding:clamp(80px,10vw,140px) 0;overflow:hidden">
+    <div style="max-width:1400px;margin:0 auto;padding:0 clamp(20px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,96px);align-items:center">
+      <div style="display:flex;flex-direction:column;gap:28px">
+        <span data-reveal="1" style="display:flex;align-items:center;gap:12px;font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#b4602f"><span style="width:36px;height:1px;background:#b4602f"></span>{{ gr.kicker }}</span>
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(48px,6.4vw,104px);line-height:.92;letter-spacing:-.025em;margin:0;text-wrap:balance">{{ gr.title }}</h2>
+        <div data-reveal="1" data-delay="120" style="display:flex;align-items:center;gap:22px;flex-wrap:wrap">
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(88px,9vw,140px);line-height:.8;letter-spacing:-.03em">{{ gr.rating }}</span>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="display:flex;gap:3px"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="#f5b400"></path></svg><svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="#f5b400"></path></svg><svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="#f5b400"></path></svg><svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="#f5b400"></path></svg><svg viewBox="0 0 24 24" width="24" height="24"><defs><linearGradient id="g-half"><stop offset="70%" stop-color="#f5b400"></stop><stop offset="70%" stop-color="#d8cdb4"></stop></linearGradient></defs><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="url(#g-half)"></path></svg></span>
+            <span style="display:flex;align-items:center;gap:8px;font-size:15px;color:#55574a"><span style="font-weight:700;color:#1f2718">{{ gr.count }}</span><span style="display:flex;align-items:center;gap:6px"><span style="font-weight:700;letter-spacing:-.01em"><span style="color:#4285f4">G</span><span style="color:#ea4335">o</span><span style="color:#fbbc05">o</span><span style="color:#4285f4">g</span><span style="color:#34a853">l</span><span style="color:#ea4335">e</span></span></span></span>
+          </div>
+        </div>
+        <div data-reveal="1" data-delay="200" style="display:flex;flex-wrap:wrap;gap:10px">
+          <a href="{{ gr.url }}" target="_blank" style="display:flex;align-items:center;gap:12px;background:#1f2718;color:#f4eee2;font-weight:700;font-size:15px;padding:8px 8px 8px 22px;border-radius:999px;transition:transform .3s" style-hover="color:#f4eee2;transform:translateY(-3px)">{{ gr.all }}<span style="width:40px;height:40px;border-radius:50%;background:#c9a86a;color:#1f2718;display:flex;align-items:center;justify-content:center">↗</span></a>
+          <a href="{{ gr.url }}" target="_blank" style="display:flex;align-items:center;min-height:56px;padding:0 22px;border-radius:999px;border:1px solid #1f2718;color:#1f2718;font-weight:600;font-size:15px" style-hover="background:#1f2718;color:#f4eee2">{{ gr.write }}</a>
+        </div>
+      </div>
+      <div data-reveal="1" data-delay="150" style="position:relative;display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:auto auto;gap:14px">
+        <div data-clip="1" style="grid-row:span 2;border-radius:26px;overflow:hidden;aspect-ratio:765/1020;background:#e6d9bf">
+          <div data-speed="-0.06" style="width:100%;height:112%;margin-top:-6%"><img src="assets/photos/shop-wines.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        </div>
+        <div data-clip="1" style="border-radius:22px;overflow:hidden;aspect-ratio:1360/1020;background:#e6d9bf"><img src="assets/photos/shop-flowers.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div data-clip="1" style="border-radius:22px;overflow:hidden;aspect-ratio:1360/1020;background:#e6d9bf"><img src="assets/photos/shop-snow.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div style="position:absolute;left:-18px;bottom:28px;display:flex;align-items:center;gap:12px;background:#fbf8f1;border-radius:18px;padding:12px 16px;box-shadow:0 20px 40px rgba(31,39,24,.16)">
+          <span style="width:42px;height:42px;border-radius:50%;background:#1f2718;color:#c9a86a;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:20px">{{ gr.rating }}</span>
+          <span style="display:flex;flex-direction:column;gap:2px;font-size:13px;line-height:1.3"><span style="font-weight:700">{{ gr.badge }}</span><span style="color:#6b6a5a">{{ gr.count }}</span></span>
+        </div>
+      </div>
+    </div>
+    <div onMouseEnter="{{ grPause }}" onMouseLeave="{{ grPlay }}" style="margin-top:clamp(56px,7vw,96px);display:flex;flex-direction:column;gap:16px;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)">
+      <sc-for list="{{ grRows }}" as="row" hint-placeholder-count="2">
+        <div data-marquee="{{ row.dir }}" style="display:flex;gap:16px;width:max-content">
+          <sc-for list="{{ row.items }}" as="r" hint-placeholder-count="6">
+            <figure style="margin:0;flex:none;width:clamp(300px,30vw,400px);display:flex;flex-direction:column;justify-content:space-between;gap:22px;background:#fbf8f1;border:1px solid rgba(31,39,24,.08);border-radius:24px;padding:26px 28px">
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="display:flex;gap:2px"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="#f5b400"></path></svg><svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="#f5b400"></path></svg><svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="#f5b400"></path></svg><svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="#f5b400"></path></svg><svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="#f5b400"></path></svg></span><span style="font-size:12px;color:#8a7f66">{{ r.when }}</span></div>
+                <blockquote style="margin:0;font-family:'Instrument Serif',serif;font-size:23px;line-height:1.25;color:#1f2718;text-wrap:pretty">“{{ r.text }}”</blockquote>
+              </div>
+              <figcaption style="display:flex;align-items:center;gap:12px">
+                <span style="width:40px;height:40px;border-radius:50%;background:{{ r.c }};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex:none">{{ r.initial }}</span>
+                <span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-weight:700;font-size:15px">{{ r.name }}</span><span style="font-size:12.5px;color:#8a7f66">{{ r.meta }}</span></span>
+                <span style="margin-left:auto;font-weight:700;font-size:18px;color:#4285f4">G</span>
+              </figcaption>
+            </figure>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section data-screen-label="Instagram" style="background:#e6d9bf;padding:clamp(72px,9vw,120px) clamp(20px,4vw,56px)">
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:40px">
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(40px,5.4vw,80px);line-height:.95;margin:0;color:#1f2718">@comptoirdelavallee</h2>
+        <a data-reveal="1" href="https://www.instagram.com/comptoirdelavallee/" target="_blank" style="background:#1f2718;color:#f4eee2;font-weight:700;padding:18px 28px;border-radius:999px;font-size:15px;transition:transform .3s" style-hover="transform:translateY(-3px);color:#f4eee2">{{ t.igBtn }} ↗</a>
+      </div>
+      <div style="columns:3 220px;column-gap:12px">
+        <sc-for list="{{ ig }}" as="p" hint-placeholder-count="6">
+          <div data-reveal="1" data-delay="{{ p.delay }}" style="break-inside:avoid;margin-bottom:12px;aspect-ratio:{{ p.ratio }};border-radius:16px;overflow:hidden;background:#d8c9aa;transition:transform .5s,border-radius .5s" style-hover="transform:rotate(-2deg) scale(1.04);border-radius:48px">
+            <image-slot id="ig-{{ $index }}" shape="rect" placeholder="Post Instagram" src="{{ p.src }}" credit="{{ p.credit }}" credit-href="{{ p.href }}"></image-slot>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Infos pratiques" style="padding:clamp(80px,10vw,140px) clamp(20px,4vw,56px)">
+    <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:clamp(40px,5vw,80px)">
+      <div style="display:flex;flex-direction:column;gap:36px">
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,7vw,110px);line-height:.92;letter-spacing:-.02em;margin:0;color:#1f2718">{{ t.visitTitle }}</h2>
+        <div data-reveal="1" style="display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-top:1px solid rgba(31,39,24,.2);font-size:17px;line-height:1.5">
+            <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66;padding-top:4px">{{ t.lAddress }}</span>
+            <span>891 route de Saint-Zacharie<br>13390 Auriol{{ t.country }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-top:1px solid rgba(31,39,24,.2);font-size:17px">
+            <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66;padding-top:4px">{{ t.lPhone }}</span>
+            <a href="tel:+33427501510" style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1">{{ t.phone }}</a>
+          </div>
+          <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-top:1px solid rgba(31,39,24,.2);font-size:17px">
+            <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66;padding-top:4px">{{ t.lHours }}</span>
+            <span style="color:#8a7f66;font-style:italic">{{ t.tbc }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:130px 1fr;gap:20px;padding:20px 0;border-block:1px solid rgba(31,39,24,.2);font-size:17px">
+            <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66;padding-top:4px">Parking</span>
+            <span style="color:#8a7f66;font-style:italic">{{ t.tbc }}</span>
+          </div>
+        </div>
+        <div data-reveal="1" style="display:flex;flex-wrap:wrap;gap:10px">
+          <a href="{{ mapsUrl }}" target="_blank" style="background:#1f2718;color:#f4eee2;font-weight:700;padding:18px 28px;border-radius:999px;font-size:15px;transition:transform .3s" style-hover="transform:translateY(-3px);color:#f4eee2">{{ t.directions }} ↗</a>
+          <a href="tel:+33427501510" style="border:1px solid #1f2718;color:#1f2718;font-weight:600;padding:18px 28px;border-radius:999px;font-size:15px" style-hover="background:#1f2718;color:#f4eee2">{{ t.callShort }}</a>
+        </div>
+      </div>
+      <div data-clip="1" style="min-height:480px;border-radius:28px;overflow:hidden;background:#e6d9bf">
+        <iframe title="Google Maps" src="https://maps.google.com/maps?q=891%20route%20de%20Saint-Zacharie%2C%2013390%20Auriol&z=14&output=embed" style="border:0;width:100%;height:100%;min-height:480px;display:block;filter:grayscale(.4) sepia(.2)" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <footer data-screen-label="Footer" style="position:relative;background:#1f2718;color:#cfc4a8;padding:clamp(64px,8vw,110px) clamp(20px,4vw,56px) {{ footerPad }};overflow:hidden">
+    <div style="position:absolute;width:70vw;aspect-ratio:1;right:-25vw;top:-35vw;border-radius:50%;background:radial-gradient(circle,rgba(201,168,106,.14),rgba(201,168,106,0) 65%);pointer-events:none"></div>
+    <div style="position:relative;max-width:1400px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(48px,6vw,80px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:32px;align-items:end;padding-bottom:clamp(40px,5vw,64px);border-bottom:1px solid rgba(244,238,226,.14)">
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,7vw,116px);line-height:.9;letter-spacing:-.03em;margin:0;color:#f4eee2">{{ ft.ctaTitle }} <em style="color:#c9a86a">{{ ft.ctaEm }}</em></h2>
+        <div data-reveal="1" data-delay="150" style="display:flex;flex-direction:column;gap:20px;align-items:flex-start">
+          <p style="margin:0;font-size:18px;line-height:1.5;color:#e6dcc6">{{ ft.address }}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <a href="https://www.google.com/maps/dir/?api=1&amp;destination=891+route+de+Saint-Zacharie+13390+Auriol" target="_blank" style="display:flex;align-items:center;gap:12px;background:#f4eee2;color:#1f2718;font-weight:700;font-size:15px;padding:8px 8px 8px 22px;border-radius:999px;transition:transform .3s" style-hover="color:#1f2718;transform:translateY(-3px)">{{ ft.directions }}<span style="width:40px;height:40px;border-radius:50%;background:#1f2718;color:#f4eee2;display:flex;align-items:center;justify-content:center">↗</span></a>
+            <a href="tel:+33427501510" style="display:flex;align-items:center;min-height:56px;padding:0 24px;border-radius:999px;background:#c9a86a;color:#1f2718;font-weight:700;font-size:15px;transition:transform .3s" style-hover="color:#1f2718;transform:translateY(-3px)">{{ ft.phone }}</a>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:40px 32px">
+        <div style="display:flex;flex-direction:column;gap:18px;align-items:flex-start">
+          <img src="assets/logo.jpg" alt="Comptoir de la Vallée" style="width:84px;height:84px;border-radius:50%;object-fit:cover;display:block;box-shadow:0 0 0 1px rgba(201,168,106,.5)">
+          <p style="margin:0;font-size:15px;line-height:1.6;max-width:240px">{{ ft.tagline }}</p>
+          <a href="https://www.instagram.com/comptoirdelavallee/" target="_blank" style="display:flex;align-items:center;gap:10px;border:1px solid rgba(244,238,226,.25);color:#f4eee2;font-size:14px;font-weight:600;padding:10px 16px;border-radius:999px" style-hover="color:#1f2718;background:#c9a86a;border-color:#c9a86a">@comptoirdelavallee ↗</a>
+        </div>
+        <sc-for list="{{ ft.cols }}" as="col" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <span style="font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#c9a86a;margin-bottom:6px">{{ col.title }}</span>
+            <sc-for list="{{ col.links }}" as="l" hint-placeholder-count="5">
+              <a href="{{ l.href }}" style="color:#cfc4a8;font-size:15px;transition:color .3s,padding .3s" style-hover="color:#f4eee2;padding-left:6px">{{ l.label }}</a>
+            </sc-for>
+          </div>
+        </sc-for>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#c9a86a;margin-bottom:6px">{{ ft.infoTitle }}</span>
+          <span style="font-size:13px;color:#8f8a72">{{ ft.phoneK }}</span>
+          <a href="tel:+33427501510" style="font-family:'Instrument Serif',serif;font-size:28px;color:#f4eee2;margin-top:-8px" style-hover="color:#c9a86a">{{ ft.phone }}</a>
+          <span style="font-size:13px;color:#8f8a72">{{ ft.hoursK }}</span>
+          <span style="font-size:15px;font-style:italic;color:#cfc4a8;margin-top:-8px">{{ ft.tbc }}</span>
+        </div>
+      </div>
+      <div data-speed="0.06" style="font-family:'Instrument Serif',serif;font-size:11.4vw;line-height:.85;letter-spacing:-.04em;color:#c9a86a;white-space:nowrap;text-align:center;margin:0 calc(-1 * clamp(20px,4vw,56px))">Comptoir de la Vallée</div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;padding-top:24px;border-top:1px solid rgba(244,238,226,.14);font-size:13px">
+        <span>{{ ft.copy }}</span>
+        <div style="display:flex;flex-wrap:wrap;gap:8px 22px">
+          <sc-for list="{{ ft.legal }}" as="l" hint-placeholder-count="3">
+            <a href="{{ l.href }}" style="color:#cfc4a8" style-hover="color:#c9a86a">{{ l.label }}</a>
+          </sc-for>
+        </div>
+        <button onClick="{{ toTop }}" style="display:flex;align-items:center;gap:10px;background:transparent;border:1px solid rgba(244,238,226,.25);color:#f4eee2;font:600 13px 'Hanken Grotesk',sans-serif;padding:10px 16px;border-radius:999px;cursor:pointer" style-hover="background:#f4eee2;color:#1f2718">{{ ft.top }} ↑</button>
+      </div>
+    </div>
+  </footer>
+
+  <sc-if value="{{ rvOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-rv-overlay="1" onClick="{{ rvBackdrop }}" style="position:fixed;inset:0;z-index:400;background:rgba(10,12,8,.94);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;gap:clamp(12px,3vw,40px);padding:16px">
+      <button onClick="{{ rvPrev }}" aria-label="Précédent" style="flex:none;width:52px;height:52px;border-radius:50%;border:0;background:rgba(244,238,226,.12);color:#f4eee2;font-size:22px;cursor:pointer;visibility:{{ rvPrevVis }}" style-hover="background:rgba(244,238,226,.22)">‹</button>
+      <div data-rv-panel="1" style="position:relative;height:min(92vh,860px);max-width:calc(100vw - 32px);aspect-ratio:{{ rv.ratio }};border-radius:18px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.6)">
+        <video data-rv="1" src="{{ rv.src }}" poster="{{ rv.poster }}" onClick="{{ rvTap }}" onDoubleClick="{{ rvLike }}" onEnded="{{ rvNext }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;cursor:pointer"></video>
+        <div style="position:absolute;left:0;right:0;top:0;padding:10px 12px 40px;background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,0));pointer-events:none;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:4px">
+            <sc-for list="{{ rvBars }}" as="bar" hint-placeholder-count="7">
+              <span style="flex:1;height:2.5px;border-radius:2px;background:rgba(255,255,255,.35);overflow:hidden"><span data-rv-bar="{{ bar.i }}" style="display:block;height:100%;width:0%;background:#fff"></span></span>
+            </sc-for>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;pointer-events:auto">
+            <img src="assets/logo.jpg" alt="" style="width:34px;height:34px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #c9a86a">
+            <div style="display:flex;flex-direction:column;line-height:1.2;color:#fff;font:600 14px 'Hanken Grotesk',sans-serif">comptoirdelavallee<span style="font-weight:400;font-size:12px;opacity:.85">Auriol, France</span></div>
+            <a href="https://www.instagram.com/comptoirdelavallee/" target="_blank" style="margin-left:6px;border:1px solid rgba(255,255,255,.7);color:#fff;font:600 12px 'Hanken Grotesk',sans-serif;padding:5px 12px;border-radius:8px" style-hover="color:#fff;background:rgba(255,255,255,.15)">{{ t.follow }}</a>
+            <button onClick="{{ rvMuteToggle }}" aria-label="Son" style="margin-left:auto;width:36px;height:36px;border-radius:50%;border:0;background:rgba(0,0,0,.35);color:#fff;font-size:15px;cursor:pointer">{{ rvMuteIcon }}</button>
+            <button onClick="{{ rvClose }}" aria-label="Fermer" style="width:36px;height:36px;border-radius:50%;border:0;background:rgba(0,0,0,.35);color:#fff;font-size:20px;cursor:pointer">×</button>
+          </div>
+        </div>
+        <sc-if value="{{ rvPaused }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none"><span style="width:76px;height:76px;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;padding-left:6px">▶</span></div>
+        </sc-if>
+        <div data-rv-heart="1" style="position:absolute;left:50%;top:50%;margin:-60px 0 0 -60px;width:120px;height:120px;display:flex;align-items:center;justify-content:center;font-size:110px;color:#fff;opacity:0;pointer-events:none;text-shadow:0 8px 30px rgba(0,0,0,.4)">♥</div>
+        <div style="position:absolute;right:10px;bottom:90px;display:flex;flex-direction:column;align-items:center;gap:18px;color:#fff">
+          <button onClick="{{ rvLike }}" aria-label="J'aime" style="border:0;background:transparent;color:{{ rvHeartColor }};font-size:30px;cursor:pointer;line-height:1;transition:transform .2s" style-active="transform:scale(.8)">{{ rvHeartIcon }}</button>
+          <a href="https://www.instagram.com/comptoirdelavallee/" target="_blank" aria-label="Commenter" style="color:#fff;font-size:26px;line-height:1" style-hover="color:#fff">💬</a>
+          <button onClick="{{ rvShare }}" aria-label="Partager" style="border:0;background:transparent;color:#fff;font-size:26px;cursor:pointer;line-height:1">➤</button>
+          <img src="assets/logo.jpg" alt="" style="width:30px;height:30px;border-radius:8px;object-fit:cover;border:2px solid #fff">
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:60px 70px 18px 16px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.7));color:#fff;pointer-events:none;display:flex;flex-direction:column;gap:6px">
+          <span style="font:600 14px 'Hanken Grotesk',sans-serif">comptoirdelavallee</span>
+          <span style="font-family:'Instrument Serif',serif;font-size:26px;line-height:1.05">{{ rv.label }}</span>
+          <span style="font:400 12px 'Hanken Grotesk',sans-serif;opacity:.8">{{ rvCount }} · {{ rvShared }}</span>
+        </div>
+      </div>
+      <button onClick="{{ rvNext }}" aria-label="Suivant" style="flex:none;width:52px;height:52px;border-radius:50%;border:0;background:rgba(244,238,226,.12);color:#f4eee2;font-size:22px;cursor:pointer;visibility:{{ rvNextVis }}" style-hover="background:rgba(244,238,226,.22)">›</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showBar }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:60;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px;background:rgba(31,39,24,.92);backdrop-filter:blur(14px);border-radius:999px;box-shadow:0 12px 30px rgba(0,0,0,.3)">
+      <a href="{{ mapsUrl }}" target="_blank" style="display:flex;align-items:center;justify-content:center;min-height:50px;border-radius:999px;color:#f4eee2;font-weight:700;font-size:15px">{{ t.directions }}</a>
+      <a href="tel:+33427501510" style="display:flex;align-items:center;justify-content:center;min-height:50px;background:#c9a86a;border-radius:999px;color:#1f2718;font-weight:700;font-size:15px">{{ t.callShort }}</a>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;fr&quot;,&quot;en&quot;],&quot;default&quot;:&quot;fr&quot;,&quot;tsType&quot;:&quot;'fr'|'en'&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;mobileBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const COPY = {
+  fr: {
+    nav: ['Jardinerie','Animalerie','Déco & maison','Services','Promotions','Actualités','À propos','Contact'],
+    menu: 'Menu', close: 'Fermer', scroll: 'Défiler',
+    callShort: 'Appeler', callLong: 'Appeler le 04 27 50 15 10', visit: 'Nous rendre visite', directions: 'Itinéraire',
+    heroKicker: 'Jardinerie · Animalerie · Déco — Auriol',
+    heroTitle: 'Tout pour votre jardin et vos animaux, au cœur de la vallée',
+    heroSub: "Jardinerie, animalerie et déco à Auriol. Des plantes choisies pour notre climat, des conseils de passionnés et des arrivages toute l'année.",
+    marquee: ['Plantes & fleurs','Oliviers','Arbres fruitiers','Plantes exotiques','Poterie','Outillage','Animalerie','Déco & maison'],
+    worldsTitle: 'Nos univers',
+    worlds: [
+      { title: 'Jardinerie', text: 'Plantes, fleurs, arbres fruitiers, poterie et outillage pour le jardin et la terrasse.', ph: 'Photo jardinerie' },
+      { title: 'Oliviers', text: "Des jeunes plants aux sujets centenaires, l'arbre emblème de la Provence.", ph: 'Photo oliviers' },
+      { title: 'Animalerie', text: 'Alimentation, accessoires et soins pour vos compagnons.', ph: 'Photo animalerie' },
+      { title: 'Déco & maison', text: 'Objets, cache-pots et idées cadeaux, chaussures confort au quotidien.', ph: 'Photo déco' }
+    ],
+    arrKicker: 'Arrivages', arrTitle: "Ça vient d'arriver", arrNew: 'Nouveau',
+    arrText: 'Chaque semaine, de nouvelles plantes arrivent au Comptoir. Passez vite, les plus beaux sujets partent en premier.',
+    arrBtn: 'Voir les arrivages', arrPh: 'Arrivage',
+    offerKicker: 'Offre du moment', offerBadge: '-30 %', ringText: 'OFFRE DU MOMENT · OFFRE DU MOMENT · ',
+    offerTitle: "Strelitzia, l'exotisme dans votre jardin",
+    offerText: '-30 % ou 2 achetés = 1 offert', offerTerms: "Jusqu'à fin septembre · en magasin, dans la limite des stocks disponibles",
+    offerBtn: 'Toutes nos promotions',
+    oliveKicker: 'Service', oliveTitle: "Préparez votre récolte d'olives.",
+    oliveText: 'Peignes, filets, gaules électriques : achetez ou louez le matériel de récolte directement en magasin.',
+    oliveBtn: 'En savoir plus', oliveBook: 'Réserver par téléphone',
+    oliveTools: [{ name: 'Peignes', mode: 'Vente · Location' }, { name: 'Filets', mode: 'Vente · Location' }, { name: 'Gaules électriques', mode: 'Vente · Location' }],
+    whyTitle: 'Pourquoi le Comptoir',
+    why: [
+      { n: 1, title: 'Des plantes adaptées à notre climat', text: 'Soleil, mistral, sécheresse, nous sélectionnons ce qui pousse bien en Provence.' },
+      { n: 2, title: 'Le conseil avant tout', text: 'Plantation, taille, arrosage, nous prenons le temps de vous répondre.' },
+      { n: 3, title: 'Un commerce local', text: "Une équipe de la vallée, engagée dans la vie d'Auriol." }
+    ],
+    igBtn: 'Suivez-nous', follow: 'Suivre', nextVid: 'Vidéo suivante', shareDone: 'Lien copié', swipe: 'Glissez ou utilisez ← →',
+    reelsKicker: 'En vidéo', reelsTitle: 'Au cœur du Comptoir', reelsHint: 'Touchez une vidéo pour le son',
+    soundOn: 'Son activé', soundOff: 'Son',
+    reelLabels: ['Foire aux plantes', 'Les allées', 'Nouveautés déco', 'Nos agrumes', 'Oliviers', 'Jeu concours', 'Animalerie'],
+    visitTitle: 'Nous rendre visite', lAddress: 'Adresse', lPhone: 'Téléphone', lHours: 'Horaires',
+    country: '', phone: '04 27 50 15 10', tbc: 'À confirmer',
+    tagline: 'Le Comptoir de la Vallée — Tout pour votre jardin & vos animaux. Auriol, Provence.',
+    legal: ['Mentions légales','Politique de confidentialité','Gestion des cookies','Instagram']
+  },
+  en: {
+    nav: ['Garden centre','Pet shop','Home & décor','Services','Offers','News','About','Contact'],
+    menu: 'Menu', close: 'Close', scroll: 'Scroll',
+    callShort: 'Call', callLong: 'Call +33 4 27 50 15 10', visit: 'Visit us', directions: 'Directions',
+    heroKicker: 'Garden centre · Pet shop · Décor — Auriol',
+    heroTitle: 'Everything for your garden and your pets, in the heart of the valley',
+    heroSub: 'Garden centre, pet shop and home décor in Auriol. Plants chosen for our climate, advice from people who love what they do, and new arrivals all year round.',
+    marquee: ['Plants & flowers','Olive trees','Fruit trees','Exotic plants','Pottery','Tools','Pet shop','Home & décor'],
+    worldsTitle: 'Our worlds',
+    worlds: [
+      { title: 'Garden centre', text: 'Plants, flowers, fruit trees, pottery and tools for garden and terrace.', ph: 'Garden centre photo' },
+      { title: 'Olive trees', text: 'From young plants to century-old specimens, the emblem of Provence.', ph: 'Olive trees photo' },
+      { title: 'Pet shop', text: 'Food, accessories and care for your companions.', ph: 'Pet shop photo' },
+      { title: 'Home & décor', text: 'Décor pieces, plant pots, gift ideas and comfortable everyday footwear.', ph: 'Décor photo' }
+    ],
+    arrKicker: 'New arrivals', arrTitle: 'Just arrived', arrNew: 'New',
+    arrText: 'New plants arrive at the Comptoir every week. Come by soon, the finest specimens go first.',
+    arrBtn: 'See new arrivals', arrPh: 'New arrival',
+    offerKicker: 'Offer of the moment', offerBadge: '-30%', ringText: 'OFFER OF THE MOMENT · OFFER OF THE MOMENT · ',
+    offerTitle: 'Strelitzia, the exotic touch for your garden',
+    offerText: '-30% or buy 2, get 1 free', offerTerms: 'Until end of September · in store, while stocks last',
+    offerBtn: 'All our offers',
+    oliveKicker: 'Service', oliveTitle: 'Get ready for your olive harvest.',
+    oliveText: 'Combs, nets, electric harvesters: buy or rent your harvesting equipment in store.',
+    oliveBtn: 'Find out more', oliveBook: 'Book by phone',
+    oliveTools: [{ name: 'Combs', mode: 'Buy · Rent' }, { name: 'Nets', mode: 'Buy · Rent' }, { name: 'Electric harvesters', mode: 'Buy · Rent' }],
+    whyTitle: 'Why the Comptoir',
+    why: [
+      { n: 1, title: 'Plants suited to our climate', text: 'Sun, mistral wind, dry summers, we choose what thrives in Provence.' },
+      { n: 2, title: 'Advice comes first', text: 'Planting, pruning, watering, we take the time to answer you.' },
+      { n: 3, title: 'A local business', text: 'A team from the valley, involved in life in Auriol.' }
+    ],
+    igBtn: 'Follow us', follow: 'Follow', nextVid: 'Next video', shareDone: 'Link copied', swipe: 'Swipe or use ← →',
+    reelsKicker: 'On video', reelsTitle: 'Inside the Comptoir', reelsHint: 'Tap a video for sound',
+    soundOn: 'Sound on', soundOff: 'Sound',
+    reelLabels: ['Plant fair', 'The aisles', 'New décor', 'Our citrus', 'Olive trees', 'Giveaway', 'Pet shop'],
+    visitTitle: 'Visit us', lAddress: 'Address', lPhone: 'Phone', lHours: 'Hours',
+    country: ', France', phone: '+33 4 27 50 15 10', tbc: 'To be confirmed',
+    tagline: 'Le Comptoir de la Vallée — Everything for your garden and your pets. Auriol, Provence.',
+    legal: ['Legal notice','Privacy policy','Cookie settings','Instagram']
+  }
+};
+
+const cdn = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1800&q=70`;
+const dl = (id) => `https://unsplash.com/photos/${id}/download?w=1600`;
+const ph = (src, name, user) => ({ src, credit: `Photo by ${name} on Unsplash`, href: `https://unsplash.com/@${user}` });
+const IMG = {
+  hero: ph(cdn('photo-1730105484667-07f12146b7fd'), 'Mohamed Fsili', 'mfsili'),
+  olive1: ph(cdn('photo-1699727213807-fbd3d3278673'), 'The Now Time', 'thenowtime'),
+  olive2: ph(dl('PEOuy4cBI48'), 'Jason Leung', 'ninjason'),
+  olive3: ph(dl('sgj62wdIsgQ'), 'Kelis', 'raquelraclette'),
+  olive4: ph(dl('BXVnafOID_8'), 'Natalia Gusakova', 'nataliaraylenegusakova'),
+  nursery: ph(cdn('photo-1749372527996-6db07fc8a0a1'), 'Odile', 'odile__'),
+  dog: ph(cdn('photo-1621266778264-2122ca94a05c'), 'Helena Lopes', 'helenalopesph'),
+  dog2: ph(dl('ZNkgygvhmMM'), 'Barnabas Davoti', 'davotibarna'),
+  pots: ph(cdn('photo-1749518295706-dc15ca3b5fd5'), 'Christie Luke', 'christieluke'),
+  geranium: ph(cdn('photo-1745930023100-4281445662aa'), 'Charlotte Cowell', 'shaylabruins'),
+  strel: ph(cdn('photo-1745242369599-e3d2ebb0bfe1'), 'Caroline Badran', '___atmos'),
+  strel2: ph(dl('C4jbVNd4_to'), 'Stan Tuladhar', 'stan_dgafos_tuladhar'),
+  pot: ph(dl('3w1L85GTUog'), 'Sarath P Raj', 'sharathsinstastories')
+};
+const own = (n) => ({ src: `assets/photos/${n}.jpg`, credit: '', href: '' });
+Object.assign(IMG, {
+  olive3: own('turtle-small'), team: own('team'),
+  palms: own('palms'), dachshund: own('dachshund'), elephant: own('elephant'),
+  hats: own('hats'), potsTeal: own('pots-teal'), potsStack: own('pots-stack'), stools: own('table-stools'),
+  potsSquare: own('pots-square'), hatsPalms: own('hats-palms'), cycas: own('cycas'), soaps: own('soaps'), muguet: own('muguet'), cactusRed: own('cactus-red'), rosesBasket: own('roses-basket'), lantern: own('lantern'), baskets: own('baskets'),
+  fish: own('fish'), turtleBig: own('turtle-big'), lizard: own('lizard'), daffodils: own('daffodils')
+});
+const DIMS = { hats: 1222, 'pots-teal': 1094, 'pots-stack': 1094, 'olive-table': 1197, 'table-stools': 1197, fish: 1118, 'turtle-small': 1118, lizard: 1118, 'turtle-big': 1226, elephant: 1226, daffodils: 1248, dachshund: 1137, palms: 1248, team: 1111, 'pots-square': 1096, 'hats-palms': 1225, cycas: 1226, soaps: 1229, muguet: 1008, 'cactus-red': 1043, 'roses-basket': 1228, lantern: 1084, baskets: 1227 };
+const ratioOf = (im) => { const m = /photos\/(.+)\.jpg/.exec(im.src); return m && DIMS[m[1]] ? `1000/${DIMS[m[1]]}` : '4/5'; };
+const VID = (n) => ({ src: `assets/videos/v${n}.mp4`, poster: `assets/videos/v${n}-poster.jpg`, ratio: n === 7 ? '576/816' : '9/16' });
+const WORLD_VID = [2, 5, 7, 3];
+const REEL_ORDER = [1, 2, 3, 4, 5, 6, 7];
+const WORLD_IMG = [IMG.nursery, IMG.olive2, IMG.dog, IMG.pots];
+const ARR_IMG = [IMG.potsSquare, IMG.hatsPalms, IMG.cycas, IMG.soaps, IMG.lantern, IMG.potsTeal];
+const IG_IMG = [IMG.muguet, IMG.dachshund, IMG.cactusRed, IMG.baskets, IMG.rosesBasket, IMG.fish];
+const SCHEMES = [['#2f3b25','#f4eee2'],['#e6d9bf','#1f2718'],['#c9a86a','#1f2718'],['#b4602f','#f8efe2']];
+const EASE = 'cubic-bezier(.2,.7,.2,1)';
+
+class Component extends DCLogic {
+  state = { lang: (typeof location !== 'undefined' && (new URLSearchParams(location.search).get('lang') || (location.hash || '').replace('#', '') || null)) || null, w: typeof window !== 'undefined' ? window.innerWidth : 1280, menuOpen: false, sound: -1, rv: -1, rvMuted: false, rvPaused: false, liked: {}, shared: false, mega: null, ph: 0, phMuted: true };
+  rootRef = (el) => { this.root = el; };
+  componentDidMount() {
+    this.reduced = (this.props.motion === false) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.lastY = 0; this.vel = 0;
+    this.onResize = () => { this.setState({ w: window.innerWidth }); this.tick(); };
+    this.onScroll = () => { if (!this.raf) this.raf = requestAnimationFrame(() => { this.raf = null; this.tick(); }); };
+    window.addEventListener('resize', this.onResize);
+    document.addEventListener('scroll', this.onScroll, { passive: true, capture: true });
+    const waitS = () => (window.SITE ? (this.forceUpdate(), setTimeout(() => this.setupMarquee(), 80)) : setTimeout(waitS, 60)); waitS();
+    setTimeout(() => { this.intro(); this.setupReveal(); this.startLoops(); this.setupCursor(); this.setupVideos(); this.tick(); }, 60);
+  }
+  componentDidUpdate(pp, ps) {
+    if (ps.mega !== this.state.mega) { this.tick(); if (this.state.mega && !this.reduced) setTimeout(() => { const p = this.root.querySelector('[data-mega-panel]'); if (p && !ps.mega) p.animate([{ opacity: 0, transform: 'translateY(-12px)' }, { opacity: 1, transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.2,.7,.2,1)' }); this.q('[data-mega-link]').forEach((el, i) => el.animate([{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }], { duration: 500, delay: 40 * i, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' })); const im = this.root.querySelector('[data-mega-img]'); if (im) im.animate([{ transform: 'scale(1.15)' }, { transform: 'scale(1)' }], { duration: 1200, easing: 'cubic-bezier(.2,.7,.2,1)' }); }, 0); }
+    if (ps.ph !== this.state.ph || ps.phMuted !== this.state.phMuted || ps.rv !== this.state.rv) this.phTick(window.innerHeight);
+    if (ps.lang !== this.state.lang) setTimeout(() => { this.animateWords(0); this.startLoops(); this.tick(); }, 0);
+    if (!ps.menuOpen && this.state.menuOpen && !this.reduced) setTimeout(() => this.q('[data-menu-item]').forEach((el, i) =>
+      el.animate([{ transform: 'translateY(110%)' }, { transform: 'none' }], { duration: 800, delay: 60 * i, easing: EASE, fill: 'both' })), 0);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    document.removeEventListener('scroll', this.onScroll, { capture: true });
+    window.removeEventListener('mousemove', this.onMove);
+    this.onKey && window.removeEventListener('keydown', this.onKey); cancelAnimationFrame(this.rvRaf);
+    this.io && this.io.disconnect();
+    this.vio && this.vio.disconnect();
+    cancelAnimationFrame(this.cursorRaf);
+  }
+  q(s) { return this.root ? Array.from(this.root.querySelectorAll(s)) : []; }
+  intro() {
+    const loader = this.root && this.root.querySelector('[data-loader]');
+    if (!loader) return;
+    if (this.reduced) { loader.style.display = 'none'; return; }
+    const logo = loader.querySelector('[data-loader-logo]'), txt = loader.querySelector('[data-loader-text]');
+    logo.animate([{ transform: 'scale(.6) rotate(-20deg)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 800, easing: EASE, fill: 'both' });
+    txt.animate([{ transform: 'translateY(100%)' }, { transform: 'none' }], { duration: 800, delay: 200, easing: EASE, fill: 'both' });
+    const out = loader.animate([{ clipPath: 'inset(0 0 0 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 1000, delay: 1200, easing: 'cubic-bezier(.76,0,.24,1)', fill: 'both' });
+    out.onfinish = () => { loader.style.display = 'none'; };
+    const zoom = this.root.querySelector('[data-zoom]');
+    if (zoom) zoom.animate([{ transform: 'scale(1.25)' }, { transform: 'scale(1)' }], { duration: 2400, delay: 1200, easing: EASE, fill: 'both' });
+    const fl = this.root.querySelector('[data-float]');
+    if (fl) fl.animate([{ transform: 'translateY(80px) rotate(8deg)', opacity: 0 }, { transform: 'rotate(-3deg)', opacity: 1 }], { duration: 1400, delay: 1700, easing: EASE, fill: 'both' });
+    this.animateWords(1500);
+  }
+  animateWords(base) {
+    if (this.reduced) return;
+    this.q('[data-word]').forEach((el, i) => el.animate(
+      [{ transform: 'translateY(110%) rotate(4deg)' }, { transform: 'none' }],
+      { duration: 1200, delay: base + i * 70, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' }));
+  }
+  setupReveal() {
+    if (this.reduced) return;
+    this.io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      if (el.dataset.clip) el.style.clipPath = 'inset(0 0 0 0 round 0px)';
+      else { el.style.opacity = 1; el.style.transform = 'none'; }
+      this.io.unobserve(el);
+    }), { threshold: 0.12 });
+    this.q('[data-reveal]').forEach((el) => {
+      const d = el.dataset.delay || 0;
+      el.style.opacity = 0; el.style.transform = 'translateY(56px)';
+      el.style.transition = `opacity 1.1s ${EASE} ${d}ms, transform 1.1s ${EASE} ${d}ms, background .4s, padding .4s, border-radius .5s`;
+      this.io.observe(el);
+    });
+    this.q('[data-clip]').forEach((el) => {
+      el.style.clipPath = 'inset(18% 10% 18% 10%)';
+      el.style.transition = `clip-path 1.4s ${EASE}`;
+      this.io.observe(el);
+    });
+  }
+  startLoops() {
+    if (this.reduced) return;
+    this.q('[data-marquee]').forEach((el) => { el.getAnimations().forEach(a => a.cancel()); el.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }], { duration: 38000, iterations: Infinity }); });
+    const once = (sel, kf, opt) => this.q(sel).forEach((el) => { if (!el.getAnimations().length) el.animate(kf, opt); });
+    once('[data-spin]', [{ transform: 'rotate(0)' }, { transform: 'rotate(360deg)' }], { duration: 18000, iterations: Infinity });
+    once('[data-ping]', [{ transform: 'scale(1)', opacity: .7 }, { transform: 'scale(3)', opacity: 0 }], { duration: 1600, iterations: Infinity, easing: 'ease-out' });
+    once('[data-scrollcue]', [{ transform: 'translateY(-14px)' }, { transform: 'translateY(36px)' }], { duration: 1600, iterations: Infinity, easing: 'cubic-bezier(.6,0,.4,1)' });
+  }
+  setupVideos() {
+    const vids = this.q('[data-vid]');
+    vids.forEach((v) => { v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute('playsinline', ''); });
+    this.vio = new IntersectionObserver((es) => es.forEach((e) => {
+      const v = e.target;
+      if (e.isIntersecting) { const p = v.play(); p && p.catch(() => {}); } else v.pause();
+    }), { threshold: 0.35 });
+    vids.forEach((v) => this.vio.observe(v));
+  }
+  setupMarquee() {
+    (this.mq || []).forEach((a) => a.cancel());
+    if (this.reduced) { this.mq = []; return; }
+    this.mq = this.q('[data-marquee]').map((el) => { const l = el.dataset.marquee === 'l'; return el.animate([{ transform: `translateX(${l ? 0 : -33.333}%)` }, { transform: `translateX(${l ? -33.333 : 0}%)` }], { duration: 60000, iterations: Infinity }); });
+  }
+  phTick(H) {
+    const s = this.root && this.root.querySelector('[data-ph-section]'); if (!s) return;
+    const r = s.getBoundingClientRect(), n = REEL_ORDER.length;
+    const prog = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - H)));
+    const idx = Math.min(n - 1, Math.floor(prog * n));
+    if (idx !== this.state.ph) { this.setState({ ph: idx }); return; }
+    const inView = r.top < H && r.bottom > 0, key = idx + '-' + inView + '-' + this.state.phMuted + '-' + this.state.rv;
+    if (key === this.phKey) return; this.phKey = key;
+    this.q('[data-ph-vid]').forEach((v) => { const me = +v.dataset.phVid === idx; v.loop = true; v.playsInline = true; v.muted = !me || this.state.phMuted; if (me && inView && this.state.rv < 0) { const p = v.play(); p && p.catch(() => {}); } else v.pause(); });
+  }
+  phGo(i) {
+    const s = this.root && this.root.querySelector('[data-ph-section]'); if (!s) return;
+    const n = REEL_ORDER.length, j = Math.max(0, Math.min(n - 1, i)), H = window.innerHeight, r = s.getBoundingClientRect(), sc = this.scroller();
+    const cur = sc === document.scrollingElement || sc === document.documentElement ? window.scrollY : sc.scrollTop;
+    sc.scrollTo({ top: cur + r.top + ((j + 0.5) / n) * (r.height - H), behavior: 'smooth' });
+  }
+  openReel(i) {
+    this.q('[data-vid]').forEach((v) => v.pause());
+    this.setState({ rv: i, rvPaused: false, shared: false });
+    document.body.style.overflow = 'hidden';
+    if (!this.onKey) { this.onKey = (e) => { if (this.state.rv < 0) return; if (e.key === 'Escape') this.closeReel(); if (e.key === 'ArrowRight' || e.key === 'ArrowDown') this.stepReel(1); if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') this.stepReel(-1); }; window.addEventListener('keydown', this.onKey); }
+    this.rvLoop();
+  }
+  closeReel() {
+    this.setState({ rv: -1 }); document.body.style.overflow = '';
+    cancelAnimationFrame(this.rvRaf);
+    setTimeout(() => this.q('[data-vid]').forEach((v) => { const r = v.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight) { const p = v.play(); p && p.catch(() => {}); } }), 50);
+  }
+  stepReel(d) {
+    const n = this.state.rv + d;
+    if (n < 0) return; if (n >= REEL_ORDER.length) return this.closeReel();
+    this.setState({ rv: n, rvPaused: false, shared: false });
+  }
+  rvLoop() {
+    cancelAnimationFrame(this.rvRaf);
+    const run = () => {
+      if (this.state.rv < 0) return;
+      const v = this.root && this.root.querySelector('[data-rv]');
+      if (v) {
+        if (v.dataset.cur !== String(this.state.rv)) { v.dataset.cur = String(this.state.rv); v.muted = this.state.rvMuted; v.playsInline = true; v.currentTime = 0; const p = v.play(); p && p.catch(() => { v.muted = true; this.setState({ rvMuted: true }); v.play().catch(() => {}); }); }
+        const prog = v.duration ? v.currentTime / v.duration : 0;
+        this.q('[data-rv-bar]').forEach((b) => { const i = +b.dataset.rvBar; b.style.width = i < this.state.rv ? '100%' : i > this.state.rv ? '0%' : (prog * 100).toFixed(2) + '%'; });
+      }
+      this.rvRaf = requestAnimationFrame(run);
+    };
+    run();
+  }
+  heartBurst() {
+    const h = this.root && this.root.querySelector('[data-rv-heart]');
+    if (h) h.animate([{ opacity: 0, transform: 'scale(.3)' }, { opacity: 1, transform: 'scale(1.1)', offset: .3 }, { opacity: 1, transform: 'scale(1)', offset: .6 }, { opacity: 0, transform: 'scale(1.2) translateY(-30px)' }], { duration: 900, easing: 'ease-out' });
+  }
+  toggleSound(i) {
+    const on = this.state.sound !== i;
+    this.q('[data-vid]').forEach((v) => { v.muted = true; });
+    if (on) { const v = this.root.querySelector(`[data-reel="${i}"]`); if (v) { v.muted = false; v.currentTime = 0; const p = v.play(); p && p.catch(() => {}); } }
+    this.setState({ sound: on ? i : -1 });
+  }
+  openMega(k) { clearTimeout(this.megaT); if (this.state.mega !== k) this.setState({ mega: k }); }
+  closeMega = () => { clearTimeout(this.megaT); this.megaT = setTimeout(() => this.setState({ mega: null }), 140); };
+  keepMega = () => clearTimeout(this.megaT);
+  toTop = () => { this.scroller().scrollTo({ top: 0, behavior: 'smooth' }); };
+  scroller() { let el = this.root && this.root.parentElement; while (el && el !== document.body && el !== document.documentElement) { const o = getComputedStyle(el).overflowY; if ((o === 'auto' || o === 'scroll') && el.scrollHeight > el.clientHeight + 1) return el; el = el.parentElement; } return document.scrollingElement || document.documentElement; }
+  setupCursor() {
+    const c = this.root && this.root.querySelector('[data-cursor]');
+    if (!c || this.reduced || !window.matchMedia('(pointer: fine)').matches) return;
+    let x = -100, y = -100, cx = -100, cy = -100, rot = 0, sc = 1, hotNow = false;
+    const fl = c.querySelector('[data-flower]'), d = this.root.querySelector('[data-cursor-dot]');
+    this.onMove = (e) => {
+      x = e.clientX; y = e.clientY; c.style.opacity = 1;
+      const hot = e.target.closest && e.target.closest('a,button');
+      hotNow = !!hot; if (d) { d.style.opacity = 1; d.style.transform = `translate3d(${x}px,${y}px,0)`; }
+    };
+    window.addEventListener('mousemove', this.onMove);
+    const loop = () => { const dx = (x - cx) * 0.16, dy = (y - cy) * 0.16; cx += dx; cy += dy; rot += 0.6 + Math.min(14, Math.hypot(dx, dy) * 0.9); sc += ((hotNow ? 1.9 : 1) - sc) * 0.15; c.style.transform = `translate3d(${cx}px,${cy}px,0)`; if (fl) fl.style.transform = `rotate(${rot.toFixed(1)}deg) scale(${sc.toFixed(3)})`; this.cursorRaf = requestAnimationFrame(loop); };
+    loop();
+  }
+  tick() {
+    if (!this.root) return;
+    const H = window.innerHeight;
+    const rt = this.root.getBoundingClientRect();
+    const y = -rt.top, scrolled = y > 40;
+    this.vel = y - this.lastY; this.lastY = y;
+    this.phTick(H);
+    const hdr = this.root.querySelector('[data-header]');
+    if (hdr) {
+      hdr.style.background = (scrolled || this.state.mega) ? 'rgba(31,39,24,.9)' : 'rgba(31,39,24,0)';
+      hdr.style.backdropFilter = (scrolled || this.state.mega) ? 'blur(16px)' : 'none';
+      hdr.style.boxShadow = scrolled ? '0 10px 30px rgba(0,0,0,.18)' : 'none';
+      const tb = hdr.querySelector('[data-topbar]');
+      if (tb) { tb.style.maxHeight = scrolled ? '0px' : '44px'; tb.style.opacity = scrolled ? 0 : 1; }
+      const lg = hdr.querySelector('[data-logo]');
+      if (lg) lg.style.transform = scrolled ? 'scale(.75)' : 'none';
+      const pr = hdr.querySelector('[data-progress]');
+      if (pr) pr.style.transform = `scaleX(${Math.min(1, Math.max(0, y / (rt.height - H)))})`;
+    }
+    if (this.reduced) return;
+    this.q('[data-speed]').forEach((el) => {
+      const r = el.parentElement.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > H + 200) return;
+      const d = r.top + r.height / 2 - H / 2;
+      el.style.transform = `translate3d(0,${(d * +el.dataset.speed).toFixed(1)}px,0)`;
+    });
+    const sk = this.root.querySelector('[data-skew]');
+    if (sk) { const v = Math.max(-12, Math.min(12, this.vel * 0.25)); sk.style.transform = `skewX(${-v}deg)`; sk.style.transition = 'transform .5s ease-out'; }
+    const cards = this.q('[data-card]');
+    cards.forEach((el, i) => {
+      const next = cards[i + 1]; if (!next) return;
+      const a = el.getBoundingClientRect(), b = next.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, 1 - (b.top - a.top) / a.height));
+      el.style.transform = `scale(${(1 - p * 0.06).toFixed(4)})`;
+      el.style.filter = `brightness(${(1 - p * 0.25).toFixed(3)})`;
+    });
+    const sec = this.root.querySelector('[data-hscroll]'), tr = this.root.querySelector('[data-htrack]'), bar = this.root.querySelector('[data-hbar]');
+    if (sec && tr) {
+      const r = sec.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -r.top / (r.height - H)));
+      const max = Math.max(0, tr.scrollWidth - window.innerWidth);
+      tr.style.transform = `translate3d(${(-p * max).toFixed(1)}px,0,0)`;
+      if (bar) bar.style.transform = `scaleX(${p})`;
+    }
+  }
+  renderVals() {
+    const raw = this.state.lang ?? this.props.lang ?? 'fr';
+    const lang = raw === 'en' ? 'en' : 'fr';
+    const t = COPY[lang];
+    const narrow = this.state.w < 1360;
+    const tiny = this.state.w < 560;
+    const mobileBar = (this.props.mobileBar ?? true) && this.state.w < 760;
+    const menuOpen = narrow && this.state.menuOpen;
+    const pg = (k) => `Pages.dc.html#${k}/${lang}`;
+    const NAVK = ['jardinerie', 'animalerie', 'deco-maison', 'services', 'promotions', 'actualites', 'a-propos', 'contact'];
+    const S = window.SITE, mkey = this.state.mega, ph = this.state.ph;
+    const navAll = t.nav.map((label, i) => { const k = NAVK[i], hm = !!(S && S.hasMega(k)); return { label, href: pg(k), hasMega: hm, line: mkey === k ? 1 : 0, caretRot: mkey === k ? 'rotate(180deg)' : 'none', onEnter: () => (hm ? this.openMega(k) : (this.state.mega && this.setState({ mega: null }))) }; });
+    const megaD = S && mkey ? S.megaFor(mkey, lang, pg) : null;
+    const links = { arrivages: pg('arrivages'), promotions: pg('promotions'), recolte: pg('recolte-olives') };
+    const WK = ['jardinerie', 'oliviers', 'animalerie', 'deco-maison'];
+    const rvI = this.state.rv, rvN = REEL_ORDER[rvI];
+    const liked = rvI >= 0 && this.state.liked[rvI];
+    return {
+      t, rootRef: this.rootRef, img: IMG,
+      heroWords: t.heroTitle.split(' '),
+      marquee: [...t.marquee, ...t.marquee],
+      navAll, navLeft: navAll.slice(0, 4), navRight: navAll.slice(4), links,
+      legalNav: ['mentions-legales', 'confidentialite', 'cookies'].map((k, i) => ({ label: t.legal[i], href: pg(k) })).concat([{ label: 'Instagram', href: 'https://www.instagram.com/comptoirdelavallee/' }]),
+      worlds: t.worlds.map((w, i) => ({ ...w, ...WORLD_IMG[i], href: pg(WK[i]), creditHref: WORLD_IMG[i].href, n: i + 1, top: `${110 + i * 28}px`, bg: SCHEMES[i][0], fg: SCHEMES[i][1] })),
+      arrivals: ARR_IMG.map((im, i) => ({ ...im, ratio: ratioOf(im), n: i + 1, offset: i % 2 ? '48px' : '0px' })),
+      ig: IG_IMG.map((im, i) => ({ ...im, ratio: ratioOf(im), delay: i * 80 })),
+      reels: REEL_ORDER.map((n, i) => {
+        const on = this.state.sound === i;
+        return { ...VID(n), i, delay: i * 70, label: t.reelLabels[n - 1], sound: on ? t.soundOn : t.soundOff,
+          pillBg: on ? '#c9a86a' : 'rgba(244,238,226,.16)', pillFg: on ? '#1f2718' : '#f4eee2', toggle: () => this.toggleSound(i), open: () => this.openReel(i), ty: `${(i - ph) * 100}%`, op: i === ph ? 1 : .45, thumbBg: i === ph ? 'rgba(244,238,226,.1)' : 'transparent', thumbRing: i === ph ? '#c9a86a' : 'transparent', go: () => this.phGo(i) };
+      }),
+      rvOpen: rvI >= 0,
+      rv: rvI >= 0 ? { ...VID(rvN), label: t.reelLabels[rvN - 1] } : { src: '', poster: '', ratio: '9/16', label: '' },
+      rvBars: REEL_ORDER.map((n, i) => ({ i })),
+      rvCount: `${rvI + 1} / ${REEL_ORDER.length}`, rvShared: this.state.shared ? t.shareDone : t.swipe,
+      rvPrevVis: rvI > 0 ? 'visible' : 'hidden', rvNextVis: rvI < REEL_ORDER.length - 1 ? 'visible' : 'hidden',
+      rvPaused: this.state.rvPaused,
+      rvMuteIcon: this.state.rvMuted ? '🔇' : '🔊',
+      rvHeartIcon: liked ? '♥' : '♡', rvHeartColor: liked ? '#ff3b5c' : '#fff',
+      rvClose: (e) => { e && e.stopPropagation(); this.closeReel(); },
+      rvBackdrop: (e) => { if (e.target === e.currentTarget) this.closeReel(); },
+      rvPrev: (e) => { e && e.stopPropagation && e.stopPropagation(); this.stepReel(-1); },
+      rvNext: (e) => { e && e.stopPropagation && e.stopPropagation(); this.stepReel(1); },
+      rvTap: (e) => { e.stopPropagation(); const v = e.currentTarget; if (v.paused) { v.play(); this.setState({ rvPaused: false }); } else { v.pause(); this.setState({ rvPaused: true }); } },
+      rvLike: (e) => { e && e.stopPropagation(); const was = this.state.liked[rvI]; if (e && e.type === 'dblclick') { this.heartBurst(); if (was) return; } else if (!was) this.heartBurst(); this.setState((s) => ({ liked: { ...s.liked, [rvI]: !was || (e && e.type === 'dblclick') } })); },
+      rvShare: (e) => { e.stopPropagation(); try { navigator.clipboard.writeText(location.href); } catch (err) {} this.setState({ shared: true }); },
+      rvMuteToggle: (e) => { e.stopPropagation(); const v = this.root.querySelector('[data-rv]'); const m = !this.state.rvMuted; if (v) v.muted = m; this.setState({ rvMuted: m }); },
+      wide: !narrow, narrow, menuOpen, showFloat: this.state.w >= 1100,
+      menuLabel: menuOpen ? t.close : t.menu,
+      callLabel: tiny ? t.callShort : (narrow ? t.phone : (this.state.w < 1700 ? t.callShort : `${t.callShort} · ${t.phone}`)),
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      setFr: () => this.setState({ lang: 'fr' }),
+      setEn: () => this.setState({ lang: 'en' }),
+      frFg: lang === 'fr' ? '#c9a86a' : '#f4eee2', enFg: lang === 'en' ? '#c9a86a' : '#f4eee2',
+      mapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=891+route+de+Saint-Zacharie+13390+Auriol',
+      showBar: mobileBar,
+      footerPad: mobileBar ? '120px' : '48px',
+      gr: (() => { const R = S && S.reviews; const en = lang === 'en'; return R ? { kicker: en ? 'Google reviews' : 'Avis Google', title: en ? 'What our customers say' : 'Ce que disent nos clients', rating: en ? R.ratingEn : R.rating, count: en ? `${R.count} reviews` : `${R.count} avis`, url: R.mapsUrl, all: en ? 'See all reviews' : 'Voir tous les avis', write: en ? 'Leave a review' : 'Laisser un avis', badge: en ? 'Rated on Google' : 'Noté sur Google' } : {}; })(),
+      grRows: (() => { const R = S && S.reviews; if (!R) return []; const en = lang === 'en'; const m = R.items.map((r) => ({ ...r, text: en ? r.en : r.fr, when: en ? r.when : r.whenFr, initial: r.name[0].toUpperCase(), meta: r.meta.includes('Local') ? (en ? r.meta + ' reviews' : r.meta.replace('Local Guide', 'Local Guide') + ' avis') : (en ? r.meta + ' reviews' : r.meta + ' avis') })); const a = m.slice(0, 4), b = m.slice(4); return [{ dir: 'l', items: [...a, ...a, ...a] }, { dir: 'r', items: [...b, ...b, ...b] }]; })(),
+      grPause: () => (this.mq || []).forEach((x) => x.pause()), grPlay: () => (this.mq || []).forEach((x) => x.play()),
+      megaOpen: !narrow && !!megaD, mega: megaD || { links: [], img: {}, promo: {} }, closeMega: this.closeMega, keepMega: this.keepMega,
+      ft: S ? S.footer(lang, pg) : { cols: [], legal: [] }, toTop: this.toTop,
+      phHeight: `${100 + (REEL_ORDER.length - 1) * 55}svh`, phWide: this.state.w >= 900,
+      phCols: this.state.w < 900 ? 'minmax(0,1fr)' : 'minmax(0,1fr) auto minmax(0,1fr)',
+      phNum: String(ph + 1).padStart(2, '0'), phTotal: '/ ' + String(REEL_ORDER.length).padStart(2, '0'), phLabel: t.reelLabels[REEL_ORDER[ph] - 1],
+      phPrev: () => this.phGo(this.state.ph - 1), phNext: () => this.phGo(this.state.ph + 1),
+      phPrevOp: ph > 0 ? 1 : .35, phNextOp: ph < REEL_ORDER.length - 1 ? 1 : .35,
+      phTapMute: () => this.setState((s) => ({ phMuted: !s.phMuted })),
+      phSound: this.state.phMuted ? t.soundOff : t.soundOn, phSoundIcon: this.state.phMuted ? '🔇' : '🔊',
+      phLike: () => this.setState((s) => ({ liked: { ...s.liked, [ph]: !s.liked[ph] } })),
+      phHeartFill: this.state.liked[ph] ? '#ff3b5c' : 'none', phHeartStroke: this.state.liked[ph] ? '#ff3b5c' : '#fff',
+      phOpen: () => this.openReel(this.state.ph),
+      phScrollHint: lang === 'en' ? 'Scroll to switch videos' : 'Faites défiler pour changer de vidéo'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="./image-slot.js"></script>
 <script src="./site-content.js"></script>
+<script src="./shop-data.js"></script>
 <style>
 body{margin:0;background:#f4eee2;color:#22281a;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#2f3b25;text-decoration:none}
@@ -69,6 +70,7 @@ a:hover{color:#b4602f}
             <a href="{{ item.href }}" onMouseEnter="{{ item.onEnter }}" onFocus="{{ item.onEnter }}" style="position:relative;display:flex;align-items:center;gap:6px;color:#f4eee2;font-size:14px;font-weight:500;padding:12px 0;white-space:nowrap" style-hover="color:#c9a86a">{{ item.label }}<sc-if value="{{ item.hasMega }}" hint-placeholder-val="{{ false }}"><span style="font-size:8px;opacity:.75;transition:transform .35s;transform:{{ item.caretRot }}">▼</span></sc-if><span style="position:absolute;left:0;right:0;bottom:6px;height:1px;background:#c9a86a;transform-origin:left;transition:transform .35s;transform:scaleX({{ item.line }})"></span></a>
           </sc-for>
         </sc-if>
+        <a href="{{ shopNav }}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(244,238,226,.4);color:#f4eee2;font-weight:700;font-size:14px;white-space:nowrap" style-hover="color:#1f2718;background:#f4eee2"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M5 8h14l-1.2 11.2a1.5 1.5 0 0 1-1.5 1.3H7.7a1.5 1.5 0 0 1-1.5-1.3z"></path><path d="M9 10V6.5a3 3 0 0 1 6 0V10"></path></svg>{{ shopLabel }}<sc-if value="{{ cartN }}" hint-placeholder-val="{{ false }}"><span data-cart-n="1" style="min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#c9a86a;color:#1f2718;display:flex;align-items:center;justify-content:center;font-size:11px">{{ cartN }}</span></sc-if></a>
         <a href="tel:+33427501510" aria-label="{{ t.callShort }}" style="display:flex;align-items:center;gap:10px;background:#c9a86a;color:#1f2718;font-weight:700;font-size:14px;padding:0 20px;height:46px;border-radius:999px;white-space:nowrap;transition:transform .3s,background .3s" style-hover="background:#e0c58f;color:#1f2718;transform:scale(1.04)">
           <span style="position:relative;width:8px;height:8px;flex:none"><span data-ping="1" style="position:absolute;inset:0;border-radius:50%;background:#1f2718"></span><span style="position:absolute;inset:0;border-radius:50%;background:#1f2718"></span></span>{{ callLabel }}
         </a>
@@ -83,7 +85,7 @@ a:hover{color:#b4602f}
               <span style="font-family:'Instrument Serif',serif;font-size:56px;line-height:.95;letter-spacing:-.02em">{{ mega.label }}</span>
               <p style="margin:0;font-size:15px;line-height:1.6;color:#55574a;text-wrap:pretty">{{ mega.intro }}</p>
             </div>
-            <a href="{{ mega.href }}" style="align-self:flex-start;display:flex;align-items:center;gap:12px;background:#1f2718;color:#f4eee2;font-weight:700;font-size:14px;padding:8px 8px 8px 22px;border-radius:999px" style-hover="color:#f4eee2;background:#2f3b25">{{ mega.viewAll }}<span style="width:36px;height:36px;border-radius:50%;background:#c9a86a;color:#1f2718;display:flex;align-items:center;justify-content:center">→</span></a>
+            <div style="display:flex;flex-wrap:wrap;gap:8px"><a href="{{ mega.href }}" style="align-self:flex-start;display:flex;align-items:center;gap:12px;background:#1f2718;color:#f4eee2;font-weight:700;font-size:14px;padding:8px 8px 8px 22px;border-radius:999px" style-hover="color:#f4eee2;background:#2f3b25">{{ mega.viewAll }}<span style="width:36px;height:36px;border-radius:50%;background:#c9a86a;color:#1f2718;display:flex;align-items:center;justify-content:center">→</span></a><a href="{{ mega.shop.href }}" style="display:flex;align-items:center;gap:8px;border:1px solid #1f2718;color:#1f2718;font-weight:700;font-size:14px;padding:0 18px;min-height:52px;border-radius:999px" style-hover="background:#b4602f;border-color:#b4602f;color:#f8efe2">{{ mega.shop.label }} ↗</a></div>
           </div>
           <div style="padding:28px 36px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;align-content:start">
             <sc-for list="{{ mega.links }}" as="ml" hint-placeholder-count="6">
@@ -95,7 +97,7 @@ a:hover{color:#b4602f}
           </div>
           <div style="padding:14px;display:flex;flex-direction:column;gap:12px">
             <a href="{{ mega.href }}" style="position:relative;flex:1;min-height:250px;border-radius:20px;overflow:hidden;display:block;background:#2f3b25">
-              <img data-mega-img="1" src="{{ mega.img.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+              <span data-mega-img="1" style="position:absolute;inset:0;display:block;background:#2f3b25 center / cover no-repeat;background-image:url('{{ mega.img.src }}')"></span>
             </a>
             <a href="{{ mega.promo.href }}" style="display:flex;align-items:center;gap:14px;background:#b4602f;color:#f8efe2;border-radius:18px;padding:12px 14px;transition:transform .3s" style-hover="color:#f8efe2;transform:translateY(-2px)">
               <span style="width:54px;height:54px;border-radius:50%;background:#f8efe2;color:#b4602f;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:19px;flex:none;transform:rotate(-8deg)">{{ mega.promo.badge }}</span>
@@ -388,6 +390,41 @@ a:hover{color:#b4602f}
       </div>
     </div>
   </section>
+
+  <sc-if value="{{ showShop }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="Produits" style="background:#ece3d0;padding:clamp(72px,9vw,120px) 0;overflow:hidden">
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:clamp(28px,4vw,48px)">
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:720px">
+        <span data-reveal="1" style="display:flex;align-items:center;gap:12px;font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#b4602f"><span style="width:36px;height:1px;background:#b4602f"></span>{{ shopRail.kicker }}</span>
+        <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(44px,6vw,96px);line-height:.92;letter-spacing:-.025em;margin:0;color:#1f2718;text-wrap:balance">{{ shopRail.title }}</h2>
+        <p data-reveal="1" style="margin:0;font-size:17px;line-height:1.55;color:#55574a">{{ shopRail.intro }}</p>
+      </div>
+      <a data-reveal="1" href="{{ shopRail.href }}" style="display:flex;align-items:center;gap:12px;background:#1f2718;color:#f4eee2;font-weight:700;font-size:15px;padding:8px 8px 8px 22px;border-radius:999px;transition:transform .3s" style-hover="color:#f4eee2;transform:translateY(-3px)">{{ shopRail.all }}<span style="width:40px;height:40px;border-radius:50%;background:#c9a86a;color:#1f2718;display:flex;align-items:center;justify-content:center">→</span></a>
+    </div>
+    <div style="display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:clamp(20px,4vw,56px);padding:0 clamp(20px,4vw,56px) 12px;scrollbar-width:none">
+      <sc-for list="{{ shopRail.items }}" as="sp" hint-placeholder-count="4">
+        <article data-reveal="1" data-delay="{{ sp.delay }}" style="flex:none;width:clamp(230px,22vw,300px);scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
+          <a href="{{ sp.href }}" style="position:relative;display:block;aspect-ratio:4/5;border-radius:22px;overflow:hidden;background:#e6d9bf;transition:border-radius .6s" style-hover="border-radius:36px">
+            <img src="{{ sp.img }}" alt="{{ sp.name }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 1s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.07)">
+            <sc-if value="{{ sp.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:999px;background:{{ sp.badgeBg }};color:{{ sp.badgeFg }};font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase">{{ sp.badge }}</span></sc-if>
+            <span style="position:absolute;bottom:12px;left:12px;display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;background:rgba(251,248,241,.92);font-size:12px;font-weight:600;color:#1f2718"><span style="width:7px;height:7px;border-radius:50%;background:{{ sp.stockDot }}"></span>{{ sp.stockLabel }}</span>
+          </a>
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+            <a href="{{ sp.href }}" style="display:flex;flex-direction:column;gap:4px;color:#1f2718;min-width:0" style-hover="color:#b4602f">
+              <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a7f66;font-weight:600">{{ sp.catLabel }}</span>
+              <span style="font-family:'Instrument Serif',serif;font-size:24px;line-height:1.08">{{ sp.name }}</span>
+            </a>
+            <button onClick="{{ sp.add }}" aria-label="{{ shopRail.addLabel }}" style="flex:none;width:46px;height:46px;border-radius:50%;border:0;background:{{ sp.btnBg }};color:#f4eee2;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .3s,background .3s" style-hover="transform:scale(1.08)">{{ sp.btnIcon }}</button>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:10px;margin-top:-6px">
+            <span style="font-size:18px;font-weight:700;color:#1f2718">{{ sp.priceLabel }}</span>
+            <sc-if value="{{ sp.wasLabel }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;color:#8a7f66;text-decoration:line-through">{{ sp.wasLabel }}</span></sc-if>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+  </sc-if>
 
   <section data-screen-label="Avis Google" style="position:relative;background:#f4eee2;color:#1f2718;padding:clamp(80px,10vw,140px) 0;overflow:hidden">
     <div style="max-width:1400px;margin:0 auto;padding:0 clamp(20px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,96px);align-items:center">
@@ -710,6 +747,8 @@ class Component extends DCLogic {
   state = { lang: (typeof location !== 'undefined' && (new URLSearchParams(location.search).get('lang') || (location.hash || '').replace('#', '') || null)) || null, w: typeof window !== 'undefined' ? window.innerWidth : 1280, menuOpen: false, sound: -1, rv: -1, rvMuted: false, rvPaused: false, liked: {}, shared: false, mega: null, ph: 0, phMuted: true };
   rootRef = (el) => { this.root = el; };
   componentDidMount() {
+    const waitShop = () => (window.SHOP ? this.setState({ cartN: window.SHOP.count() }) : setTimeout(waitShop, 60)); waitShop();
+    this.onStorage = () => window.SHOP && this.setState({ cartN: window.SHOP.count() }); window.addEventListener('storage', this.onStorage); window.addEventListener('focus', this.onStorage);
     this.reduced = (this.props.motion === false) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.lastY = 0; this.vel = 0;
     this.onResize = () => { this.setState({ w: window.innerWidth }); this.tick(); };
@@ -862,6 +901,12 @@ class Component extends DCLogic {
   keepMega = () => clearTimeout(this.megaT);
   toTop = () => { this.scroller().scrollTo({ top: 0, behavior: 'smooth' }); };
   scroller() { let el = this.root && this.root.parentElement; while (el && el !== document.body && el !== document.documentElement) { const o = getComputedStyle(el).overflowY; if ((o === 'auto' || o === 'scroll') && el.scrollHeight > el.clientHeight + 1) return el; el = el.parentElement; } return document.scrollingElement || document.documentElement; }
+  shopAdd = (id) => {
+    if (!window.SHOP) return; window.SHOP.addToCart(id);
+    this.setState((s) => ({ shopAdded: { ...(s.shopAdded || {}), [id]: true }, cartN: window.SHOP.count() }));
+    setTimeout(() => { const b = this.root && this.root.querySelector('[data-cart-n]'); b && b.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.7)' }, { transform: 'scale(1)' }], { duration: 500, easing: 'cubic-bezier(.2,.7,.2,1)' }); }, 0);
+    clearTimeout(this.addT); this.addT = setTimeout(() => this.setState({ shopAdded: {} }), 2200);
+  };
   setupCursor() {
     const c = this.root && this.root.querySelector('[data-cursor]');
     if (!c || this.reduced || !window.matchMedia('(pointer: fine)').matches) return;
@@ -977,7 +1022,9 @@ class Component extends DCLogic {
       frFg: lang === 'fr' ? '#c9a86a' : '#f4eee2', enFg: lang === 'en' ? '#c9a86a' : '#f4eee2',
       mapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=891+route+de+Saint-Zacharie+13390+Auriol',
       showBar: mobileBar,
-      footerPad: mobileBar ? '120px' : '48px',
+      cartN: this.state.cartN || 0,
+      showShop: !!(window.SHOP && window.SITE), shopRail: window.SHOP && window.SITE ? window.SHOP.rail({ lang, imgOf: (k) => window.SITE.imgOf(k), onAdd: this.shopAdd, added: this.state.shopAdded, max: 10 }) : { items: [] },
+      footerPad: mobileBar ? '120px' : '48px', shopNav: `Boutique.dc.html#tout/${lang}`, shopLabel: lang === 'en' ? 'Shop' : 'Boutique',
       gr: (() => { const R = S && S.reviews; const en = lang === 'en'; return R ? { kicker: en ? 'Google reviews' : 'Avis Google', title: en ? 'What our customers say' : 'Ce que disent nos clients', rating: en ? R.ratingEn : R.rating, count: en ? `${R.count} reviews` : `${R.count} avis`, url: R.mapsUrl, all: en ? 'See all reviews' : 'Voir tous les avis', write: en ? 'Leave a review' : 'Laisser un avis', badge: en ? 'Rated on Google' : 'Noté sur Google' } : {}; })(),
       grRows: (() => { const R = S && S.reviews; if (!R) return []; const en = lang === 'en'; const m = R.items.map((r) => ({ ...r, text: en ? r.en : r.fr, when: en ? r.when : r.whenFr, initial: r.name[0].toUpperCase(), meta: r.meta.includes('Local') ? (en ? r.meta + ' reviews' : r.meta.replace('Local Guide', 'Local Guide') + ' avis') : (en ? r.meta + ' reviews' : r.meta + ' avis') })); const a = m.slice(0, 4), b = m.slice(4); return [{ dir: 'l', items: [...a, ...a, ...a] }, { dir: 'r', items: [...b, ...b, ...b] }]; })(),
       grPause: () => (this.mq || []).forEach((x) => x.pause()), grPlay: () => (this.mq || []).forEach((x) => x.play()),

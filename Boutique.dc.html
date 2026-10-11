@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<script src="./site-content.js"></script>
+<script src="./shop-data.js"></script>
+<style>
+body{margin:0;background:#f4eee2;color:#22281a;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#2f3b25;text-decoration:none}
+a:hover{color:#b4602f}
+*{box-sizing:border-box}
+::selection{background:#c9a86a;color:#1f2718}
+input,select,textarea,button{font-family:inherit}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" onClickCapture="{{ onLinkClick }}" style="min-height:100vh;overflow-x:clip">
+
+  <header style="position:sticky;top:0;z-index:50;background:rgba(31,39,24,.94);backdrop-filter:blur(16px);color:#f4eee2;box-shadow:0 10px 30px rgba(0,0,0,.12)">
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:20px;padding:10px clamp(16px,3vw,40px)">
+      <nav style="display:flex;align-items:center;gap:24px;min-width:0;overflow:hidden">
+        <sc-for list="{{ navLeft }}" as="item" hint-placeholder-count="4">
+          <a href="{{ item.href }}" style="color:#f4eee2;font-size:14px;font-weight:500;padding:10px 0;white-space:nowrap" style-hover="color:#c9a86a">{{ item.label }}</a>
+        </sc-for>
+      </nav>
+      <a href="{{ homeHref }}" style="display:flex"><img src="assets/logo.jpg" alt="Comptoir de la Vallée" style="width:52px;height:52px;border-radius:50%;object-fit:cover;display:block;box-shadow:0 0 0 1px rgba(201,168,106,.5)"></a>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:14px">
+        <div style="display:flex;gap:2px;font-weight:700;font-size:12.5px">
+          <button onClick="{{ setFr }}" style="border:0;background:transparent;padding:2px 5px;cursor:pointer;font:inherit;color:{{ frFg }}">FR</button>
+          <span style="opacity:.4">/</span>
+          <button onClick="{{ setEn }}" style="border:0;background:transparent;padding:2px 5px;cursor:pointer;font:inherit;color:{{ enFg }}">EN</button>
+        </div>
+        <button data-cart-btn="1" onClick="{{ openCart }}" style="position:relative;display:flex;align-items:center;gap:10px;height:44px;padding:0 18px 0 14px;border:0;border-radius:999px;background:#c9a86a;color:#1f2718;font-weight:700;font-size:14px;cursor:pointer;transition:transform .3s" style-hover="transform:scale(1.04)">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1f2718" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M5 8h14l-1.2 11.2a1.5 1.5 0 0 1-1.5 1.3H7.7a1.5 1.5 0 0 1-1.5-1.3z"></path><path d="M9 10V6.5a3 3 0 0 1 6 0V10"></path></svg>
+          {{ u.basket }}
+          <span data-cart-count="1" style="min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#1f2718;color:#c9a86a;display:flex;align-items:center;justify-content:center;font-size:12px">{{ cartCount }}</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+    <section data-screen-label="Boutique" style="position:relative;background:#1f2718;color:#f4eee2;padding:clamp(56px,7vw,96px) clamp(20px,4vw,56px) clamp(40px,5vw,64px);overflow:hidden">
+      <div style="position:absolute;width:50vw;aspect-ratio:1;right:-12vw;top:-24vw;border-radius:50%;background:radial-gradient(circle,rgba(201,168,106,.22),rgba(201,168,106,0) 65%);pointer-events:none"></div>
+      <div style="position:relative;max-width:1440px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:32px">
+        <div style="display:flex;flex-direction:column;gap:18px;max-width:760px">
+          <span style="display:flex;align-items:center;gap:12px;font-size:13px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#c9a86a"><span style="width:36px;height:1px;background:#c9a86a"></span>{{ u.kicker }}</span>
+          <h1 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,7.5vw,128px);line-height:.88;letter-spacing:-.03em;margin:0">{{ listTitle }}</h1>
+          <p style="margin:0;font-size:18px;line-height:1.55;color:#e6dcc6;max-width:560px;text-wrap:pretty">{{ u.intro }}</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ steps }}" as="st" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:14px;font-size:15px"><span style="width:34px;height:34px;border-radius:50%;border:1px solid #c9a86a;color:#c9a86a;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:18px">{{ st.n }}</span>{{ st.t }}</div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <div style="position:sticky;top:72px;z-index:20;background:rgba(244,238,226,.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(31,39,24,.1)">
+      <div style="max-width:1440px;margin:0 auto;padding:14px clamp(20px,4vw,56px);display:flex;gap:8px;overflow-x:auto;scrollbar-width:none">
+        <sc-for list="{{ catChips }}" as="c" hint-placeholder-count="10">
+          <button onClick="{{ c.pick }}" style="flex:none;height:42px;padding:0 18px;border-radius:999px;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:8px;transition:background .3s,color .3s">{{ c.label }}<span style="font-size:12px;opacity:.6">{{ c.count }}</span></button>
+        </sc-for>
+      </div>
+    </div>
+
+    <section style="max-width:1440px;margin:0 auto;padding:clamp(28px,4vw,48px) clamp(20px,4vw,56px) clamp(80px,9vw,120px);display:grid;grid-template-columns:{{ layoutCols }};gap:clamp(24px,3vw,48px);align-items:start">
+      <aside style="position:{{ asidePos }};top:150px;display:flex;flex-direction:column;gap:24px">
+        <label style="display:flex;align-items:center;gap:10px;background:#fbf8f1;border:1px solid rgba(31,39,24,.12);border-radius:999px;padding:0 18px;height:50px">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#55574a" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M20 20l-4.6-4.6"></path></svg>
+          <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="{{ u.search }}" style="flex:1;min-width:0;border:0;background:transparent;outline:none;font-size:15px;color:#1f2718">
+        </label>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66">{{ u.filters }}</span>
+          <sc-for list="{{ toggles }}" as="tg" hint-placeholder-count="3">
+            <button onClick="{{ tg.toggle }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:16px;border:1px solid rgba(31,39,24,.12);background:#fbf8f1;cursor:pointer;color:#1f2718;font-size:15px;font-weight:500;text-align:left">
+              {{ tg.label }}
+              <span style="flex:none;width:40px;height:24px;border-radius:999px;background:{{ tg.track }};position:relative;transition:background .3s"><span style="position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .3s;transform:{{ tg.knob }};box-shadow:0 1px 3px rgba(0,0,0,.2)"></span></span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66">{{ u.sortBy }}</span>
+          <select value="{{ sort }}" onChange="{{ onSort }}" style="height:50px;border-radius:16px;border:1px solid rgba(31,39,24,.12);background:#fbf8f1;padding:0 14px;font-size:15px;color:#1f2718;cursor:pointer">
+            <sc-for list="{{ sorts }}" as="so" hint-placeholder-count="3"><option value="{{ so.v }}">{{ so.label }}</option></sc-for>
+          </select>
+        </div>
+        <sc-if value="{{ catPage }}" hint-placeholder-val="{{ false }}">
+          <a href="{{ catPage.href }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px;border-radius:20px;background:#2f3b25;color:#f4eee2" style-hover="color:#f4eee2;background:#1f2718"><span style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#c9a86a;font-weight:700">{{ u.advice }}</span><span style="font-family:'Instrument Serif',serif;font-size:24px;line-height:1.05">{{ catPage.label }}</span></span><span style="font-size:20px">↗</span></a>
+        </sc-if>
+      </aside>
+
+      <div style="display:flex;flex-direction:column;gap:22px;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">
+          <span style="font-size:15px;color:#55574a">{{ resultLabel }}</span>
+          <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ clearFilters }}" style="border:0;background:transparent;color:#b4602f;font-weight:700;font-size:14px;cursor:pointer;padding:6px 0">{{ u.clear }} ×</button>
+          </sc-if>
+        </div>
+        <div data-grid="1" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:28px 20px">
+          <sc-for list="{{ items }}" as="p" hint-placeholder-count="8">
+            <article data-card="1" style="display:flex;flex-direction:column;gap:14px;min-width:0">
+              <a href="{{ p.href }}" style="position:relative;display:block;aspect-ratio:4/5;border-radius:22px;overflow:hidden;background:#e6d9bf;transition:border-radius .6s" style-hover="border-radius:36px">
+                <img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 1s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.07)">
+                <sc-if value="{{ p.badge }}" hint-placeholder-val="{{ false }}">
+                  <span style="position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:999px;background:{{ p.badgeBg }};color:{{ p.badgeFg }};font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase">{{ p.badge }}</span>
+                </sc-if>
+                <span style="position:absolute;bottom:12px;left:12px;display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;background:rgba(251,248,241,.92);backdrop-filter:blur(8px);font-size:12px;font-weight:600;color:#1f2718"><span style="width:7px;height:7px;border-radius:50%;background:{{ p.stockDot }}"></span>{{ p.stockLabel }}</span>
+              </a>
+              <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+                <a href="{{ p.href }}" style="display:flex;flex-direction:column;gap:4px;color:#1f2718;min-width:0" style-hover="color:#b4602f">
+                  <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a7f66;font-weight:600">{{ p.catLabel }}</span>
+                  <span style="font-family:'Instrument Serif',serif;font-size:24px;line-height:1.08;text-wrap:balance">{{ p.name }}</span>
+                </a>
+                <button onClick="{{ p.add }}" aria-label="{{ u.add }}" style="flex:none;width:46px;height:46px;border-radius:50%;border:0;background:#1f2718;color:#f4eee2;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .3s,background .3s" style-hover="background:#b4602f;transform:rotate(90deg)">+</button>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:10px;margin-top:-6px">
+                <span style="font-size:18px;font-weight:700;color:#1f2718">{{ p.priceLabel }}</span>
+                <sc-if value="{{ p.wasLabel }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;color:#8a7f66;text-decoration:line-through">{{ p.wasLabel }}</span></sc-if>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+        <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:60px 24px;border:1px dashed #c9a86a;border-radius:24px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center">
+            <span style="font-family:'Instrument Serif',serif;font-size:34px">{{ u.none }}</span>
+            <button onClick="{{ clearFilters }}" style="background:#1f2718;color:#f4eee2;border:0;font-weight:700;font-size:15px;padding:14px 22px;border-radius:999px;cursor:pointer">{{ u.clear }}</button>
+          </div>
+        </sc-if>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ isProduct }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="Produit" style="max-width:1440px;margin:0 auto;padding:clamp(28px,4vw,48px) clamp(20px,4vw,56px) clamp(64px,8vw,110px);display:flex;flex-direction:column;gap:28px">
+      <nav style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:14px;color:#55574a">
+        <a href="{{ shopHref }}" style="color:#55574a" style-hover="color:#b4602f">{{ u.shop }}</a><span style="color:#c9a86a">→</span>
+        <a href="{{ pd.catHref }}" style="color:#55574a" style-hover="color:#b4602f">{{ pd.catLabel }}</a><span style="color:#c9a86a">→</span>
+        <span style="color:#1f2718;font-weight:600">{{ pd.name }}</span>
+      </nav>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(32px,5vw,80px);align-items:start">
+        <div data-pd-img="1" style="position:relative;aspect-ratio:4/5;border-radius:32px;overflow:hidden;background:#e6d9bf">
+          <image-slot id="product-{{ pd.id }}" shape="rect" placeholder="{{ pd.name }}" src="{{ pd.img }}"></image-slot>
+          <sc-if value="{{ pd.badge }}" hint-placeholder-val="{{ false }}">
+            <span style="position:absolute;top:20px;left:20px;width:86px;height:86px;border-radius:50%;background:{{ pd.badgeBg }};color:{{ pd.badgeFg }};display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:22px;transform:rotate(-8deg);pointer-events:none">{{ pd.badge }}</span>
+          </sc-if>
+        </div>
+        <div style="position:sticky;top:110px;display:flex;flex-direction:column;gap:26px">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#b4602f">{{ pd.catLabel }}</span>
+            <h1 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(46px,5.4vw,84px);line-height:.92;letter-spacing:-.025em;margin:0;text-wrap:balance">{{ pd.name }}</h1>
+            <div style="display:flex;align-items:baseline;gap:14px">
+              <span style="font-size:30px;font-weight:700">{{ pd.priceLabel }}</span>
+              <sc-if value="{{ pd.wasLabel }}" hint-placeholder-val="{{ false }}"><span style="font-size:18px;color:#8a7f66;text-decoration:line-through">{{ pd.wasLabel }}</span></sc-if>
+            </div>
+            <p style="margin:0;font-size:18px;line-height:1.6;color:#55574a;max-width:520px;text-wrap:pretty">{{ pd.desc }}</p>
+          </div>
+          <sc-if value="{{ pd.hasSizes }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66">{{ u.size }}</span>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <sc-for list="{{ pd.sizes }}" as="sz" hint-placeholder-count="3">
+                  <button onClick="{{ sz.pick }}" style="height:48px;padding:0 20px;border-radius:999px;border:1px solid {{ sz.bd }};background:{{ sz.bg }};color:{{ sz.fg }};font-weight:600;font-size:15px;cursor:pointer">{{ sz.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+          <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:16px;background:#fbf8f1;border:1px solid rgba(31,39,24,.1);font-size:15px">
+            <span style="width:9px;height:9px;border-radius:50%;background:{{ pd.stockDot }};flex:none"></span>
+            <span style="font-weight:700">{{ pd.stockLabel }}</span>
+            <span style="color:#6b6a5a">· {{ pd.stockNote }}</span>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;height:60px;border-radius:999px;border:1px solid #1f2718">
+              <button onClick="{{ qtyDown }}" aria-label="-" style="width:52px;height:100%;border:0;background:transparent;font-size:22px;cursor:pointer;color:#1f2718">−</button>
+              <span style="min-width:28px;text-align:center;font-weight:700;font-size:17px">{{ qty }}</span>
+              <button onClick="{{ qtyUp }}" aria-label="+" style="width:52px;height:100%;border:0;background:transparent;font-size:22px;cursor:pointer;color:#1f2718">+</button>
+            </div>
+            <button onClick="{{ addCurrent }}" style="flex:1;min-width:220px;height:60px;border-radius:999px;border:0;background:#1f2718;color:#f4eee2;font-weight:700;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:background .3s,transform .3s" style-hover="background:#2f3b25;transform:translateY(-2px)">{{ u.addLong }} · {{ pd.lineTotal }}</button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px">
+            <sc-for list="{{ perks }}" as="pk" hint-placeholder-count="3">
+              <div style="display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:18px;background:#ece3d0"><span style="font-weight:700;font-size:14px">{{ pk.t }}</span><span style="font-size:13px;line-height:1.45;color:#55574a">{{ pk.d }}</span></div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:24px;margin-top:clamp(40px,5vw,72px)">
+        <h2 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(36px,4vw,60px);line-height:1;margin:0">{{ u.related }}</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:20px">
+          <sc-for list="{{ related }}" as="p" hint-placeholder-count="4">
+            <a href="{{ p.href }}" data-card="1" style="display:flex;flex-direction:column;gap:12px;color:#1f2718" style-hover="color:#b4602f">
+              <span style="display:block;aspect-ratio:4/5;border-radius:20px;overflow:hidden;background:#e6d9bf"><img src="{{ p.img }}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 1s" style-hover="transform:scale(1.06)"></span>
+              <span style="font-family:'Instrument Serif',serif;font-size:22px;line-height:1.1">{{ p.name }}</span>
+              <span style="font-weight:700;margin-top:-6px">{{ p.priceLabel }}</span>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ isReserve }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="Réservation" style="max-width:1300px;margin:0 auto;padding:clamp(36px,5vw,64px) clamp(20px,4vw,56px) clamp(64px,8vw,110px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(32px,5vw,72px);align-items:start">
+      <form onSubmit="{{ submitReserve }}" style="display:flex;flex-direction:column;gap:28px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="{{ shopHref }}" style="font-size:14px;color:#55574a" style-hover="color:#b4602f">← {{ u.continue }}</a>
+          <h1 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(46px,5.6vw,88px);line-height:.92;letter-spacing:-.025em;margin:0">{{ u.reserveTitle }}</h1>
+          <p style="margin:0;font-size:17px;line-height:1.55;color:#55574a;max-width:520px">{{ u.reserveIntro }}</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66">1 · {{ u.pickDay }}</span>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px">
+            <sc-for list="{{ days }}" as="d" hint-placeholder-count="6">
+              <button type="button" onClick="{{ d.pick }}" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 6px;border-radius:16px;border:1px solid {{ d.bd }};background:{{ d.bg }};color:{{ d.fg }};cursor:pointer">
+                <span style="font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:600">{{ d.dow }}</span>
+                <span style="font-family:'Instrument Serif',serif;font-size:30px;line-height:1">{{ d.num }}</span>
+                <span style="font-size:12px">{{ d.mon }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ slots }}" as="s" hint-placeholder-count="3">
+              <button type="button" onClick="{{ s.pick }}" style="height:46px;padding:0 18px;border-radius:999px;border:1px solid {{ s.bd }};background:{{ s.bg }};color:{{ s.fg }};font-weight:600;font-size:14px;cursor:pointer">{{ s.label }}</button>
+            </sc-for>
+          </div>
+          <span style="font-size:13px;font-style:italic;color:#8a7f66">{{ u.hoursTbc }}</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#8a7f66">2 · {{ u.details }}</span>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px">
+            <sc-for list="{{ fields }}" as="f" hint-placeholder-count="3">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#55574a">{{ f.label }}
+                <input type="{{ f.type }}" required="{{ f.req }}" style="height:52px;border-radius:14px;border:1px solid rgba(31,39,24,.18);background:#fbf8f1;padding:0 16px;font-size:16px;color:#1f2718;outline:none" style-focus="border-color:#b4602f">
+              </label>
+            </sc-for>
+          </div>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#55574a">{{ u.note }}
+            <textarea rows="3" style="border-radius:14px;border:1px solid rgba(31,39,24,.18);background:#fbf8f1;padding:14px 16px;font-size:16px;color:#1f2718;outline:none;resize:vertical" style-focus="border-color:#b4602f"></textarea>
+          </label>
+        </div>
+        <button type="submit" style="height:64px;border-radius:999px;border:0;background:#b4602f;color:#f8efe2;font-weight:700;font-size:17px;cursor:pointer;transition:transform .3s,background .3s" style-hover="background:#9a4f25;transform:translateY(-2px)">{{ u.confirm }} · {{ cartTotal }}</button>
+        <span style="font-size:14px;color:#55574a;text-align:center">{{ u.noPay }}</span>
+      </form>
+      <aside style="position:sticky;top:110px;background:#1f2718;color:#f4eee2;border-radius:28px;padding:clamp(24px,3vw,36px);display:flex;flex-direction:column;gap:20px">
+        <span style="font-family:'Instrument Serif',serif;font-size:34px;line-height:1">{{ u.summary }}</span>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <sc-for list="{{ cart }}" as="ci" hint-placeholder-count="1">
+            <div style="display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center">
+              <span style="width:56px;height:70px;border-radius:12px;background:#2f3b25 center / cover no-repeat;background-image:url('{{ ci.imgSafe }}');display:block"></span>
+              <span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-weight:600;font-size:15px">{{ ci.name }}</span><span style="font-size:13px;color:#cfc4a8">{{ ci.meta }}</span></span>
+              <span style="font-weight:700">{{ ci.total }}</span>
+            </div>
+          </sc-for></sc-if>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(244,238,226,.15);padding-top:18px">
+          <span style="color:#cfc4a8">{{ u.total }}</span><span style="font-family:'Instrument Serif',serif;font-size:40px;color:#c9a86a">{{ cartTotal }}</span>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;padding:14px;border-radius:18px;background:rgba(244,238,226,.06)">
+          <img src="assets/logo.jpg" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover">
+          <span style="display:flex;flex-direction:column;gap:2px;font-size:13px;line-height:1.4;color:#cfc4a8"><span style="font-weight:700;color:#f4eee2">{{ u.pickupAt }}</span>891 route de Saint-Zacharie, 13390 Auriol</span>
+        </div>
+      </aside>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="Confirmation" style="position:relative;min-height:calc(100vh - 72px);background:#1f2718;color:#f4eee2;padding:clamp(56px,8vw,110px) clamp(20px,4vw,56px);overflow:hidden;display:flex;align-items:center">
+      <div style="position:absolute;width:60vw;aspect-ratio:1;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(201,168,106,.2),rgba(201,168,106,0) 62%);pointer-events:none"></div>
+      <div style="position:relative;max-width:920px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:26px">
+        <span data-check="1" style="width:96px;height:96px;border-radius:50%;background:#c9a86a;color:#1f2718;display:flex;align-items:center;justify-content:center;font-size:44px">✓</span>
+        <h1 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,7vw,116px);line-height:.9;letter-spacing:-.03em;margin:0">{{ u.doneTitle }}</h1>
+        <p style="margin:0;font-size:19px;line-height:1.6;color:#e6dcc6;max-width:620px">{{ doneText }}</p>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px">
+          <sc-for list="{{ doneFacts }}" as="df" hint-placeholder-count="3">
+            <div style="display:flex;flex-direction:column;gap:4px;padding:18px 24px;border-radius:20px;background:rgba(244,238,226,.07);border:1px solid rgba(244,238,226,.14);min-width:170px"><span style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#c9a86a;font-weight:700">{{ df.k }}</span><span style="font-family:'Instrument Serif',serif;font-size:28px">{{ df.v }}</span></div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px">
+          <a href="https://www.google.com/maps/dir/?api=1&amp;destination=891+route+de+Saint-Zacharie+13390+Auriol" target="_blank" style="background:#f4eee2;color:#1f2718;font-weight:700;padding:17px 26px;border-radius:999px;font-size:15px" style-hover="color:#1f2718">{{ u.directions }} ↗</a>
+          <a href="{{ shopHref }}" style="border:1px solid rgba(244,238,226,.4);color:#f4eee2;font-weight:600;padding:17px 26px;border-radius:999px;font-size:15px" style-hover="color:#f4eee2;background:rgba(244,238,226,.1)">{{ u.backShop }}</a>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ cartOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeCart }}" data-cart-scrim="1" style="position:fixed;inset:0;z-index:300;background:rgba(15,19,11,.5);backdrop-filter:blur(4px)"></div>
+    <aside data-cart-panel="1" style="position:fixed;top:0;right:0;bottom:0;z-index:301;width:min(100%,460px);background:#f4eee2;display:flex;flex-direction:column;box-shadow:-30px 0 80px rgba(0,0,0,.25)">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 26px;border-bottom:1px solid rgba(31,39,24,.1)">
+        <span style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1">{{ u.basket }} <span style="font-size:20px;color:#8a7f66">({{ cartCount }})</span></span>
+        <button onClick="{{ closeCart }}" aria-label="Fermer" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(31,39,24,.2);background:transparent;font-size:20px;cursor:pointer;color:#1f2718">×</button>
+      </div>
+      <div style="flex:1;overflow:auto;padding:12px 26px;display:flex;flex-direction:column">
+        <sc-if value="{{ cartFull }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ cart }}" as="ci" hint-placeholder-count="1">
+          <div style="display:grid;grid-template-columns:76px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid rgba(31,39,24,.1)">
+            <span style="width:76px;height:95px;border-radius:14px;background:#e6d9bf center / cover no-repeat;background-image:url('{{ ci.imgSafe }}');display:block"></span>
+            <div style="display:flex;flex-direction:column;justify-content:space-between;gap:10px;min-width:0">
+              <div style="display:flex;justify-content:space-between;gap:10px"><span style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-family:'Instrument Serif',serif;font-size:22px;line-height:1.1">{{ ci.name }}</span><span style="font-size:13px;color:#6b6a5a">{{ ci.meta }}</span></span><span style="font-weight:700;white-space:nowrap">{{ ci.total }}</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="display:flex;align-items:center;height:38px;border-radius:999px;border:1px solid rgba(31,39,24,.25)">
+                  <button onClick="{{ ci.dec }}" style="width:36px;height:100%;border:0;background:transparent;cursor:pointer;font-size:17px;color:#1f2718">−</button>
+                  <span style="min-width:20px;text-align:center;font-weight:700;font-size:14px">{{ ci.qty }}</span>
+                  <button onClick="{{ ci.inc }}" style="width:36px;height:100%;border:0;background:transparent;cursor:pointer;font-size:17px;color:#1f2718">+</button>
+                </div>
+                <button onClick="{{ ci.remove }}" style="border:0;background:transparent;color:#8a7f66;font-size:13px;cursor:pointer;text-decoration:underline">{{ u.remove }}</button>
+              </div>
+            </div>
+          </div>
+        </sc-for></sc-if>
+        <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:40px 0">
+            <span style="font-family:'Instrument Serif',serif;font-size:32px">{{ u.emptyCart }}</span>
+            <a href="{{ shopHref }}" style="background:#1f2718;color:#f4eee2;font-weight:700;padding:15px 22px;border-radius:999px;font-size:15px" style-hover="color:#f4eee2">{{ u.backShop }}</a>
+          </div>
+        </sc-if>
+      </div>
+      <sc-if value="{{ cartFull }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:22px 26px 26px;border-top:1px solid rgba(31,39,24,.1);display:flex;flex-direction:column;gap:14px;background:#fbf8f1">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="color:#55574a">{{ u.total }}</span><span style="font-family:'Instrument Serif',serif;font-size:38px">{{ cartTotal }}</span></div>
+          <span style="font-size:13px;color:#55574a;line-height:1.45">{{ u.noPay }}</span>
+          <a href="{{ reserveHref }}" style="display:flex;align-items:center;justify-content:center;gap:12px;height:60px;border-radius:999px;background:#b4602f;color:#f8efe2;font-weight:700;font-size:16px" style-hover="color:#f8efe2;background:#9a4f25">{{ u.toReserve }} →</a>
+        </div>
+      </sc-if>
+    </aside>
+  </sc-if>
+
+  <div data-toast="1" style="position:fixed;left:50%;bottom:28px;z-index:320;transform:translate(-50%,calc(100% + 60px));opacity:0;visibility:hidden;display:flex;align-items:center;gap:14px;padding:10px 10px 10px 18px;border-radius:999px;background:#1f2718;color:#f4eee2;box-shadow:0 20px 40px rgba(0,0,0,.3);font-size:15px;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .4s,visibility .4s;max-width:calc(100vw - 24px)">
+    <span style="width:24px;height:24px;border-radius:50%;background:#c9a86a;color:#1f2718;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none">✓</span>
+    <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ toast }}</span>
+    <button onClick="{{ openCart }}" style="flex:none;border:0;background:#c9a86a;color:#1f2718;font-weight:700;font-size:14px;padding:10px 16px;border-radius:999px;cursor:pointer">{{ u.seeBasket }}</button>
+  </div>
+
+  <footer style="background:#1f2718;color:#cfc4a8;padding:40px clamp(20px,4vw,56px)">
+    <div style="max-width:1440px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px;font-size:14px">
+      <div style="display:flex;align-items:center;gap:14px"><img src="assets/logo.jpg" alt="" style="width:48px;height:48px;border-radius:50%;object-fit:cover"><span>891 route de Saint-Zacharie, 13390 Auriol · <a href="tel:+33427501510" style="color:#c9a86a" style-hover="color:#e0c58f">04 27 50 15 10</a></span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 22px">
+        <sc-for list="{{ footLinks }}" as="l" hint-placeholder-count="4"><a href="{{ l.href }}" style="color:#cfc4a8" style-hover="color:#c9a86a">{{ l.label }}</a></sc-for>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;fr&quot;,&quot;en&quot;],&quot;default&quot;:&quot;fr&quot;,&quot;tsType&quot;:&quot;'fr'|'en'&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const UI = {
+  fr: { kicker: 'Boutique en ligne', all: 'Tout', allTitle: 'La boutique', intro: 'Choisissez vos produits, réservez-les en ligne et venez les récupérer au Comptoir. Le paiement se fait en magasin.',
+    steps: ['Ajoutez au panier', 'Choisissez un créneau de retrait', 'Payez sur place'], basket: 'Panier', search: 'Rechercher un produit', filters: 'Filtres', inStock: 'En stock uniquement', promo: 'Promotions', news: 'Nouveautés',
+    sortBy: 'Trier par', sorts: ['Pertinence', 'Prix croissant', 'Prix décroissant'], results: (n) => `${n} produit${n > 1 ? 's' : ''}`, clear: 'Effacer les filtres', none: 'Aucun produit ne correspond.',
+    add: 'Ajouter', addLong: 'Ajouter au panier', stockIn: 'En stock', stockOrder: 'Sur commande', noteIn: 'Disponible au retrait sous 2 h', noteOrder: 'Délai à confirmer par le magasin',
+    badgePromo: 'Promo', badgeNew: 'Nouveau', shop: 'Boutique', size: 'Taille', related: 'Vous aimerez aussi', advice: 'Conseils & infos',
+    perks: [['Retrait gratuit', 'Au Comptoir, à Auriol'], ['Paiement en magasin', 'Aucun paiement en ligne'], ['Conseil inclus', 'Notre équipe vous accompagne']],
+    added: (n) => `${n} ajouté au panier`, seeBasket: 'Voir le panier', remove: 'Retirer', total: 'Total estimé', emptyCart: 'Votre panier est vide', backShop: 'Retour à la boutique',
+    toReserve: 'Réserver pour retrait', noPay: 'Aucun paiement en ligne : vous réglez au moment du retrait, en magasin.',
+    continue: 'Continuer mes achats', reserveTitle: 'Réserver pour retrait', reserveIntro: 'Nous préparons votre commande et vous prévenons par téléphone ou e-mail quand elle est prête.',
+    pickDay: 'Jour et créneau de retrait', slots: ['Matin', 'Midi', 'Après-midi'], hoursTbc: 'Horaires d\'ouverture à confirmer', details: 'Vos coordonnées', fName: 'Nom et prénom', fPhone: 'Téléphone', fEmail: 'E-mail', note: 'Un commentaire ? (facultatif)',
+    confirm: 'Confirmer la réservation', summary: 'Votre panier', pickupAt: 'Retrait au Comptoir de la Vallée',
+    doneTitle: 'Réservation confirmée', doneText: (d) => `Merci ! Nous préparons votre commande pour le ${d}. Présentez votre numéro de réservation en magasin et réglez sur place.`, refK: 'N° de réservation', dayK: 'Retrait', totK: 'À régler en magasin', directions: 'Itinéraire',
+    home: 'Accueil', months: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'], dows: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'] },
+  en: { kicker: 'Online shop', all: 'All', allTitle: 'The shop', intro: 'Pick your products, reserve them online and collect them at the Comptoir. Payment is made in store.',
+    steps: ['Add to basket', 'Choose a pickup slot', 'Pay in store'], basket: 'Basket', search: 'Search products', filters: 'Filters', inStock: 'In stock only', promo: 'Offers', news: 'New in',
+    sortBy: 'Sort by', sorts: ['Relevance', 'Price: low to high', 'Price: high to low'], results: (n) => `${n} product${n > 1 ? 's' : ''}`, clear: 'Clear filters', none: 'No products match.',
+    add: 'Add', addLong: 'Add to basket', stockIn: 'In stock', stockOrder: 'Made to order', noteIn: 'Ready for pickup within 2 hours', noteOrder: 'Lead time confirmed by the store',
+    badgePromo: 'Offer', badgeNew: 'New', shop: 'Shop', size: 'Size', related: 'You may also like', advice: 'Advice & info',
+    perks: [['Free pickup', 'At the Comptoir, Auriol'], ['Pay in store', 'No online payment'], ['Advice included', 'Our team is here to help']],
+    added: (n) => `${n} added to basket`, seeBasket: 'View basket', remove: 'Remove', total: 'Estimated total', emptyCart: 'Your basket is empty', backShop: 'Back to the shop',
+    toReserve: 'Reserve for pickup', noPay: 'No online payment: you pay when you collect, in store.',
+    continue: 'Continue shopping', reserveTitle: 'Reserve for pickup', reserveIntro: "We'll prepare your order and let you know by phone or email when it's ready.",
+    pickDay: 'Pickup day and slot', slots: ['Morning', 'Midday', 'Afternoon'], hoursTbc: 'Opening hours to be confirmed', details: 'Your details', fName: 'Full name', fPhone: 'Phone', fEmail: 'Email', note: 'Any comments? (optional)',
+    confirm: 'Confirm reservation', summary: 'Your basket', pickupAt: 'Pickup at Le Comptoir de la Vallée',
+    doneTitle: 'Reservation confirmed', doneText: (d) => `Thank you! We're preparing your order for ${d}. Show your reservation number in store and pay on site.`, refK: 'Reservation no.', dayK: 'Pickup', totK: 'To pay in store', directions: 'Directions',
+    home: 'Home', months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], dows: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] }
+};
+const KEY = 'comptoir-basket-v1';
+const EASE = 'cubic-bezier(.2,.7,.2,1)';
+
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    const r = this.parse();
+    let cart = [];
+    try { cart = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) {}
+    this.state = { ...r, w: typeof window !== 'undefined' ? window.innerWidth : 1280, query: '', inStock: false, promo: false, news: false, sort: 'rel', qty: 1, size: 0, cart, cartOpen: false, toast: '', day: 1, slot: 0, done: null, ready: !!window.SHOP };
+  }
+  rootRef = (el) => { this.root = el; };
+  parse() {
+    if (typeof location === 'undefined') return { view: 'list', cat: null, pid: null, lang: null };
+    const parts = decodeURIComponent((location.hash || '').replace(/^#/, '')).split('/').filter(Boolean);
+    let lang = null; if (parts.length && (parts[parts.length - 1] === 'fr' || parts[parts.length - 1] === 'en')) lang = parts.pop();
+    const [a, b] = parts;
+    if (a === 'p') return { view: 'product', pid: b, cat: null, lang };
+    if (a === 'reserver') return { view: 'reserve', cat: null, pid: null, lang };
+    if (a === 'ok') return { view: 'done', cat: null, pid: null, lang };
+    return { view: 'list', cat: a && a !== 'tout' ? a : null, pid: null, lang };
+  }
+  componentDidMount() {
+    this.reduced = this.props.motion === false || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.onResize = () => this.setState({ w: window.innerWidth });
+    this.onPop = () => this.setState({ ...this.parse(), qty: 1, size: 0, cartOpen: false }, () => this.afterNav());
+    window.addEventListener('resize', this.onResize);
+    window.addEventListener('hashchange', this.onPop);
+    window.addEventListener('popstate', this.onPop);
+    const wait = () => (window.SHOP && window.SITE ? this.setState({ ready: true }, () => this.afterNav(true)) : setTimeout(wait, 50));
+    wait();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('hashchange', this.onPop);
+    window.removeEventListener('popstate', this.onPop);
+    clearTimeout(this.toastT);
+  }
+  componentDidUpdate(pp, ps) {
+    if (ps.cart !== this.state.cart) { try { localStorage.setItem(KEY, JSON.stringify(this.state.cart)); } catch (e) {} }
+    if (!ps.cartOpen && this.state.cartOpen && !this.reduced) setTimeout(() => {
+      const p = this.root.querySelector('[data-cart-panel]'), s = this.root.querySelector('[data-cart-scrim]');
+      p && p.animate([{ transform: 'translateX(100%)' }, { transform: 'none' }], { duration: 550, easing: EASE });
+      s && s.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400 });
+    }, 0);
+    const f = (s) => [s.cat, s.query, s.inStock, s.promo, s.news, s.sort].join('|');
+    if (f(ps) !== f(this.state)) setTimeout(() => this.animateCards(), 0);
+  }
+  q(s) { return this.root ? Array.from(this.root.querySelectorAll(s)) : []; }
+  scrollTop() { window.scrollTo(0, 0); let el = this.root; while (el) { if (el.scrollTop) el.scrollTop = 0; el = el.parentElement; } }
+  afterNav(first) {
+    if (!first) this.scrollTop();
+    setTimeout(() => {
+      this.animateCards();
+      if (this.reduced) return;
+      const im = this.root && this.root.querySelector('[data-pd-img]');
+      if (im) im.animate([{ clipPath: 'inset(12% 10% 12% 10% round 32px)' }, { clipPath: 'inset(0 0 0 0 round 32px)' }], { duration: 1200, easing: EASE });
+      const c = this.root && this.root.querySelector('[data-check]');
+      if (c) c.animate([{ transform: 'scale(0) rotate(-90deg)' }, { transform: 'scale(1.15)', offset: .7 }, { transform: 'none' }], { duration: 900, easing: EASE });
+    }, 30);
+  }
+  animateCards() {
+    if (this.reduced) return;
+    this.q('[data-card]').forEach((el, i) => el.animate([{ opacity: 0, transform: 'translateY(36px)' }, { opacity: 1, transform: 'none' }], { duration: 800, delay: Math.min(i, 12) * 45, easing: EASE, fill: 'backwards' }));
+  }
+  go(hash) {
+    try { history.pushState(null, '', '#' + hash); } catch (e) {}
+    this.setState({ ...this.parse(), qty: 1, size: 0, cartOpen: false }, () => this.afterNav());
+  }
+  onLinkClick = (e) => {
+    const a = e.target.closest && e.target.closest('a'); if (!a) return;
+    const h = a.getAttribute('href') || '';
+    if (h.startsWith('#') && h.length > 1) { e.preventDefault(); this.go(h.slice(1)); }
+  };
+  lang() { const l = this.state.lang ?? this.props.lang ?? 'fr'; return l === 'en' ? 'en' : 'fr'; }
+  fmt(n) { return this.lang() === 'en' ? '€' + n.toFixed(2) : n.toFixed(2).replace('.', ',') + ' €'; }
+  product(id) { return window.SHOP.products.find((p) => p.id === id); }
+  img(k) { const r = window.SITE && window.SITE.imgOf(k); return r ? r.src : ''; }
+  priceOf(p, si) { return p.sizes ? p.sizes[si || 0].price : p.price; }
+  addToCart(p, qty, si) {
+    const key = p.id + (p.sizes ? ':' + (si || 0) : '');
+    const cart = this.state.cart.slice(), ex = cart.find((c) => c.key === key);
+    if (ex) ex.qty += qty; else cart.push({ key, id: p.id, size: p.sizes ? si || 0 : null, qty });
+    this.setState({ cart: cart.map((c) => ({ ...c })), toast: UI[this.lang()].added(p[this.lang()][0]) });
+    if (!this.reduced) {
+      const b = this.root.querySelector('[data-cart-count]'); b && b.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.6)' }, { transform: 'scale(1)' }], { duration: 500, easing: EASE });
+    }
+    const t = this.root.querySelector('[data-toast]');
+    if (t) { t.style.transform = 'translate(-50%,0)'; t.style.opacity = 1; t.style.visibility = 'visible'; clearTimeout(this.toastT); this.toastT = setTimeout(() => { t.style.transform = 'translate(-50%,calc(100% + 60px))'; t.style.opacity = 0; t.style.visibility = 'hidden'; }, 2800); }
+  }
+  setQty(key, d) { this.setState((s) => ({ cart: s.cart.map((c) => (c.key === key ? { ...c, qty: c.qty + d } : c)).filter((c) => c.qty > 0) })); }
+  dayList(u) {
+    const out = []; const t = new Date();
+    for (let i = 0; out.length < 7 && i < 10; i++) { const d = new Date(t.getFullYear(), t.getMonth(), t.getDate() + i); if (d.getDay() === 0) continue; out.push(d); }
+    return out;
+  }
+  setLang(l) {
+    const hash = (location.hash || '').replace(/^#/, '').split('/').filter((x) => x && x !== 'fr' && x !== 'en');
+    try { history.replaceState(null, '', '#' + [...hash, l].join('/')); } catch (e) {}
+    this.setState({ lang: l });
+  }
+  renderVals() {
+    const lang = this.lang(), u = UI[lang], S = window.SHOP, SITE = window.SITE;
+    const pg = (k) => `Pages.dc.html#${k}/${lang}`;
+    const sh = (h) => `#${h}/${lang}`;
+    const wide = this.state.w >= 980;
+    const base = {
+      rootRef: this.rootRef, onLinkClick: this.onLinkClick, u, homeHref: `Accueil%20v3.dc.html#${lang}`, shopHref: sh('tout'), reserveHref: sh('reserver'),
+      setFr: () => this.setLang('fr'), setEn: () => this.setLang('en'), frFg: lang === 'fr' ? '#c9a86a' : '#f4eee2', enFg: lang === 'en' ? '#c9a86a' : '#f4eee2',
+      openCart: () => this.setState({ cartOpen: true }), closeCart: () => this.setState({ cartOpen: false }), cartOpen: this.state.cartOpen, toast: this.state.toast,
+      navLeft: wide ? [{ label: u.home, href: `Accueil%20v3.dc.html#${lang}` }, { label: u.shop, href: sh('tout') }, { label: lang === 'en' ? 'Garden centre' : 'Jardinerie', href: pg('jardinerie') }, { label: 'Contact', href: pg('contact') }] : [{ label: u.shop, href: sh('tout') }],
+      footLinks: [{ label: u.home, href: `Accueil%20v3.dc.html#${lang}` }, { label: 'Contact', href: pg('contact') }, { label: lang === 'en' ? 'Legal notice' : 'Mentions légales', href: pg('mentions-legales') }, { label: 'Instagram ↗', href: 'https://www.instagram.com/comptoirdelavallee/' }],
+      isList: false, isProduct: false, isReserve: false, isDone: false, cart: [], cartCount: 0, cartTotal: this.fmt(0), cartEmpty: true, cartFull: false
+    };
+    if (!this.state.ready || !S) return { ...base, isList: true, items: [], catChips: [], toggles: [], sorts: [], steps: [], perks: [], related: [], days: [], slots: [], fields: [], doneFacts: [], pd: {} };
+    const catOf = (id) => S.cats.find((c) => c.id === id);
+    const badge = (p) => p.badge === 'promo' ? { badge: p.was ? `-${Math.round((1 - p.price / p.was) * 100)} %`.replace(' %', lang === 'en' ? '%' : ' %') : u.badgePromo, badgeBg: '#b4602f', badgeFg: '#f8efe2' } : p.badge === 'new' ? { badge: u.badgeNew, badgeBg: '#c9a86a', badgeFg: '#1f2718' } : { badge: '', badgeBg: '', badgeFg: '' };
+    const card = (p) => ({ id: p.id, name: p[lang][0], img: this.img(p.img), href: sh('p/' + p.id), catLabel: catOf(p.cat)[lang], priceLabel: (p.sizes ? (lang === 'en' ? 'from ' : 'dès ') : '') + this.fmt(this.priceOf(p, 0)), wasLabel: p.was ? this.fmt(p.was) : '', stockLabel: p.stock === 'in' ? u.stockIn : u.stockOrder, stockDot: p.stock === 'in' ? '#3f9b4f' : '#d08a2e', ...badge(p), add: () => this.addToCart(p, 1, 0) });
+    const cart = this.state.cart.map((c) => { const p = this.product(c.id); if (!p) return null; const pr = this.priceOf(p, c.size); return { ...c, p, name: p[lang][0], img: this.img(p.img), imgSafe: this.img(p.img), meta: [c.size != null && p.sizes ? p.sizes[c.size][lang] : null, `${this.fmt(pr)} × ${c.qty}`].filter(Boolean).join(' · '), total: this.fmt(pr * c.qty), sum: pr * c.qty, inc: () => this.setQty(c.key, 1), dec: () => this.setQty(c.key, -1), remove: () => this.setQty(c.key, -c.qty) }; }).filter(Boolean);
+    const sum = cart.reduce((a, c) => a + c.sum, 0), count = cart.reduce((a, c) => a + c.qty, 0);
+    const out = { ...base, cart, cartCount: count, cartTotal: this.fmt(sum), cartEmpty: !cart.length, cartFull: !!cart.length };
+    const v = this.state.view;
+
+    if (v === 'product') {
+      const p = this.product(this.state.pid) || S.products[0], si = this.state.size, pr = this.priceOf(p, si), c = catOf(p.cat);
+      return { ...out, isProduct: true, qty: this.state.qty,
+        pd: { ...card(p), desc: p[lang][1], catHref: sh(p.cat), priceLabel: this.fmt(pr), lineTotal: this.fmt(pr * this.state.qty), stockNote: p.stock === 'in' ? u.noteIn : u.noteOrder, hasSizes: !!p.sizes,
+          sizes: (p.sizes || []).map((s, i) => ({ label: s[lang], bd: i === si ? '#1f2718' : 'rgba(31,39,24,.2)', bg: i === si ? '#1f2718' : 'transparent', fg: i === si ? '#f4eee2' : '#1f2718', pick: () => this.setState({ size: i }) })) },
+        qtyUp: () => this.setState((s) => ({ qty: s.qty + 1 })), qtyDown: () => this.setState((s) => ({ qty: Math.max(1, s.qty - 1) })),
+        addCurrent: () => this.addToCart(p, this.state.qty, si),
+        perks: u.perks.map(([t, d]) => ({ t, d })),
+        related: S.products.filter((x) => x.cat === p.cat && x.id !== p.id).concat(S.products.filter((x) => x.cat !== p.cat && x.badge)).slice(0, 4).map(card) };
+    }
+    if (v === 'reserve' || v === 'done') {
+      const days = this.dayList(u);
+      const fmtDay = (d) => `${u.dows[d.getDay()]} ${d.getDate()} ${u.months[d.getMonth()]}`;
+      if (v === 'done') {
+        const dn = this.state.done || { ref: 'CDV-0000', day: fmtDay(days[0]), slot: u.slots[0], total: this.fmt(0) };
+        return { ...out, isDone: true, doneText: u.doneText(`${dn.day} (${dn.slot.toLowerCase()})`), doneFacts: [{ k: u.refK, v: dn.ref }, { k: u.dayK, v: dn.day }, { k: u.totK, v: dn.total }] };
+      }
+      return { ...out, isReserve: true,
+        days: days.map((d, i) => { const on = i === this.state.day; return { dow: u.dows[d.getDay()], num: d.getDate(), mon: u.months[d.getMonth()], bd: on ? '#1f2718' : 'rgba(31,39,24,.15)', bg: on ? '#1f2718' : '#fbf8f1', fg: on ? '#f4eee2' : '#1f2718', pick: () => this.setState({ day: i }) }; }),
+        slots: u.slots.map((s, i) => { const on = i === this.state.slot; return { label: s, bd: on ? '#b4602f' : 'rgba(31,39,24,.2)', bg: on ? '#b4602f' : 'transparent', fg: on ? '#f8efe2' : '#1f2718', pick: () => this.setState({ slot: i }) }; }),
+        fields: [{ label: u.fName, type: 'text', req: true }, { label: u.fPhone, type: 'tel', req: true }, { label: u.fEmail, type: 'email', req: false }],
+        submitReserve: (e) => { e.preventDefault(); if (!cart.length) return; const ref = 'CDV-' + String(Math.floor(1000 + Math.random() * 9000)); this.setState({ done: { ref, day: fmtDay(days[this.state.day]), slot: u.slots[this.state.slot], total: this.fmt(sum) }, cart: [] }, () => this.go('ok/' + lang)); } };
+    }
+
+    const st = this.state, ql = st.query.trim().toLowerCase();
+    let list = S.products.filter((p) => (!st.cat || p.cat === st.cat) && (!st.inStock || p.stock === 'in') && (!st.promo || p.badge === 'promo') && (!st.news || p.badge === 'new') && (!ql || (p[lang][0] + ' ' + p[lang][1]).toLowerCase().includes(ql)));
+    if (st.sort === 'asc') list = list.slice().sort((a, b) => this.priceOf(a) - this.priceOf(b));
+    if (st.sort === 'desc') list = list.slice().sort((a, b) => this.priceOf(b) - this.priceOf(a));
+    const cur = st.cat && catOf(st.cat);
+    const chip = (id, label, n) => { const on = (st.cat || null) === id; return { label, count: n, bd: on ? '#1f2718' : 'rgba(31,39,24,.18)', bg: on ? '#1f2718' : 'transparent', fg: on ? '#f4eee2' : '#1f2718', pick: () => this.go((id || 'tout') + '/' + lang) }; };
+    const tg = (k, label) => ({ label, track: st[k] ? '#b4602f' : 'rgba(31,39,24,.2)', knob: st[k] ? 'translateX(16px)' : 'none', toggle: () => this.setState({ [k]: !st[k] }) });
+    const hasFilters = !!(st.cat || ql || st.inStock || st.promo || st.news || st.sort !== 'rel');
+    return { ...out, isList: true,
+      listTitle: cur ? cur[lang] : u.allTitle,
+      steps: u.steps.map((t, i) => ({ n: i + 1, t })),
+      catChips: [chip(null, u.all, S.products.length), ...S.cats.map((c) => chip(c.id, c[lang], S.products.filter((p) => p.cat === c.id).length))],
+      layoutCols: wide ? '260px minmax(0,1fr)' : 'minmax(0,1fr)', asidePos: wide ? 'sticky' : 'static',
+      query: st.query, onQuery: (e) => this.setState({ query: e.target.value }),
+      toggles: [tg('inStock', u.inStock), tg('promo', u.promo), tg('news', u.news)],
+      sort: st.sort, onSort: (e) => this.setState({ sort: e.target.value }),
+      sorts: [{ v: 'rel', label: u.sorts[0] }, { v: 'asc', label: u.sorts[1] }, { v: 'desc', label: u.sorts[2] }],
+      catPage: cur && cur.page && SITE ? { label: SITE.pages[cur.page][lang].nav, href: pg(cur.page) } : null,
+      resultLabel: u.results(list.length), hasFilters,
+      clearFilters: () => { this.setState({ query: '', inStock: false, promo: false, news: false, sort: 'rel' }); if (st.cat) this.go('tout/' + lang); },
+      items: list.map(card), empty: !list.length };
+  }
+}
+</script>
+</body>
+</html>

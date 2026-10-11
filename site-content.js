@@ -225,7 +225,8 @@ SITE.megaFor = function (k, lang, href) {
   return { key: k, label: pg.nav, intro: this.firstSentence(pg.intro), href: href(k), img: this.imgOf(P.img),
     links: links.slice(0, 8).map(function (l, i) { return Object.assign({}, l, { n: i + 1 }); }),
     kicker: L ? 'Explore' : 'Découvrir', viewAll: L ? 'View all' : 'Tout voir', promoKicker: L ? 'Offer of the moment' : 'Offre du moment',
-    promo: { badge: offer.badge, title: offer.title, href: href('promotions') } };
+    promo: { badge: offer.badge, title: offer.title, href: href('promotions') },
+    shop: { label: L ? 'Shop online' : 'Acheter en ligne', href: 'Boutique.dc.html#' + (this.shopCat[k] || 'tout') + '/' + lang } };
 };
 SITE.footer = function (lang, href) {
   const L = lang === 'en', S = this, p = function (k) { return { label: S.pages[k][lang].nav, href: href(k) }; };
@@ -271,3 +272,6 @@ SITE.reviews = {
   ],
   photos: [ ['shop-flowers', 1360, 1020], ['shop-epicerie', 1360, 558], ['shop-wines', 765, 1020], ['shop-entrance', 1400, 709], ['shop-snow', 1360, 1020] ]
 };
+
+SITE.shopCat = { 'jardinerie': 'tout', 'plantes-fleurs': 'plantes-fleurs', 'oliviers': 'oliviers', 'arbres-fruitiers': 'arbres-fruitiers', 'plantes-exotiques': 'plantes-exotiques', 'poterie': 'poterie', 'outillage-entretien': 'outillage', 'animalerie': 'animalerie', 'deco-maison': 'deco', 'promotions': 'tout', 'arrivages': 'tout' };
+SITE.shopHref = function (k, lang) { const c = this.shopCat[k]; return c ? 'Boutique.dc.html#' + c + '/' + lang : null; };
